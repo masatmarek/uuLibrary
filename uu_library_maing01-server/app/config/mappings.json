@@ -1,0 +1,36 @@
+{
+  "{vendor}-{uuApp}-{uuSubApp}": {
+    "useCaseMap": {
+      "init": {
+        "realization": "api/controllers/LibraryMainController.init",
+        "httpMethod": "POST",
+        "type": "CMD"
+      },
+      "defaultUve": {
+        "realization": "index.html",
+        "httpMethod": "GET",
+        "type": "UVE"
+      },
+      "book/create": {
+        "realization": "api/controllers/BookController.create",
+        "httpMethod": "POST",
+        "type": "CMD"
+      },
+      "book/update": {
+        "realization": "api/controllers/BookController.update",
+        "httpMethod": "POST",
+        "type": "CMD"
+      },
+      "book/list": {
+        "realization": "api/controllers/BookController.list",
+        "httpMethod": "GET",
+        "type": "CMD"
+      },
+      "location/delete": {
+        "realization": "api/controllers/LocationController.delete",
+        "httpMethod": "GET",
+        "type": "CMD"
+      }
+    }
+  }
+}

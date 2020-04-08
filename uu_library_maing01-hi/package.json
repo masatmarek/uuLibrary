@@ -1,0 +1,105 @@
+{
+  "name": "uu_library_maing01-hi",
+  "version": "0.1.0",
+  "description": "",
+  "license": "License Commercial",
+  "namespace": "UuLibrary",
+  "spec": "uu5-app; uu_appg01@1.6.3",
+  "dependencies": {
+    "systemjs": "0.19.47",
+    "uu5g04": "^1.19.0",
+    "uu_plus4u5g01": "^4.0.0",
+    "immutable": "3.8.2",
+    "uu5codekitg01": "^1.0.0",
+    "uu5tilesg01": "^3.0.0",
+    "uu_appg01": "^4.0.0",
+    "uu_appg01_core": "^4.0.0",
+    "uu_appg01_oidc": "^2.0.0",
+    "uu_pg01": "^2.0.0",
+    "uu_plus4u5g01-console": "^1.0.0"
+  },
+  "uuBuildSettings": {
+    "externals": {
+      "uu5g04": {
+        "cdnBaseUri": "https://cdn.plus4u.net/uu-uu5g04/1.0.0",
+        "localBaseUri": "node_modules/uu5g04/dist/"
+      },
+      "uu5g04-bricks": {
+        "cdnBaseUri": "https://cdn.plus4u.net/uu-uu5g04/1.0.0/",
+        "localBaseUri": "node_modules/uu5g04/dist/"
+      },
+      "uu5g04-forms": {
+        "cdnBaseUri": "https://cdn.plus4u.net/uu-uu5g04/1.0.0/",
+        "localBaseUri": "node_modules/uu5g04/dist/"
+      },
+      "uu_appg01_core": {
+        "cdnBaseUri": "https://cdn.plus4u.net/uu-appg01-core/4.0.0/",
+        "localBaseUri": "node_modules/uu_appg01_core/dist/"
+      },
+      "uu_appg01": {
+        "cdnBaseUri": "https://cdn.plus4u.net/uu-appg01/4.0.0/",
+        "localBaseUri": "node_modules/uu_appg01/dist/"
+      },
+      "uu_appg01_oidc": {
+        "cdnBaseUri": "https://cdn.plus4u.net/uu-appg01-oidc/2.0.0/",
+        "localBaseUri": "node_modules/uu_appg01_oidc/dist/"
+      },
+      "uu_plus4u5g01": {
+        "cdnBaseUri": "https://cdn.plus4u.net/uu-plus4u5g01/4.0.0/",
+        "localBaseUri": "node_modules/uu_plus4u5g01/dist/"
+      },
+      "uu_plus4u5g01-bricks": {
+        "cdnBaseUri": "https://cdn.plus4u.net/uu-plus4u5g01/4.0.0/",
+        "localBaseUri": "node_modules/uu_plus4u5g01/dist/"
+      },
+      "uu_plus4u5g01-app": {
+        "cdnBaseUri": "https://cdn.plus4u.net/uu-plus4u5g01/4.0.0/",
+        "localBaseUri": "node_modules/uu_plus4u5g01/dist/"
+      },
+      "uu_plus4u5g01-console": {
+        "cdnBaseUri": "https://cdn.plus4u.net/uu-plus4u5g01-console/1.0.0/"
+      },
+      "immutable": {
+        "cdnBaseUri": "https://cdn.plus4u.net/libs/immutable/3.8.2/"
+      },
+      "uu5codekitg01": {
+        "cdnBaseUri": "https://cdn.plus4u.net/uu-uu5codekitg01/1.0.0/"
+      },
+      "uu_pg01": {
+        "cdnBaseUri": "https://cdn.plus4u.net/uu-pg01/2.0.0/"
+      },
+      "uu_pg01-bricks": {
+        "cdnBaseUri": "https://cdn.plus4u.net/uu-pg01/2.0.0/"
+      },
+      "uu_pg01-forms": {
+        "cdnBaseUri": "https://cdn.plus4u.net/uu-pg01/2.0.0/"
+      },
+      "uu_pg01-tiles": {
+        "cdnBaseUri": "https://cdn.plus4u.net/uu-pg01/2.0.0/"
+      }
+    }
+  },
+  "devDependencies": {
+    "uu_appg01_devkit": "^1.6.3"
+  },
+  "engines": {
+    "node": ">=10.16.0"
+  },
+  "scripts": {
+    "clean": "uu_appg01_devkit clean",
+    "test": "uu_appg01_devkit test",
+    "build": "uu_appg01_devkit build",
+    "package": "uu_appg01_devkit package",
+    "dist": "uu_appg01_devkit package",
+    "start": "uu_appg01_devkit start",
+    "prettify": "uu_appg01_devkit prettify",
+    "vulnerabilityScan": "uu_appg01_devkit vulnerabilityScan",
+    "generate": "uu_appg01_devkit generate",
+    "lsiExport": "uu_appg01_devkit lsiExport",
+    "lsiImport": "uu_appg01_devkit lsiImport"
+  },
+  "prettier": {
+    "printWidth": 120
+  },
+  "private": true
+}
