@@ -7,14 +7,21 @@
     "useCaseMap": {}
   },
   "*": {
-    "profileList": ["Authorities","Executives","AwidOwner"],
+    "profileList": ["Managers","Customers","AwidOwner","Authorities"],
     "useCaseMap": {
+      "sys/listPermissions": ["Public"],
       "init": ["AwidOwner"],
       "defaultUve": ["Public"],
-      "book/create": ["Public"],
-      "book/update": ["Public"],
+      "book/create": ["Managers"],
+      "book/update": ["Managers"],
       "book/list": ["Public"],
-      "location/delete": ["Public"]
+      "location/delete": ["Managers"],
+      "book/borrow": ["Managers","Customers"],
+      "book/relocate": ["Managers"],
+      "book/return": ["Managers"],
+      "book/setState": ["Managers","Customers"],
+      "location/getProfiles": ["Customers"],
+      "location/create": ["Managers"]
     }
   }
 }

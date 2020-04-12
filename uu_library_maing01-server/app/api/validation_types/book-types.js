@@ -9,12 +9,12 @@ const bookCreateDtoInType = shape({
 });
 const bookUpdateDtoInType = shape({
   code: codeType().isRequired(),
-  locationCode: codeType(),
   name: string(),
   author: string()
 });
 const bookListDtoInType = shape({
   author: string(),
+  name: string(),
   locationCode: codeType(),
   pageInfo: shape({
     pageIndex: integer(),

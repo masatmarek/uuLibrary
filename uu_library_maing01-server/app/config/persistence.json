@@ -9,12 +9,12 @@
         },
         "book": {
           "realization": "dao/BookMongo",
-          "maxNoi": 100,
+          "maxNoi": 500000,
           "maxSoi": 16000
         },
         "location": {
           "realization": "dao/LocationMongo",
-          "maxNoi": 500000,
+          "maxNoi": 100,
           "maxSoi": 16000
 
         }

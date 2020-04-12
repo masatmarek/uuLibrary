@@ -49,6 +49,10 @@ export const Form = UU5.Common.VisualComponent.create({
   //@@viewOff:getDefaultProps
 
   //@@viewOn:reactLifeCycle
+  getInitialState() {
+    this._codeInput = UU5.Common.Reference.create();
+    return {};
+  },
   //@@viewOff:reactLifeCycle
 
   //@@viewOn:interface
@@ -58,6 +62,25 @@ export const Form = UU5.Common.VisualComponent.create({
   //@@viewOff:overriding
 
   //@@viewOn:private
+  _convertNameToCode(name) {
+    let code = "";
+    for (let i = 0; i < name.length; i++) {
+      if (name[i] === " ") {
+        code += "-";
+      } else {
+        code += name[i].toLowerCase();
+      }
+    }
+    return code;
+  },
+  _fillTheCodeField(opt) {
+    let { value } = opt;
+    let { component } = opt;
+    component.setValue(value);
+    if (!this.props.update) {
+      this._codeInput.current.setValue(this._convertNameToCode(value));
+    }
+  },
   _handleOnSave(opt) {
     let { values } = opt;
     if (this.props.update) {
@@ -85,6 +108,7 @@ export const Form = UU5.Common.VisualComponent.create({
               inputColWidth={{ xs: 12 }}
               label={<UU5.Bricks.Lsi lsi={Lsi.nameLabel} />}
               required
+              onChange={this._fillTheCodeField}
               requiredMessage={<UU5.Bricks.Lsi lsi={Lsi.required} />}
               value={this.props.update ? this.props.data.name : ""}
             />
@@ -95,6 +119,7 @@ export const Form = UU5.Common.VisualComponent.create({
                 inputColWidth={{ xs: 12 }}
                 label={<UU5.Bricks.Lsi lsi={Lsi.codeLabel} />}
                 required
+                ref_={this._codeInput}
                 requiredMessage={<UU5.Bricks.Lsi lsi={Lsi.required} />}
               />
             )}
@@ -108,15 +133,17 @@ export const Form = UU5.Common.VisualComponent.create({
               value={this.props.update ? this.props.data.author : ""}
             />
             {/* Todo: this will be select */}
-            <UU5.Forms.Text
-              name="locationCode"
-              labelColWidth={{ xs: 12 }}
-              inputColWidth={{ xs: 12 }}
-              label={<UU5.Bricks.Lsi lsi={Lsi.locationLabel} />}
-              required
-              requiredMessage={<UU5.Bricks.Lsi lsi={Lsi.required} />}
-              value={this.props.update ? this.props.data.locationCode : ""}
-            />
+            {this.props.update ? null : (
+              <UU5.Forms.Text
+                name="locationCode"
+                labelColWidth={{ xs: 12 }}
+                inputColWidth={{ xs: 12 }}
+                label={<UU5.Bricks.Lsi lsi={Lsi.locationLabel} />}
+                required
+                requiredMessage={<UU5.Bricks.Lsi lsi={Lsi.required} />}
+                value={this.props.update ? this.props.data.locationCode : ""}
+              />
+            )}
           </UU5.Bricks.Row>
           <UU5.Forms.Controls
             buttonSubmitProps={{

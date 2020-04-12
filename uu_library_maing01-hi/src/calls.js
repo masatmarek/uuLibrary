@@ -16,7 +16,14 @@ let Calls = {
     let commandUri = Calls.getCommandUri("loadDemoContent");
     return Calls.call("get", commandUri, dtoIn);
   },
-
+  profileList(dtoIn) {
+    let commandUri = Calls.getCommandUri("location/getProfiles");
+    return Calls.promisedCall("get", commandUri, dtoIn);
+  },
+  syslistPermissions(dtoIn){
+    let commandUri = Calls.getCommandUri("sys/listPermissions");
+    Calls.promisedCall("get", commandUri, dtoIn);
+  },
   bookList(dtoIn) {
     let commandUri = Calls.getCommandUri("book/list");
     return Calls.promisedCall("get", commandUri, dtoIn);

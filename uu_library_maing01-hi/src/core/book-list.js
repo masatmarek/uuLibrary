@@ -43,6 +43,7 @@ export const BookList = UU5.Common.VisualComponent.create({
   //@@viewOn:reactLifeCycle
   getInitialState() {
     this._listDataManager = UU5.Common.Reference.create();
+    this._profileList = [];
     return {};
   },
   //@@viewOff:reactLifeCycle
@@ -66,6 +67,27 @@ export const BookList = UU5.Common.VisualComponent.create({
           done(data);
         },
         fail
+      })
+    );
+  },
+  _handleGetpermList() {
+    let data = {
+      uuIdentityList: UU5.Environment.getSession().getIdentity()
+        ? UU5.Environment.getSession().getIdentity().uuIdentity
+        : "0-0"
+    };
+    return new Promise((done, fail) =>
+      Calls.syslistPermissions({
+        data,
+        done: data => {
+          for (let perm of data.itemList) {
+            this._profileList.push(perm.profileCode);
+          }
+          done(data);
+        },
+        fail: failDtoOut => {
+          console.log(failDtoOut);
+        }
       })
     );
   },
@@ -107,24 +129,49 @@ export const BookList = UU5.Common.VisualComponent.create({
     });
   },
   _getTileActionList(tileData) {
-    return [
-      {
-        content: <UU5.Bricks.Lsi lsi={Lsi.updateButton} />,
-        onClick: () => {
-          this._openUpdateModal(tileData);
+    if (this._profileList.includes("Managers")) {
+      return [
+        {
+          content: <UU5.Bricks.Lsi lsi={Lsi.updateButton} />,
+          onClick: () => {
+            this._openUpdateModal(tileData);
+          },
+          bgStyle: "filled",
+          priority: 0
         },
-        bgStyle: "filled",
-        colorSchema: "green"
-      },
-      {
-        content: <UU5.Bricks.Lsi lsi={Lsi.deleteButton} />,
-        onClick: () => {
-          this._openDeleteConfirmModal(tileData);
+        {
+          content: <UU5.Bricks.Lsi lsi={Lsi.deleteButton} />,
+          onClick: () => {
+            this._openDeleteConfirmModal(tileData);
+          },
+          bgStyle: "filled",
+          priority: 0
         },
-        bgStyle: "filled",
-        colorSchema: "red"
-      }
-    ];
+        {
+          content: <UU5.Bricks.Lsi lsi={Lsi.borrowButton} />,
+          onClick: () => {
+            console.log("This feature will be implemented in future");
+          },
+          bgStyle: "filled",
+          colorSchema: "success",
+          priority: 1,
+          borderRadius: 5
+        }
+      ];
+    } else if (this._profileList.includes("Customers") && !this._profileList.includes("Managers")) {
+      return [
+        {
+          content: <UU5.Bricks.Lsi lsi={Lsi.borrowButton} />,
+          onClick: () => {
+            console.log("This feature will be implemented in future");
+          },
+          bgStyle: "filled",
+          priority: 1
+        }
+      ];
+    } else {
+      return [];
+    }
   },
   _getActionBarActions() {
     return [
@@ -143,8 +190,6 @@ export const BookList = UU5.Common.VisualComponent.create({
     );
   },
   _openUpdateModal(data) {
-    console.log(data);
-
     ModalHelper.open(
       <UU5.Bricks.Lsi lsi={Lsi.createFeeConfiguration} />,
       <Form
@@ -160,7 +205,7 @@ export const BookList = UU5.Common.VisualComponent.create({
     return (
       <UU5.Bricks.Div>
         <UU5.Bricks.Lsi lsi={Lsi[name]} className={classNames.boldText()} />
-        :&nbsp;
+        :&nbsp;&nbsp;
         <UU5.Bricks.Span content={value} />
       </UU5.Bricks.Div>
     );
@@ -170,11 +215,13 @@ export const BookList = UU5.Common.VisualComponent.create({
       <UuP.Tiles.ActionTile
         actionList={this._getTileActionList(tileInfo.data)}
         header={tileInfo.name}
+        maxHeight
         level={4}
         content={
           <UU5.Bricks.Div>
             {this._getBookInfoLine("author", tileInfo.author)}
             {this._getBookInfoLine("location", tileInfo.locationCode)}
+            {this._getBookInfoLine("state", <UU5.Bricks.Lsi lsi={Lsi[tileInfo.state]} />)}
           </UU5.Bricks.Div>
         }
       />
@@ -198,7 +245,7 @@ export const BookList = UU5.Common.VisualComponent.create({
                 <UU5.Tiles.ListController data={data} selectable={false}>
                   <UU5.Tiles.ActionBar
                     collapsible={false}
-                    title={<UU5.Bricks.Lsi lsi={Lsi.bookList} />}
+                    title=""
                     searchable={true}
                     actions={this._getActionBarActions()}
                   />
@@ -207,7 +254,9 @@ export const BookList = UU5.Common.VisualComponent.create({
                     tileBorder
                     tileStyle={{ borderRadius: 4 }}
                     tileMinWidth={345}
-                    tileHeight={120}
+                    tileHeight={230}
+                    rowSpacing={8}
+                    tileSpacing={8}
                     tileJustify="space-between"
                     scrollToAlignment="center"
                   />
@@ -225,6 +274,7 @@ export const BookList = UU5.Common.VisualComponent.create({
 
   //@@viewOn:render
   render() {
+    this._handleGetpermList();
     return <UU5.Bricks.Div {...this.getMainPropsToPass()}>{this._getBooks()}</UU5.Bricks.Div>;
   }
   //@@viewOff:render

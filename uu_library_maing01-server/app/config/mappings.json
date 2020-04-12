@@ -30,6 +30,36 @@
         "realization": "api/controllers/LocationController.delete",
         "httpMethod": "GET",
         "type": "CMD"
+      },
+      "book/borrow": {
+        "realization": "api/controllers/BookController.borrow",
+        "httpMethod": "POST",
+        "type": "CMD"
+      },
+      "book/relocate": {
+        "realization": "api/controllers/BookController.relocate",
+        "httpMethod": "POST",
+        "type": "CMD"
+      },
+      "book/return": {
+        "realization": "api/controllers/BookController.return",
+        "httpMethod": "POST",
+        "type": "CMD"
+      },
+      "book/setState": {
+        "realization": "api/controllers/BookController.setState",
+        "httpMethod": "POST",
+        "type": "CMD"
+      },
+      "location/getProfiles": {
+        "realization": "api/controllers/LocationController.getProfiles",
+        "httpMethod": "GET",
+        "type": "CMD"
+      },
+      "location/create": {
+        "realization": "api/controllers/LocationController.create",
+        "httpMethod": "POST",
+        "type": "CMD"
       }
     }
   }

@@ -7,6 +7,8 @@ import "uu_plus4u5g01-app";
 
 import Config from "./config/config.js";
 import SpaAuthenticated from "./spa-authenticated.js";
+import SpaNotAuthenticated from "./spa-not-authenticated.js";
+
 //@@viewOff:imports
 
 const Spa = UU5.Common.VisualComponent.create({
@@ -62,7 +64,7 @@ const Spa = UU5.Common.VisualComponent.create({
       child = <SpaAuthenticated {...this.getMainPropsToPass()} identity={this.getIdentity()} />;
     } else if (this.isNotAuthenticated()) {
       // TODO Fill in the productInfo.baseUri properly (e.g. "https://uuos9.plus4u.net/uu-bookkitg01-main/00000-111111111111/").
-      child = <Plus4U5.App.SpaNotAuthenticated {...this.getMainPropsToPass()} productInfo={{ baseUri: "" }} />;
+      child = <SpaNotAuthenticated {...this.getMainPropsToPass()} productInfo={{ baseUri: "" }} />;
     } else {
       child = <Plus4U5.App.SpaLoading {...this.getMainPropsToPass()} content="uuLibrary" />;
     }

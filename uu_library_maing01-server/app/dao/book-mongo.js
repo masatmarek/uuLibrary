@@ -10,7 +10,7 @@ class BookMongo extends UuObjectDao {
     return await super.insertOne(uuObject);
   }
 
-  async listByCriteria(awid, criteria, pageInfo) {
+  async listByCriteria(awid, criteria, pageInfo = {}) {
     let filter = {};
     if (criteria.author) filter.author = criteria.author;
     if (criteria.locationCode) filter.locationCode = criteria.locationCode;
@@ -18,10 +18,10 @@ class BookMongo extends UuObjectDao {
     return await super.find(filter, pageInfo);
   }
 
-  async get(awid, id) {
+  async getByCode(awid, code) {
     let filter = {
       awid: awid,
-      id: id
+      code: code
     };
     return await super.findOne(filter);
   }
@@ -34,10 +34,10 @@ class BookMongo extends UuObjectDao {
     return await super.findOneAndUpdate(filter, uuObject, "NONE");
   }
 
-  async remove(uuObject) {
+  async removeByCode(awid, code) {
     let filter = {
-      awid: uuObject.awid,
-      id: uuObject.id
+      awid,
+      code
     };
     return await super.deleteOne(filter);
   }
