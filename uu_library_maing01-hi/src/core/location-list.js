@@ -14,17 +14,17 @@ import ModalHelper from "../helpers/modal-helper.js";
 
 import Form from "./form";
 
-import Lsi from "./book-list-lsi.js";
+import Lsi from "./location-list-lsi.js";
 //@@viewOff:imports
 
-export const BookList = UU5.Common.VisualComponent.create({
+export const LocationList = UU5.Common.VisualComponent.create({
   //@@viewOn:mixins
   mixins: [UU5.Common.BaseMixin],
   //@@viewOff:mixins
 
   //@@viewOn:statics
   statics: {
-    tagName: Config.TAG + "BookList",
+    tagName: Config.TAG + "LocationList",
     classNames: {
       main: () => Config.Css.css``,
       boldText: () => Config.Css.css`
@@ -39,20 +39,13 @@ export const BookList = UU5.Common.VisualComponent.create({
       cancelButton: () => Config.Css.css`
         margin-right: 4px;
     `,
-      getBackDiv: () => Config.Css.css`
-        color: #bdbdbd;
-        font-size: 16px;
-        display: flex;
+      header: () => Config.Css.css`
+        color: #1976D2;
         cursor: pointer;
         &:hover{
           text-decoration: underline;
         }
-      `,
-      getBackIcon: () => Config.Css.css`
-        color: #757575;
-        transform: rotate(90deg);
-        font-size: 20px!important;
-        `
+    `
     }
   },
   //@@viewOff:statics
@@ -79,10 +72,9 @@ export const BookList = UU5.Common.VisualComponent.create({
 
   //@@viewOn:private
   _handleLoad() {
-    let locationCode = UU5.Common.Tools.getUrlParam("code");
-    let data = { locationCode };
+    let data = {};
     return new Promise((done, fail) =>
-      Calls.bookList({
+      Calls.locationList({
         data,
         done: data => {
           for (let conf of data.itemList) {
@@ -97,7 +89,7 @@ export const BookList = UU5.Common.VisualComponent.create({
 
   _handleDelete(code) {
     return new Promise((resolve, reject) => {
-      Calls.bookDelete({
+      Calls.locationDelete({
         data: { code },
         done: dtoOut => {
           ModalHelper.close();
@@ -137,7 +129,7 @@ export const BookList = UU5.Common.VisualComponent.create({
   },
   _handleUpdate(data) {
     return new Promise((resolve, reject) => {
-      Calls.bookUpdate({
+      Calls.locationUpdate({
         data,
         done: dtoOut => {
           ModalHelper.close();
@@ -156,7 +148,7 @@ export const BookList = UU5.Common.VisualComponent.create({
   },
   _handleCreate(data) {
     return new Promise((resolve, reject) => {
-      Calls.bookCreate({
+      Calls.locationCreate({
         data,
         done: dtoOut => {
           ModalHelper.close();
@@ -190,28 +182,6 @@ export const BookList = UU5.Common.VisualComponent.create({
           },
           bgStyle: "filled",
           priority: 0
-        },
-        {
-          content: <UU5.Bricks.Lsi lsi={Lsi.borrowButton} />,
-          onClick: () => {
-            console.log("This feature will be implemented in future");
-          },
-          bgStyle: "filled",
-          colorSchema: "success",
-          priority: 1,
-          borderRadius: "5px"
-        }
-      ];
-    } else if (this._profileList.includes("Customers") && !this._profileList.includes("Managers")) {
-      return [
-        {
-          content: <UU5.Bricks.Lsi lsi={Lsi.borrowButton} />,
-          onClick: () => {
-            console.log("This feature will be implemented in future");
-          },
-          bgStyle: "filled",
-          colorSchema: "success",
-          priority: 1
         }
       ];
     } else {
@@ -230,12 +200,14 @@ export const BookList = UU5.Common.VisualComponent.create({
       ];
     }
   },
-
+  _setRoute(code) {
+    UU5.Environment.setRoute("location", { code });
+  },
   _openDeleteConfirmModal(data) {
     let classNames = this.getClassName();
     let modal = UU5.Environment.getPage().getModal();
     modal.open({
-      header: <UU5.Bricks.Lsi lsi={Lsi.deleteBook} />,
+      header: <UU5.Bricks.Lsi lsi={Lsi.deleteLocation} />,
       content: <UU5.Bricks.Lsi lsi={Lsi.areYouSureToDelete} />,
       footer: (
         <UU5.Bricks.Div>
@@ -271,7 +243,7 @@ export const BookList = UU5.Common.VisualComponent.create({
       />
     );
   },
-  _getBookInfoLine(name, value) {
+  _getLocationInfoLine(name, value) {
     let classNames = this.getClassName();
     return (
       <UU5.Bricks.Div key={UU5.Common.Tools.generateUUID(4)}>
@@ -281,24 +253,36 @@ export const BookList = UU5.Common.VisualComponent.create({
       </UU5.Bricks.Div>
     );
   },
+  _getTileHeader(data) {
+    let classNames = this.getClassName();
+    return (
+      <UU5.Bricks.Span
+        mainAttrs={{
+          onClick: () => this._setRoute(data.code)
+        }}
+        className={classNames.header()}
+      >
+        {data.name}
+      </UU5.Bricks.Span>
+    );
+  },
   _renderTile(tileInfo) {
     return (
       <UuP.Tiles.ActionTile
         key={UU5.Common.Tools.generateUUID(4)}
         actionList={this._getTileActionList(tileInfo.data)}
-        header={tileInfo.name}
+        header={this._getTileHeader(tileInfo)}
         level={4}
         content={
           <UU5.Bricks.Div key={UU5.Common.Tools.generateUUID(4)}>
-            {this._getBookInfoLine("author", tileInfo.author)}
-            {this._getBookInfoLine("location", tileInfo.locationCode)}
-            {this._getBookInfoLine("state", <UU5.Bricks.Lsi lsi={Lsi[tileInfo.state]} />)}
+            {this._getLocationInfoLine("state", <UU5.Bricks.Lsi lsi={Lsi[tileInfo.state]} />)}
+            {this._getLocationInfoLine("capacity", tileInfo.capacity)}
           </UU5.Bricks.Div>
         }
       />
     );
   },
-  _getBooks() {
+  _getLocations() {
     return (
       <UU5.Common.ListDataManager
         ref_={this._listDataManager}
@@ -322,12 +306,11 @@ export const BookList = UU5.Common.VisualComponent.create({
                   />
                   <UU5.Tiles.List
                     tile={this._renderTile}
-                    tileBorder
-                    tileStyle={{ borderRadius: 4 }}
-                    tileMinWidth={345}
-                    tileHeight={230}
+                    tileHeight={120}
                     rowSpacing={8}
                     tileSpacing={8}
+                    tileElevationHover={3}
+                    tileElevation={1}
                     tileJustify="space-between"
                     scrollToAlignment="center"
                   />
@@ -341,31 +324,16 @@ export const BookList = UU5.Common.VisualComponent.create({
       </UU5.Common.ListDataManager>
     );
   },
-  _getBackLink() {
-    let classNames = this.getClassName();
-    return (
-      <UU5.Bricks.Div
-        className={classNames.getBackDiv()}
-        mainAttrs={{ onClick: () => UU5.Environment.setRoute("location") }}
-      >
-        <UU5.Bricks.Icon className={classNames.getBackIcon()} icon="mdi-subdirectory-arrow-left" />
-        <UU5.Bricks.Lsi lsi={Lsi.back} />
-      </UU5.Bricks.Div>
-    );
-  },
   //@@viewOff:private
 
   //@@viewOn:render
   render() {
     this._handleGetpermList();
-    return (
-      <UU5.Bricks.Div {...this.getMainPropsToPass()}>
-        {this._getBackLink()}
-        {this._getBooks()}
-      </UU5.Bricks.Div>
-    );
+    console.log("sadf");
+
+    return <UU5.Bricks.Div {...this.getMainPropsToPass()}>{this._getLocations()}</UU5.Bricks.Div>;
   }
   //@@viewOff:render
 });
 
-export default BookList;
+export default LocationList;

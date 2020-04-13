@@ -1,0 +1,1 @@
+udìlat na routì location list lokací s možností prokliku na danou lokaci  ->>> UU5.Environment.setRoute("location",code: locCode)

@@ -1,19 +1,18 @@
 const Lsi = {
-  bookList: { cs: "List knížek", en: "Book list" },
   author: { cs: "Autor", en: "Author" },
   state: { cs: "Stav", en: "State" },
-  available: { cs: "Dostupná", en: "Available" },
-  borrowed: { cs: "Zapůjčená", en: "Borrowed" },
-  location: { cs: "Umístění", en: "Location" },
+  active: { cs: "Aktivní", en: "Active" },
+  passive: { cs: "Pozastavená", en: "Suspend" },
+  closed: { cs: "Zavřená", en: "Closed" },
+  capacity: { cs: "Kapacita", en: "Capacity" },
   updateButton: { cs: "Upravit", en: "Update" },
   deleteButton: { cs: "Smazat", en: "Delete" },
   createButton: { cs: "Vytvořit", en: "Create" },
   borrowButton: { cs: "Půjčit", en: "Borrow" },
   returnButton: { cs: "Vrátit", en: "Return" },
-  deleteBook: { cs: "Smazat knihu", en: "Delete book" },
+  deleteLocation: { cs: "Smazat umístění", en: "Delete location" },
   areYouSureToDelete: { cs: "Jste si jistý?", en: "Are your sure?" },
-  cancel: { cs: "Zrušit", en: "Cancel" },
-  back: { cs: "Do nadřazené složky", en: "To upper folder" }
+  cancel: { cs: "Zrušit", en: "Cancel" }
 };
 
 export default Lsi;

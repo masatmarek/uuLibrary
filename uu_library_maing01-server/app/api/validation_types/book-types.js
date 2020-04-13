@@ -21,3 +21,6 @@ const bookListDtoInType = shape({
     pageSize: integer()
   })
 });
+const bookDeleteDtoInType = shape({
+  code: codeType().isRequired()
+});

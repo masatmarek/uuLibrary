@@ -5,6 +5,7 @@ import "uu5g04-bricks";
 import Config from "./config/config.js";
 
 import BookList from "../core/book-list";
+import LocationList from "../core/location-list";
 
 import Lsi from "../config/lsi.js";
 //@@viewOff:imports
@@ -47,7 +48,7 @@ export const Location = UU5.Common.VisualComponent.create({
     return (
       <UU5.Bricks.Div {...this.getMainPropsToPass()}>
         <UU5.Bricks.Header level="0" content={<UU5.Bricks.Lsi lsi={Lsi.location.header} />} />
-        <BookList />
+        {this.props.params && this.props.params.code ? <BookList /> : <LocationList />}
       </UU5.Bricks.Div>
     );
   }

@@ -85,6 +85,13 @@ const List = {
       this.code = `${List.UC_CODE}invalidDtoIn`;
       this.message = "DtoIn is not valid.";
     }
+  },
+  LocationDoesNotExist: class extends LibraryMainUseCaseError {
+    constructor() {
+      super(...arguments);
+      this.code = `${List.UC_CODE}locationDoesNotExist`;
+      this.message = "Location does not exist.";
+    }
   }
 };
 
@@ -184,7 +191,33 @@ const SetState = {
   }
 };
 
+const Delete = {
+  UC_CODE: `${BOOK_ERROR_PREFIX}delete/`,
+  InvalidDtoIn: class extends LibraryMainUseCaseError {
+    constructor() {
+      super(...arguments);
+      this.code = `${Delete.UC_CODE}invalidDtoIn`;
+      this.message = "DtoIn is not valid.";
+    }
+  },
+  BookDoesNotExist: class extends LibraryMainUseCaseError {
+    constructor() {
+      super(...arguments);
+      this.code = `${Delete.UC_CODE}bookDoesNotExist`;
+      this.message = "Book does not exist.";
+    }
+  },
+  DeleteByCodeFailed: class extends LibraryMainUseCaseError {
+    constructor() {
+      super(...arguments);
+      this.code = `${Delete.UC_CODE}deleteByCodeFailed`;
+      this.message = "Delete of book failed.";
+    }
+  }
+};
+
 module.exports = {
+  Delete,
   SetState,
   Return,
   Relocate,

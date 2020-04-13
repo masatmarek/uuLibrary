@@ -17,6 +17,9 @@ const WARNINGS = {
   },
   relocateUnsupportedKeys: {
     code: `${Errors.Relocate.UC_CODE}unsupportedKeys`
+  },
+  deleteUnsupportedKeys: {
+    code: `${Errors.Relocate.UC_CODE}unsupportedKeys`
   }
 };
 const STATES = {
@@ -29,6 +32,32 @@ class BookAbl {
     this.validator = new Validator(Path.join(__dirname, "..", "api", "validation_types", "book-types.js"));
     this.dao = DaoFactory.getDao("book");
     this.locationDao = DaoFactory.getDao("location");
+  }
+
+  async delete(awid, dtoIn) {
+    // HDS 1.2, 1.3, A1, A2
+    let validationResult = this.validator.validate("bookDeleteDtoInType", dtoIn);
+    let uuAppErrorMap = ValidationHelper.processValidationResult(
+      dtoIn,
+      validationResult,
+      WARNINGS.deleteUnsupportedKeys.code,
+      Errors.Delete.InvalidDtoIn
+    );
+    // HDS 2
+    let book = await this.dao.getByCode(awid, dtoIn.code);
+    if (!book) {
+      // A3
+      throw new Errors.Delete.BookDoesNotExist({ uuAppErrorMap }, { code: dtoIn.code });
+    }
+    // HDS 3
+    try {
+      await this.dao.deleteByCode(awid, dtoIn.code);
+    } catch (e) {
+      // A4
+      throw new Errors.Delete.DeleteByCodeFailed({ uuAppErrorMap }, { code: dtoIn.code }, e);
+    }
+    // HDS;
+    return { uuAppErrorMap };
   }
 
   async setState(awid, dtoIn) {}
@@ -96,7 +125,13 @@ class BookAbl {
     );
 
     // HDS 2
-    //todo: if dtoIn contains locationCode then check if location exists
+    if (dtoIn && dtoIn.locationCode) {
+      let location = await this.locationDao.getByCode(awid, dtoIn.locationCode);
+      if (!location) {
+        // A3
+        throw new Errors.List.LocationDoesNotExist({ uuAppErrorMap }, { locationCode: dtoIn.locationCode });
+      }
+    }
 
     // HDS 3
     let dtoOut = await this.dao.listByCriteria(awid, dtoIn, dtoIn.pageInfo);

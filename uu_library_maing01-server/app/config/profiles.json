@@ -21,7 +21,9 @@
       "book/return": ["Managers"],
       "book/setState": ["Managers","Customers"],
       "location/getProfiles": ["Customers"],
-      "location/create": ["Managers"]
+      "location/create": ["Managers"],
+      "book/delete": ["Managers"],
+      "location/list": ["Public"]
     }
   }
 }

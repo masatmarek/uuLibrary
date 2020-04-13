@@ -20,9 +20,28 @@ class LocationAbl {
     this.dao = DaoFactory.getDao("location");
   }
 
+  async list(awid, dtoIn) {
+    // HDS 1
+    let validationResult = this.validator.validate("locationListDtoInType", dtoIn);
+    // A1, A2
+    let uuAppErrorMap = ValidationHelper.processValidationResult(
+      dtoIn,
+      validationResult,
+      WARNINGS.createUnsupportedKeys.code,
+      Errors.Create.InvalidDtoIn
+    );
+
+    // HDS 3
+    let dtoOut = await this.dao.list(awid, dtoIn.pageInfo);
+
+    // HDS 4
+    dtoOut.uuAppErrorMap = uuAppErrorMap;
+    return dtoOut;
+  }
+
   async create(awid, dtoIn) {
     // HDS 1
-    let validationResult = this.validator.validate("createLocationDtoInType", dtoIn);
+    let validationResult = this.validator.validate("locationCreateDtoInType", dtoIn);
     // A1, A2
     let uuAppErrorMap = ValidationHelper.processValidationResult(
       dtoIn,

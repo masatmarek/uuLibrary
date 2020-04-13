@@ -32,7 +32,13 @@ const Create = {
   }
 };
 
+const List = {
+  UC_CODE: `${LOCATION_ERROR_PREFIX}list/`,
+  
+};
+
 module.exports = {
+  List,
   Create,
   Delete
 };

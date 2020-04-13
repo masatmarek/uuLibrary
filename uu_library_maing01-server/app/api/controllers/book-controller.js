@@ -2,6 +2,10 @@
 const BookAbl = require("../../abl/book-abl.js");
 
 class BookController {
+
+  delete(ucEnv) {
+    return BookAbl.delete(ucEnv.getUri().getAwid(), ucEnv.getDtoIn());
+  }
   setState(ucEnv) {
     return BookAbl.setState(ucEnv.getUri().getAwid(), ucEnv.getDtoIn());
   }

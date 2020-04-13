@@ -34,7 +34,7 @@ class BookMongo extends UuObjectDao {
     return await super.findOneAndUpdate(filter, uuObject, "NONE");
   }
 
-  async removeByCode(awid, code) {
+  async deleteByCode(awid, code) {
     let filter = {
       awid,
       code

@@ -16,12 +16,10 @@ class LocationMongo extends UuObjectDao {
     };
     return await super.findOne(filter);
   }
-  async increaseBookCount(awid, code, countOfBooks) {
-    let filter = {
-      awid: awid,
-      code: code
-    };
-    return await super.findOneAndUpdate(filter, { countOfBooks }, "NONE");
+  async list(awid, pageInfo = {}) {
+    let filter = {};
+    filter.awid = awid;
+    return await super.find(filter, pageInfo);
   }
   async remove(uuObject) {
     let filter = {

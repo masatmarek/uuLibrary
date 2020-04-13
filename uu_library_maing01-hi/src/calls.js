@@ -20,9 +20,13 @@ let Calls = {
     let commandUri = Calls.getCommandUri("location/getProfiles");
     return Calls.promisedCall("get", commandUri, dtoIn);
   },
-  syslistPermissions(dtoIn){
+  syslistPermissions(dtoIn) {
     let commandUri = Calls.getCommandUri("sys/listPermissions");
     Calls.promisedCall("get", commandUri, dtoIn);
+  },
+  locationList(dtoIn) {
+    let commandUri = Calls.getCommandUri("location/list");
+    return Calls.promisedCall("get", commandUri, dtoIn);
   },
   bookList(dtoIn) {
     let commandUri = Calls.getCommandUri("book/list");
@@ -34,6 +38,10 @@ let Calls = {
   },
   bookUpdate(dtoIn) {
     let commandUri = Calls.getCommandUri("book/update");
+    return Calls.promisedCall("post", commandUri, dtoIn);
+  },
+  bookDelete(dtoIn) {
+    let commandUri = Calls.getCommandUri("book/delete");
     return Calls.promisedCall("post", commandUri, dtoIn);
   },
   /*
