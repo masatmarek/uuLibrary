@@ -2,7 +2,6 @@
 const BookAbl = require("../../abl/book-abl.js");
 
 class BookController {
-
   delete(ucEnv) {
     return BookAbl.delete(ucEnv.getUri().getAwid(), ucEnv.getDtoIn());
   }
@@ -16,15 +15,6 @@ class BookController {
 
   relocate(ucEnv) {
     return BookAbl.relocate(ucEnv.getUri().getAwid(), ucEnv.getDtoIn());
-  }
-
-  borrow(ucEnv) {
-    return BookAbl.borrow(
-      ucEnv.getUri().getAwid(),
-      ucEnv.getDtoIn(),
-      ucEnv.getSession(),
-      ucEnv.getAuthorizationResult().getAuthorizedProfiles()
-    );
   }
   getProfiles(ucEnv) {
     return BookAbl.getProfiles(ucEnv.getAuthorizationResult());

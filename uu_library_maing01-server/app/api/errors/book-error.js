@@ -125,6 +125,27 @@ const Relocate = {
       this.code = `${Borrow.UC_CODE}bookIsNotInProperState`;
       this.message = "Book is not in proper state";
     }
+  },
+  LocationIsFull: class extends LibraryMainUseCaseError {
+    constructor() {
+      super(...arguments);
+      this.code = `${Create.UC_CODE}locationIsFull`;
+      this.message = "Location is full.";
+    }
+  },
+  LocationIsNotInProperState: class extends LibraryMainUseCaseError {
+    constructor() {
+      super(...arguments);
+      this.code = `${Create.UC_CODE}locationIsNotInProperState`;
+      this.message = "Location is not in proper state.";
+    }
+  },
+  BookIsAlreadyInThisLocation: class extends LibraryMainUseCaseError {
+    constructor() {
+      super(...arguments);
+      this.code = `${Create.UC_CODE}bookIsAlreadyInThisLocation`;
+      this.message = "Book is already in this location.";
+    }
   }
 };
 

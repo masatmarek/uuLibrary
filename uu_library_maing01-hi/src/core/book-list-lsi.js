@@ -13,7 +13,10 @@ const Lsi = {
   deleteBook: { cs: "Smazat knihu", en: "Delete book" },
   areYouSureToDelete: { cs: "Jste si jistý?", en: "Are your sure?" },
   cancel: { cs: "Zrušit", en: "Cancel" },
-  back: { cs: "Do nadřazené složky", en: "To upper folder" }
+  back: { cs: "Do nadřazené složky", en: "To upper folder" },
+  successBorrowPrefix: { cs: "Půjčení", en: "" },
+  book: { cs: "knihy", en: "" },
+  successBorrowSuffix: { cs: "problěhlo úspěšně.", en: "" }
 };
 
 export default Lsi;

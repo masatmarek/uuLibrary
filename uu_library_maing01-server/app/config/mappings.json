@@ -31,11 +31,6 @@
         "httpMethod": "GET",
         "type": "CMD"
       },
-      "book/borrow": {
-        "realization": "api/controllers/BookController.borrow",
-        "httpMethod": "POST",
-        "type": "CMD"
-      },
       "book/relocate": {
         "realization": "api/controllers/BookController.relocate",
         "httpMethod": "POST",
@@ -69,6 +64,11 @@
       "location/list": {
         "realization": "api/controllers/LocationController.list",
         "httpMethod": "GET",
+        "type": "CMD"
+      },
+      "rental/borrowBook": {
+        "realization": "api/controllers/RentalController.borrowBook",
+        "httpMethod": "POST",
         "type": "CMD"
       }
     }

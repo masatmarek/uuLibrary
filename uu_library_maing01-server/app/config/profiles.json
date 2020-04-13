@@ -7,7 +7,7 @@
     "useCaseMap": {}
   },
   "*": {
-    "profileList": ["Managers","Customers","AwidOwner","Authorities"],
+    "profileList": ["Administrators", "Managers", "Librarians", "Customers", "AwidOwner", "Authorities"],
     "useCaseMap": {
       "sys/listPermissions": ["Public"],
       "init": ["AwidOwner"],
@@ -16,14 +16,15 @@
       "book/update": ["Managers"],
       "book/list": ["Public"],
       "location/delete": ["Managers"],
-      "book/borrow": ["Managers","Customers"],
+      "book/borrow": ["Managers", "Customers"],
       "book/relocate": ["Managers"],
       "book/return": ["Managers"],
-      "book/setState": ["Managers","Customers"],
+      "book/setState": ["Managers", "Customers"],
       "location/getProfiles": ["Customers"],
       "location/create": ["Managers"],
       "book/delete": ["Managers"],
-      "location/list": ["Public"]
+      "location/list": ["Public"],
+      "rental/borrowBook": ["Managers", "Customers"]
     }
   }
 }

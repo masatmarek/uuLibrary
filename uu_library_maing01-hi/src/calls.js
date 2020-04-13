@@ -32,6 +32,10 @@ let Calls = {
     let commandUri = Calls.getCommandUri("book/list");
     return Calls.promisedCall("get", commandUri, dtoIn);
   },
+  rentalBorowBook(dtoIn){
+    let commandUri = Calls.getCommandUri("rental/borrowBook");
+    return Calls.promisedCall("post", commandUri, dtoIn);
+  },
   bookCreate(dtoIn) {
     let commandUri = Calls.getCommandUri("book/create");
     return Calls.promisedCall("post", commandUri, dtoIn);

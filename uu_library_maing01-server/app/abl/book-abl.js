@@ -19,7 +19,7 @@ const WARNINGS = {
     code: `${Errors.Relocate.UC_CODE}unsupportedKeys`
   },
   deleteUnsupportedKeys: {
-    code: `${Errors.Relocate.UC_CODE}unsupportedKeys`
+    code: `${Errors.Delete.UC_CODE}unsupportedKeys`
   }
 };
 const STATES = {
@@ -74,44 +74,61 @@ class BookAbl {
       Errors.Relocate.InvalidDtoIn
     );
     // HDS 2
+    // HDS 2.1
     let book = await this.dao.getByCode(awid, dtoIn.code);
     if (!book) {
       //A3
       throw new Errors.Relocate.BookDoesNotExist({ uuAppErrorMap }, { code: dtoIn.code });
     }
+    // HDS 2.2
     if (book.state !== STATES.available) {
       //A4
-      throw new Errors.Relocate.BookIsNotInProperState({ uuAppErrorMap }, { code: dtoIn.code });
+      throw new Errors.Relocate.BookIsNotInProperState(
+        { uuAppErrorMap },
+        { state: book.state, expectedState: STATES.available }
+      );
     }
     // HDS 3
-    let location = await this.locationDao.getByCode(awid, dtoIn.code);
+    // HDS 3.1
+    let location = await this.locationDao.getByCode(awid, dtoIn.locationCode);
     if (!location) {
-      //A5
-      throw new Errors.Relocate.LocationDoesNotExist({ uuAppErrorMap }, { code: dtoIn.code });
+      // A5
+      throw new Errors.Relocate.LocationDoesNotExist({ uuAppErrorMap }, { locationCode: dtoIn.locationCode });
     }
-    //todo: HDS 4 validate location capacity A6
-
-    // HDS 5
+    // HDS 3.2
+    if (dtoIn.locationCode === book.locationCode) {
+      // A6
+      throw new Errors.Relocate.BookIsAlreadyInThisLocation({ uuAppErrorMap }, { locationCode: dtoIn.locationCode });
+    }
+    // HDS 3.3
+    let books = await this.dao.listByCriteria(awid, { locationCode: location.code });
+    if (books.itemList.length === location.capacity) {
+      // A7
+      throw new Errors.Relocate.LocationIsFull({ uuAppErrorMap }, { locationCode: dtoIn.locationCode });
+    }
+    // HDS 3.4
+    if (location.state !== STATES.active) {
+      //A8
+      throw new Errors.Relocate.LocationIsNotInProperState(
+        { uuAppErrorMap },
+        { state: location.state, expectedState: STATES.active }
+      );
+    }
+    // HDS 4
     dtoIn.awid = awid;
 
-    // HDS 6
+    // HDS 5
     try {
       book = await this.dao.updateByCode(dtoIn);
     } catch (e) {
-      // A7
+      // A9
       throw new Errors.Relocate.UpdateByDaoFailed({ uuAppErrorMap });
     }
 
-    // HDS 7
+    // HDS 6
     let dtoOut = { ...book };
     dtoOut.uuAppErrorMap = uuAppErrorMap;
     return dtoOut;
-  }
-
-  async borrow(awid, dtoIn, session, profiles) {
-    console.log(profiles);
-
-    return session;
   }
 
   async list(awid, dtoIn) {

@@ -24,3 +24,7 @@ const bookListDtoInType = shape({
 const bookDeleteDtoInType = shape({
   code: codeType().isRequired()
 });
+const bookRelocateDtoInType = shape({
+  code: codeType.isRequired(),
+  locationCode: codeType.isRequired()
+});

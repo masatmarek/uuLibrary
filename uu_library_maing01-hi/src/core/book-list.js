@@ -51,7 +51,12 @@ export const BookList = UU5.Common.VisualComponent.create({
       getBackIcon: () => Config.Css.css`
         color: #757575;
         transform: rotate(90deg);
-        font-size: 20px!important;
+        font-size: 20px !important;
+        `,
+      link: () => Config.Css.css`
+        cursor: pointer;
+        text-decoration: underline !important;
+        color: #1976D2 !important;
         `
     }
   },
@@ -94,7 +99,37 @@ export const BookList = UU5.Common.VisualComponent.create({
       })
     );
   },
-
+  _handleBorrowBook(book) {
+    let data = { code: book.code };
+    let classNames = this.getClassName();
+    return new Promise((done, fail) =>
+      Calls.rentalBorowBook({
+        data,
+        done: data => {
+          done(data);
+          this._listDataManager.current.load();
+          UU5.Environment.getPage()
+            .getAlertBus()
+            .setAlert({
+              colorSchema: "success",
+              closeTimer: 7000,
+              content: (
+                <UU5.Bricks.Span>
+                  <UU5.Bricks.Lsi lsi={Lsi.successBorrowPrefix} />
+                  &nbsp;
+                  <UU5.Bricks.Link href="http://www.unicorn.com/" className={classNames.link()} target="_blank">
+                    <UU5.Bricks.Lsi lsi={Lsi.book} />
+                  </UU5.Bricks.Link>
+                  &nbsp;
+                  <UU5.Bricks.Lsi lsi={Lsi.successBorrowSuffix} />
+                </UU5.Bricks.Span>
+              )
+            });
+        },
+        fail
+      })
+    );
+  },
   _handleDelete(code) {
     return new Promise((resolve, reject) => {
       Calls.bookDelete({
@@ -173,8 +208,9 @@ export const BookList = UU5.Common.VisualComponent.create({
     });
   },
   _getTileActionList(tileData) {
+    let actions = [];
     if (this._profileList.includes("Managers")) {
-      return [
+      actions = [
         {
           content: <UU5.Bricks.Lsi lsi={Lsi.updateButton} />,
           onClick: () => {
@@ -190,30 +226,32 @@ export const BookList = UU5.Common.VisualComponent.create({
           },
           bgStyle: "filled",
           priority: 0
-        },
-        {
-          content: <UU5.Bricks.Lsi lsi={Lsi.borrowButton} />,
-          onClick: () => {
-            console.log("This feature will be implemented in future");
-          },
-          bgStyle: "filled",
-          colorSchema: "success",
-          priority: 1,
-          borderRadius: "5px"
         }
       ];
-    } else if (this._profileList.includes("Customers") && !this._profileList.includes("Managers")) {
-      return [
-        {
+      if (tileData.state === "available") {
+        actions.push({
           content: <UU5.Bricks.Lsi lsi={Lsi.borrowButton} />,
-          onClick: () => {
-            console.log("This feature will be implemented in future");
-          },
+          onClick: () => this._handleBorrowBook(tileData),
           bgStyle: "filled",
           colorSchema: "success",
           priority: 1
-        }
-      ];
+        });
+      }
+      return actions;
+    } else if (this._profileList.includes("Customers") && !this._profileList.includes("Managers")) {
+      if (tileData.state === "available") {
+        return [
+          {
+            content: <UU5.Bricks.Lsi lsi={Lsi.borrowButton} />,
+            onClick: () => this._handleBorrowBook(tileData),
+            bgStyle: "filled",
+            colorSchema: "success",
+            priority: 1
+          }
+        ];
+      } else {
+        return [];
+      }
     } else {
       return [];
     }
