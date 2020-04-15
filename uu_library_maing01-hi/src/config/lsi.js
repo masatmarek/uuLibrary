@@ -14,7 +14,7 @@ const Lsi = {
       en: "About Application"
     },
     location: {
-      cs: "Umístění",
+      cs: "Oddělení",
       en: "Location"
     }
   },
@@ -111,7 +111,7 @@ const Lsi = {
   },
   location: {
     header: {
-      cs: "Umístění",
+      cs: "Oddělení",
       en: "Location"
     }
   }

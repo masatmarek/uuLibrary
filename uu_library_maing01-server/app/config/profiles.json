@@ -7,7 +7,7 @@
     "useCaseMap": {}
   },
   "*": {
-    "profileList": ["Administrators", "Managers", "Librarians", "Customers", "AwidOwner", "Authorities"],
+    "profileList": ["Administrators","Managers","Librarians","Customers","AwidOwner","Authorities"],
     "useCaseMap": {
       "sys/listPermissions": ["Public"],
       "init": ["AwidOwner"],
@@ -15,16 +15,19 @@
       "book/create": ["Managers"],
       "book/update": ["Managers"],
       "book/list": ["Public"],
-      "location/delete": ["Managers"],
-      "book/borrow": ["Managers", "Customers"],
+      "book/borrow": ["Managers","Customers"],
       "book/relocate": ["Managers"],
+      "book/setState": ["Managers","Customers"],
       "book/return": ["Managers"],
-      "book/setState": ["Managers", "Customers"],
-      "location/getProfiles": ["Customers"],
-      "location/create": ["Managers"],
       "book/delete": ["Managers"],
+      "rental/borrowBook": ["Managers","Customers"],
+      "location/create": ["Managers"],
       "location/list": ["Public"],
-      "rental/borrowBook": ["Managers", "Customers"]
+      "location/delete": ["Managers"],
+      "location/setState": ["Managers"],
+      "location/suspend": ["Managers"],
+      "location/reactivate": ["Managers"],
+      "location/close": ["Managers"]
     }
   }
 }

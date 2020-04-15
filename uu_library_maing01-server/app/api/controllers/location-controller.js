@@ -3,6 +3,22 @@ const LocationAbl = require("../../abl/location-abl.js");
 
 class LocationController {
 
+  close(ucEnv) {
+    return LocationAbl.close(ucEnv.getUri().getAwid(), ucEnv.getDtoIn());
+  }
+
+  reactivate(ucEnv) {
+    return LocationAbl.reactivate(ucEnv.getUri().getAwid(), ucEnv.getDtoIn());
+  }
+
+  suspend(ucEnv) {
+    return LocationAbl.suspend(ucEnv.getUri().getAwid(), ucEnv.getDtoIn());
+  }
+
+  setState(ucEnv) {
+    return LocationAbl.setState(ucEnv.getUri().getAwid(), ucEnv.getDtoIn());
+  }
+
   list(ucEnv) {
     return LocationAbl.list(ucEnv.getUri().getAwid(), ucEnv.getDtoIn());
   }

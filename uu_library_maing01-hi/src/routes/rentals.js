@@ -10,14 +10,14 @@ import LocationList from "../core/location-list";
 import Lsi from "../config/lsi.js";
 //@@viewOff:imports
 
-export const Location = UU5.Common.VisualComponent.create({
+export const Rentals = UU5.Common.VisualComponent.create({
   //@@viewOn:mixins
   mixins: [UU5.Common.BaseMixin, UU5.Common.RouteMixin],
   //@@viewOff:mixins
 
   //@@viewOn:statics
   statics: {
-    tagName: Config.TAG + "Location",
+    tagName: Config.TAG + "Rentals",
     classNames: {
       main: () => Config.Css.css``
     },
@@ -47,15 +47,7 @@ export const Location = UU5.Common.VisualComponent.create({
   render() {
     return (
       <UU5.Bricks.Div {...this.getMainPropsToPass()}>
-        <UU5.Bricks.Header
-          level="0"
-          content={
-            <UU5.Bricks.Div>
-              <UU5.Bricks.Lsi lsi={Lsi.location.header} /> &nbsp;
-              {this.props.params && this.props.params.code ? this.props.params.code : ""}
-            </UU5.Bricks.Div>
-          }
-        />
+        <UU5.Bricks.Header level="0" content={<UU5.Bricks.Lsi lsi={Lsi.location.header} />} />
         {this.props.params && this.props.params.code ? <BookList /> : <LocationList />}
       </UU5.Bricks.Div>
     );
@@ -63,4 +55,4 @@ export const Location = UU5.Common.VisualComponent.create({
   //@@viewOff:render
 });
 
-export default Location;
+export default Rentals;

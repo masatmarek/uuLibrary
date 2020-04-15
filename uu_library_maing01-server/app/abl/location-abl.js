@@ -20,6 +20,22 @@ class LocationAbl {
     this.dao = DaoFactory.getDao("location");
   }
 
+  async close(awid, dtoIn) {
+    
+  }
+
+  async reactivate(awid, dtoIn) {
+    
+  }
+
+  async suspend(awid, dtoIn) {
+    
+  }
+
+  async setState(awid, dtoIn) {
+    
+  }
+
   async list(awid, dtoIn) {
     // HDS 1
     let validationResult = this.validator.validate("locationListDtoInType", dtoIn);

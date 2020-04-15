@@ -329,7 +329,6 @@ export const LocationList = UU5.Common.VisualComponent.create({
   //@@viewOn:render
   render() {
     this._handleGetpermList();
-    console.log("sadf");
 
     return <UU5.Bricks.Div {...this.getMainPropsToPass()}>{this._getLocations()}</UU5.Bricks.Div>;
   }

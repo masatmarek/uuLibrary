@@ -70,6 +70,26 @@
         "realization": "api/controllers/RentalController.borrowBook",
         "httpMethod": "POST",
         "type": "CMD"
+      },
+      "location/setState": {
+        "realization": "api/controllers/LocationController.setState",
+        "httpMethod": "POST",
+        "type": "CMD"
+      },
+      "location/suspend": {
+        "realization": "api/controllers/LocationController.suspend",
+        "httpMethod": "POST",
+        "type": "CMD"
+      },
+      "location/reactivate": {
+        "realization": "api/controllers/LocationController.reactivate",
+        "httpMethod": "POST",
+        "type": "CMD"
+      },
+      "location/close": {
+        "realization": "api/controllers/LocationController.close",
+        "httpMethod": "POST",
+        "type": "CMD"
       }
     }
   }

@@ -331,6 +331,8 @@ export const BookList = UU5.Common.VisualComponent.create({
             {this._getBookInfoLine("author", tileInfo.author)}
             {this._getBookInfoLine("location", tileInfo.locationCode)}
             {this._getBookInfoLine("state", <UU5.Bricks.Lsi lsi={Lsi[tileInfo.state]} />)}
+            {this._getBookInfoLine("condition", "")}
+            {this._getBookInfoLine("genre", "")}
           </UU5.Bricks.Div>
         }
       />

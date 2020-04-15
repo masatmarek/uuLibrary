@@ -10,7 +10,7 @@ const Lsi = {
   createButton: { cs: "Vytvořit", en: "Create" },
   borrowButton: { cs: "Půjčit", en: "Borrow" },
   returnButton: { cs: "Vrátit", en: "Return" },
-  deleteLocation: { cs: "Smazat umístění", en: "Delete location" },
+  deleteLocation: { cs: "Smazat oddělení", en: "Delete location" },
   areYouSureToDelete: { cs: "Jste si jistý?", en: "Are your sure?" },
   cancel: { cs: "Zrušit", en: "Cancel" }
 };

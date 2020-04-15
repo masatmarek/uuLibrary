@@ -37,7 +37,31 @@ const List = {
   
 };
 
+const SetState = {
+  UC_CODE: `${LOCATION_ERROR_PREFIX}setState/`,
+  
+};
+
+const Suspend = {
+  UC_CODE: `${LOCATION_ERROR_PREFIX}suspend/`,
+  
+};
+
+const Reactivate = {
+  UC_CODE: `${LOCATION_ERROR_PREFIX}reactivate/`,
+  
+};
+
+const Close = {
+  UC_CODE: `${LOCATION_ERROR_PREFIX}close/`,
+  
+};
+
 module.exports = {
+  Close,
+  Reactivate,
+  Suspend,
+  SetState,
   List,
   Create,
   Delete
