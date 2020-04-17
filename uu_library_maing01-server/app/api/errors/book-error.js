@@ -47,6 +47,20 @@ const Create = {
       this.code = `${Create.UC_CODE}locationIsNotInProperState`;
       this.message = "Location is not in proper state.";
     }
+  },
+  ConditionDoesNotExist: class extends LibraryMainUseCaseError {
+    constructor() {
+      super(...arguments);
+      this.code = `${Create.UC_CODE}conditionDoesNotExist`;
+      this.message = "Condition does not exist.";
+    }
+  },
+  GenreDoesNotExist: class extends LibraryMainUseCaseError {
+    constructor() {
+      super(...arguments);
+      this.code = `${Create.UC_CODE}genreDoesNotExist`;
+      this.message = "Genre does not exist.";
+    }
   }
 };
 

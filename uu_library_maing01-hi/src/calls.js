@@ -32,7 +32,19 @@ let Calls = {
     let commandUri = Calls.getCommandUri("book/list");
     return Calls.promisedCall("get", commandUri, dtoIn);
   },
-  rentalBorowBook(dtoIn){
+  genreList(dtoIn) {
+    let commandUri = Calls.getCommandUri("genre/list");
+    return Calls.promisedCall("get", commandUri, dtoIn);
+  },
+  genreGet(dtoIn) {
+    let commandUri = Calls.getCommandUri("genre/get");
+    Calls.promisedCall("get", commandUri, dtoIn);
+  },
+  conditionGet(dtoIn) {
+    let commandUri = Calls.getCommandUri("condition/get");
+    Calls.promisedCall("get", commandUri, dtoIn);
+  },
+  rentalBorowBook(dtoIn) {
     let commandUri = Calls.getCommandUri("rental/borrowBook");
     return Calls.promisedCall("post", commandUri, dtoIn);
   },

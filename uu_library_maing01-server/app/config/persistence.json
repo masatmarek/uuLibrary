@@ -16,12 +16,21 @@
           "realization": "dao/LocationMongo",
           "maxNoi": 100,
           "maxSoi": 16000
-
         },
         "rental": {
           "realization": "dao/RentalMongo",
           "maxNoi": 500000,
           "maxSoi": 16000
+        },
+        "genre": {
+          "realization": "dao/GenreMongo",
+          "maxNoi": 1000,
+          "maxSoi": 200
+        },
+        "condition": {
+          "realization": "dao/ConditionMongo",
+          "maxNoi": 1000,
+          "maxSoi": 200
 
         }
       }

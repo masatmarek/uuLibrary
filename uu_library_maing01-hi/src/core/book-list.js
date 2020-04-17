@@ -331,11 +331,41 @@ export const BookList = UU5.Common.VisualComponent.create({
             {this._getBookInfoLine("author", tileInfo.author)}
             {this._getBookInfoLine("location", tileInfo.locationCode)}
             {this._getBookInfoLine("state", <UU5.Bricks.Lsi lsi={Lsi[tileInfo.state]} />)}
-            {this._getBookInfoLine("condition", "")}
-            {this._getBookInfoLine("genre", "")}
+            {this._getCondition(tileInfo.conditionCode)}
+            {this._getGenre(tileInfo.genreCode)}
           </UU5.Bricks.Div>
         }
       />
+    );
+  },
+  _getGenre(code) {
+    return (
+      <UU5.Common.Loader onLoad={Calls.genreGet} data={{ code: code }}>
+        {({ isLoading, isError, data }) => {
+          if (isLoading) {
+            return <UU5.Bricks.Loading />;
+          } else if (isError) {
+            return <></>;
+          } else {
+            return this._getBookInfoLine("genre", data.name);
+          }
+        }}
+      </UU5.Common.Loader>
+    );
+  },
+  _getCondition(code) {
+    return (
+      <UU5.Common.Loader onLoad={Calls.conditionGet} data={{ code: code }}>
+        {({ isLoading, isError, data }) => {
+          if (isLoading) {
+            return <UU5.Bricks.Loading />;
+          } else if (isError) {
+            return <></>;
+          } else {
+            return this._getBookInfoLine("condition", data.name);
+          }
+        }}
+      </UU5.Common.Loader>
     );
   },
   _getBooks() {
@@ -364,7 +394,7 @@ export const BookList = UU5.Common.VisualComponent.create({
                     tile={this._renderTile}
                     tileBorder
                     tileStyle={{ borderRadius: 4 }}
-                    tileMinWidth={345}
+                    tileMinWidth={445}
                     tileHeight={230}
                     rowSpacing={8}
                     tileSpacing={8}

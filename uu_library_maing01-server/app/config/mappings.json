@@ -90,6 +90,46 @@
         "realization": "api/controllers/LocationController.close",
         "httpMethod": "POST",
         "type": "CMD"
+      },
+      "genre/create": {
+        "realization": "api/controllers/GenreController.genreCreate",
+        "httpMethod": "POST",
+        "type": "CMD"
+      },
+      "genre/delete": {
+        "realization": "api/controllers/GenreController.genreDelete",
+        "httpMethod": "POST",
+        "type": "CMD"
+      },
+      "genre/list": {
+        "realization": "api/controllers/GenreController.genreList",
+        "httpMethod": "GET",
+        "type": "CMD"
+      },
+      "condition/list": {
+        "realization": "api/controllers/ConditionController.conditionList",
+        "httpMethod": "GET",
+        "type": "CMD"
+      },
+      "condition/create": {
+        "realization": "api/controllers/ConditionController.conditionCreate",
+        "httpMethod": "POST",
+        "type": "CMD"
+      },
+      "condition/delete": {
+        "realization": "api/controllers/ConditionController.conditionDelete",
+        "httpMethod": "POST",
+        "type": "CMD"
+      },
+      "genre/get": {
+        "realization": "api/controllers/GenreController.genreGet",
+        "httpMethod": "GET",
+        "type": "CMD"
+      },
+      "condition/get": {
+        "realization": "api/controllers/ConditionController.conditionGet",
+        "httpMethod": "GET",
+        "type": "CMD"
       }
     }
   }

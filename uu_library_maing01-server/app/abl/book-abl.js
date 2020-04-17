@@ -32,6 +32,8 @@ class BookAbl {
     this.validator = new Validator(Path.join(__dirname, "..", "api", "validation_types", "book-types.js"));
     this.dao = DaoFactory.getDao("book");
     this.locationDao = DaoFactory.getDao("location");
+    this.genreDao = DaoFactory.getDao("genre");
+    this.conditionDao = DaoFactory.getDao("condition");
   }
 
   async delete(awid, dtoIn) {
@@ -221,10 +223,20 @@ class BookAbl {
       );
     }
     // HDS 3
+    let condition = await this.conditionDao.getByCode(awid, dtoIn.conditionCode);
+    if (!condition) {
+      throw new Errors.Create.ConditionDoesNotExist({ uuAppErrorMap }, { conditionCode: dtoIn.conditionCode });
+    }
+    // HDS 4
+    let genre = await this.genreDao.getByCode(awid, dtoIn.genreCode);
+    if (!genre) {
+      throw new Errors.Create.GenreDoesNotExist({ uuAppErrorMap }, { genreCode: dtoIn.genreCode });
+    }
+    // HDS 5
     dtoIn.awid = awid;
     dtoIn.state = STATES.available;
 
-    // HDS 4
+    // HDS 6
     let book;
     try {
       book = await this.dao.create(dtoIn);
@@ -238,7 +250,7 @@ class BookAbl {
       }
     }
 
-    // HDS 5
+    // HDS 7
     let dtoOut = { ...book };
     dtoOut.uuAppErrorMap = uuAppErrorMap;
     return dtoOut;
