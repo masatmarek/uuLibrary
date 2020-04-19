@@ -3,7 +3,7 @@ const codeType = string(/^[0-9a-zA-Z_\-]{2,64}$/);
 
 const genreCreateDtoInType = shape({
   code: codeType().isRequired(),
-  name: string().isRequired()
+  name: shape().isRequired()
 });
 const genreDeleteDtoInType = shape({
   code: codeType().isRequired()

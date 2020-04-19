@@ -31,7 +31,11 @@
           "realization": "dao/ConditionMongo",
           "maxNoi": 1000,
           "maxSoi": 200
-
+        },
+        "request": {
+          "realization": "dao/RequestMongo",
+          "maxNoi": 500000,
+          "maxSoi": 1000
         }
       }
     }

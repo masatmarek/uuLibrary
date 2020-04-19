@@ -280,7 +280,7 @@ export const BookList = UU5.Common.VisualComponent.create({
           <UU5.Bricks.Button
             content={<UU5.Bricks.Lsi lsi={Lsi.cancel} />}
             className={classNames.cancelButton()}
-            onClick={modal.close}
+            onClick={() => modal.close()}
           />
           <UU5.Bricks.Button
             colorSchema="red"
@@ -347,7 +347,7 @@ export const BookList = UU5.Common.VisualComponent.create({
           } else if (isError) {
             return <></>;
           } else {
-            return this._getBookInfoLine("genre", data.name);
+            return this._getBookInfoLine("genre", <UU5.Bricks.Lsi lsi={data.name} />);
           }
         }}
       </UU5.Common.Loader>
@@ -362,7 +362,7 @@ export const BookList = UU5.Common.VisualComponent.create({
           } else if (isError) {
             return <></>;
           } else {
-            return this._getBookInfoLine("condition", data.name);
+            return this._getBookInfoLine("condition", <UU5.Bricks.Lsi lsi={data.name} />);
           }
         }}
       </UU5.Common.Loader>

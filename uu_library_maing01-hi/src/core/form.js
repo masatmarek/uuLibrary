@@ -132,18 +132,38 @@ export const Form = UU5.Common.VisualComponent.create({
               requiredMessage={<UU5.Bricks.Lsi lsi={Lsi.required} />}
               value={this.props.update ? this.props.data.author : ""}
             />
-            {/* Todo: this will be select */}
-            {this.props.update ? null : (
-              <UU5.Forms.Text
-                name="locationCode"
-                labelColWidth={{ xs: 12 }}
-                inputColWidth={{ xs: 12 }}
-                label={<UU5.Bricks.Lsi lsi={Lsi.locationLabel} />}
-                required
-                requiredMessage={<UU5.Bricks.Lsi lsi={Lsi.required} />}
-                value={this.props.update ? this.props.data.locationCode : ""}
-              />
-            )}
+
+            <UU5.Forms.Select
+              name="locationCode"
+              labelColWidth={{ xs: 12 }}
+              inputColWidth={{ xs: 12 }}
+              label={<UU5.Bricks.Lsi lsi={Lsi.locationLabel} />}
+              required
+              requiredMessage={<UU5.Bricks.Lsi lsi={Lsi.required} />}
+            >
+              <UU5.Forms.Select.Option value="A1" />
+              <UU5.Forms.Select.Option value="A2" />
+            </UU5.Forms.Select>
+            <UU5.Forms.Select
+              name="genreCode"
+              labelColWidth={{ xs: 12 }}
+              inputColWidth={{ xs: 12 }}
+              label={<UU5.Bricks.Lsi lsi={Lsi.genreLabel} />}
+              required
+              requiredMessage={<UU5.Bricks.Lsi lsi={Lsi.required} />}
+            >
+              <UU5.Forms.Select.Option value="Horror" />
+            </UU5.Forms.Select>
+            <UU5.Forms.Select
+              name="conditionCode"
+              labelColWidth={{ xs: 12 }}
+              inputColWidth={{ xs: 12 }}
+              label={<UU5.Bricks.Lsi lsi={Lsi.conditionLabel} />}
+              required
+              requiredMessage={<UU5.Bricks.Lsi lsi={Lsi.required} />}
+            >
+              <UU5.Forms.Select.Option value="Nová" />
+            </UU5.Forms.Select>
           </UU5.Bricks.Row>
           <UU5.Forms.Controls
             buttonSubmitProps={{

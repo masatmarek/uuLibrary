@@ -62,7 +62,8 @@ export const Left = UU5.Common.VisualComponent.create({
   _getItems() {
     return [
       { code: "home", content: <UU5.Bricks.Lsi lsi={Lsi.leftLinks.home} /> },
-      { code: "location", content: <UU5.Bricks.Lsi lsi={Lsi.leftLinks.location} /> }
+      { code: "location", content: <UU5.Bricks.Lsi lsi={Lsi.leftLinks.location} /> },
+      { code: "admin", content: <UU5.Bricks.Lsi lsi={Lsi.leftLinks.controlPanel} /> }
     ];
   },
 

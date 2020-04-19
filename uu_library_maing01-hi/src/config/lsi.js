@@ -16,6 +16,10 @@ const Lsi = {
     location: {
       cs: "Oddělení",
       en: "Location"
+    },
+    controlPanel: {
+      cs: "Ovládací panel",
+      en: "Control panel"
     }
   },
 

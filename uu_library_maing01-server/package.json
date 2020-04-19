@@ -5,6 +5,7 @@
   "license": "License Commercial",
   "spec": "nodejs-app; uu_appg01@1.6.3",
   "dependencies": {
+    "nodemailer": "^6.4.6",
     "uu_appg01_server": "^4.6.0"
   },
   "devDependencies": {

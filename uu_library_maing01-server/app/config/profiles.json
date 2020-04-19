@@ -20,7 +20,7 @@
       "book/setState": ["Managers","Customers"],
       "book/return": ["Managers"],
       "book/delete": ["Administrators","Managers","Librarians"],
-      "rental/borrowBook": ["Managers","Customers"],
+      "rental/confirmBorrowBook": ["Managers","Customers"],
       "location/create": ["Administrators","Managers"],
       "location/list": ["Public"],
       "location/delete": ["Administrators","Managers"],
@@ -29,13 +29,14 @@
       "location/reactivate": ["Administrators","Managers"],
       "location/close": ["Administrators","Managers"],
       "genre/create": ["Administrators","Managers"],
-      "genre/delete": ["Administrators","Managers"],
+      "genre/get": ["Public"],
       "genre/list": ["Public"],
-      "condition/list": ["Public"],
+      "genre/delete": ["Administrators","Managers"],
       "condition/create": ["Administrators","Managers"],
+      "condition/get": ["Public"],
+      "condition/list": ["Public"],
       "condition/delete": ["Administrators","Managers"],
-      "genre/get": ["Managers"],
-      "condition/get": ["Managers"]
+      "request/create": ["Customers"]
     }
   }
 }

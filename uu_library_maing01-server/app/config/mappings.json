@@ -66,8 +66,8 @@
         "httpMethod": "GET",
         "type": "CMD"
       },
-      "rental/borrowBook": {
-        "realization": "api/controllers/RentalController.borrowBook",
+      "rental/confirmBorrowBook": {
+        "realization": "api/controllers/RentalController.confirmConfirmBorrowBook",
         "httpMethod": "POST",
         "type": "CMD"
       },
@@ -129,6 +129,11 @@
       "condition/get": {
         "realization": "api/controllers/ConditionController.conditionGet",
         "httpMethod": "GET",
+        "type": "CMD"
+      },
+      "request/create": {
+        "realization": "api/controllers/RequestController.requestCreate",
+        "httpMethod": "POST",
         "type": "CMD"
       }
     }
