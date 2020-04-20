@@ -16,9 +16,17 @@ const Lsi = {
   deleteBook: { cs: "Smazat knihu", en: "Delete book" },
   areYouSureToDelete: { cs: "Jste si jistý?", en: "Are your sure?" },
   cancel: { cs: "Zrušit", en: "Cancel" },
+  delete: { cs: "Smazat", en: "Delete" },
   successBorrowPrefix: { cs: "Žádost o půjčení", en: "" },
   book: { cs: "knihy", en: "" },
-  successBorrowSuffix: { cs: "problěhla úspěšně.", en: "" }
+  successBorrowSuffix: { cs: "problěhla úspěšně.", en: "" },
+  successDelete: { cs: "Smazaní proběhlo úspěšně", en: "Delete of book was successfull" },
+  areYouSure(name) {
+    return {
+      cs: `Jste si jistý že chcete smazat knihu: '${name}'?`,
+      en: `Are you sure that you want to delete book: '${name}'?`
+    };
+  }
 };
 
 export default Lsi;

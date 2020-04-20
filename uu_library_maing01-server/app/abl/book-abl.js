@@ -247,25 +247,24 @@ class BookAbl {
     }
     // HDS 4
     dtoIn.code = this.createCode(dtoIn.name);
-    // HDS 5
     dtoIn.awid = awid;
     dtoIn.state = STATES.available;
 
-    // HDS 6
+    // HDS 5
     let book;
     try {
       book = await this.dao.create(dtoIn);
     } catch (e) {
       if (e instanceof DuplicateKey) {
-        // A6
+        // A8
         throw new Errors.Create.DuplicateCode({ uuAppErrorMap }, { code: dtoIn.code });
       } else {
-        // A7
+        // A9
         throw new Errors.Create.CreateByDaoFailed({ uuAppErrorMap });
       }
     }
 
-    // HDS 7
+    // HDS 6
     let dtoOut = { ...book };
     dtoOut.uuAppErrorMap = uuAppErrorMap;
     return dtoOut;

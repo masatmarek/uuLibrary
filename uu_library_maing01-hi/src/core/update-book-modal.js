@@ -5,20 +5,19 @@ import "uu5tilesg01";
 import "uu_pg01-bricks";
 import "uu_pg01-tiles";
 
-import Calls from "../calls";
 import Config from "./config/config.js";
 
-import Lsi from "./create-book-modal-lsi.js";
+import Lsi from "./update-book-modal-lsi.js";
 //@@viewOff:imports
 
-export const CreateBookModal = UU5.Common.VisualComponent.create({
+export const UpdateBookModal = UU5.Common.VisualComponent.create({
   //@@viewOn:mixins
   mixins: [UU5.Common.BaseMixin, UU5.Common.ElementaryMixin],
   //@@viewOff:mixins
 
   //@@viewOn:statics
   statics: {
-    tagName: Config.TAG + "CreateBookModal",
+    tagName: Config.TAG + "UpdateBookModal",
     classNames: {
       main: () => Config.Css.css``
     }
@@ -27,13 +26,13 @@ export const CreateBookModal = UU5.Common.VisualComponent.create({
 
   //@@viewOn:propTypes
   propTypes: {
-    onCreate: UU5.PropTypes.func
+    onUpdate: UU5.PropTypes.func
   },
   //@@viewOff:propTypes
 
   //@@viewOn:getDefaultProps
   getDefaultProps() {
-    return { onCreate: null };
+    return { onUpdate: null };
   },
   //@@viewOff:getDefaultProps
 
@@ -72,24 +71,24 @@ export const CreateBookModal = UU5.Common.VisualComponent.create({
     );
   },
 
-  _handleCreate({ component, values }) {
+  _handleUpdate({ component, values }) {
     values = { ...values };
     values.locationCode = UU5.Common.Tools.getUrlParam("code");
     component.saveDone(values);
   },
 
-  _handleCreateDone(dtoOut) {
+  _handleUpdateDone(dtoOut) {
     this._modal.current.close();
     this._alertBus.current.setAlert(
       {
         content: <UU5.Bricks.Div content={<UU5.Bricks.Lsi lsi={Lsi.success} />} />,
         colorSchema: "success"
       },
-      () => this.props.onCreate && this.props.onCreate(dtoOut.dtoOut)
+      () => this.props.onUpdate && this.props.onUpdate(dtoOut.dtoOut)
     );
   },
 
-  _handleCreateFail() {
+  _handleUpdateFail() {
     this._alertBus.current.setAlert({
       content: <UU5.Bricks.Div content={<UU5.Bricks.Lsi lsi={Lsi.fail} />} />,
       colorSchema: "danger"
@@ -100,9 +99,9 @@ export const CreateBookModal = UU5.Common.VisualComponent.create({
 
     return (
       <UU5.Forms.ContextForm
-        onSave={formRef => this._handleCreate(formRef)}
-        onSaveDone={this._handleCreateDone}
-        onSaveFail={this._handleCreateFail}
+        onSave={formRef => this._handleUpdate(formRef)}
+        onSaveDone={this._handleUpdateDone}
+        onSaveFail={this._handleUpdateFail}
         onCancel={this._closeModal}
       >
         <UU5.Forms.Text
@@ -193,4 +192,4 @@ export const CreateBookModal = UU5.Common.VisualComponent.create({
   }
   //@@viewOff:render
 });
-export default CreateBookModal;
+export default UpdateBookModal;

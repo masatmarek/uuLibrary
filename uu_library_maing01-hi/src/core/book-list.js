@@ -73,7 +73,6 @@ export const BookList = UU5.Common.VisualComponent.create({
     this._listDataManager = UU5.Common.Reference.create();
     this._createModal = UU5.Common.Reference.create();
     this._updateModal = UU5.Common.Reference.create();
-    this._deleteModal = UU5.Common.Reference.create();
     return {};
   },
   //@@viewOff:reactLifeCycle
@@ -102,14 +101,34 @@ export const BookList = UU5.Common.VisualComponent.create({
     );
   },
   _handleCreate(data) {
-    console.log(data);
-
     return new Promise((resolve, reject) => {
       Calls.bookCreate({
         data,
         done: dtoOut => {
           ModalHelper.close();
           resolve(dtoOut);
+        },
+        fail: failDtoOut => {
+          UU5.Environment.getPage()
+            .getAlertBus()
+            .setAlert({ colorSchema: "danger", content: failDtoOut.message });
+          ModalHelper.close();
+          reject(failDtoOut);
+        }
+      });
+    });
+  },
+  _handleDelete(code) {
+    return new Promise((resolve, reject) => {
+      Calls.bookDelete({
+        data: code,
+        done: dtoOut => {
+          ModalHelper.close();
+          resolve(dtoOut);
+          this._listDataManager.current.load();
+          UU5.Environment.getPage()
+            .getAlertBus()
+            .setAlert({ colorSchema: "danger", content: <UU5.Bricks.Lsi lsi={Lsi.successDelete} /> });
         },
         fail: failDtoOut => {
           UU5.Environment.getPage()
@@ -144,7 +163,7 @@ export const BookList = UU5.Common.VisualComponent.create({
     this._createModal.current.open();
   },
   _renderTile(tileInfo) {
-    return <BookTile key={tileInfo.code} data={tileInfo} />;
+    return <BookTile key={tileInfo.code} data={tileInfo} onDelete={this._handleDelete} />;
   },
   _getBooks() {
     return (

@@ -11,6 +11,7 @@ import "uu_pg01-tiles";
 import Config from "./config/config.js";
 import Calls from "../calls";
 import ModalHelper from "../helpers/modal-helper.js";
+import UpdateBookModal from "./update-book-modal";
 
 import Form from "./create-book-modal";
 
@@ -67,6 +68,10 @@ export const BookTile = UU5.Common.VisualComponent.create({
   //@@viewOff:statics
 
   //@@viewOn:propTypes
+  propTypes: {
+    route: UU5.PropTypes.object,
+    onDelete: UU5.PropTypes.func
+  },
   //@@viewOff:propTypes
 
   //@@viewOn:getDefaultProps
@@ -77,7 +82,6 @@ export const BookTile = UU5.Common.VisualComponent.create({
     this._listDataManager = UU5.Common.Reference.create();
     this._createModal = UU5.Common.Reference.create();
     this._updateModal = UU5.Common.Reference.create();
-    this._deleteModal = UU5.Common.Reference.create();
 
     return {};
   },
@@ -126,25 +130,6 @@ export const BookTile = UU5.Common.VisualComponent.create({
       })
     );
   },
-  _handleDelete(code) {
-    return new Promise((resolve, reject) => {
-      Calls.bookDelete({
-        data: { code },
-        done: dtoOut => {
-          ModalHelper.close();
-          resolve(dtoOut);
-          this._listDataManager.current.load();
-        },
-        fail: failDtoOut => {
-          UU5.Environment.getPage()
-            .getAlertBus()
-            .setAlert({ colorSchema: "danger", content: failDtoOut.message });
-          ModalHelper.close();
-          reject(failDtoOut);
-        }
-      });
-    });
-  },
   _handleUpdate(data) {
     return new Promise((resolve, reject) => {
       Calls.bookUpdate({
@@ -169,7 +154,7 @@ export const BookTile = UU5.Common.VisualComponent.create({
     let actions = [];
     let permissions = JSON.parse(localStorage.getItem("permission"));
     if (
-      permissions.includes["Administrators"] ||
+      permissions.includes("Administrators") ||
       permissions.includes("Managers") ||
       permissions.includes("Librarirans")
     ) {
@@ -185,7 +170,7 @@ export const BookTile = UU5.Common.VisualComponent.create({
         {
           content: <UU5.Bricks.Lsi lsi={Lsi.deleteButton} />,
           onClick: () => {
-            this._openDeleteConfirmModal(tileData);
+            this._openDeleteModal(tileData);
           },
           bgStyle: "filled",
           priority: 0
@@ -219,40 +204,37 @@ export const BookTile = UU5.Common.VisualComponent.create({
       return [];
     }
   },
-
-  _openDeleteConfirmModal(data) {
-    let classNames = this.getClassName();
-    let modal = UU5.Environment.getPage().getModal();
-    modal.open({
-      header: <UU5.Bricks.Lsi lsi={Lsi.deleteBook} />,
-      content: <UU5.Bricks.Lsi lsi={Lsi.areYouSureToDelete} />,
-      footer: (
-        <UU5.Bricks.Div>
-          <UU5.Bricks.Button
-            content={<UU5.Bricks.Lsi lsi={Lsi.cancel} />}
-            className={classNames.cancelButton()}
-            onClick={() => modal.close()}
-          />
-          <UU5.Bricks.Button
-            colorSchema="red"
-            content={<UU5.Bricks.Lsi lsi={Lsi.deleteButton} />}
-            onClick={() => this._listDataManager.current.delete(data.code)}
-          />
-        </UU5.Bricks.Div>
-      ),
-      className: classNames.confirmDeleteModal()
-    });
+  _handleDelete(formRef, code) {
+    formRef.component.saveDone({ code });
   },
-  _openUpdateModal(data) {
+
+  _handleDeleteDone(dtoOut) {
+    this.props.onDelete && this.props.onDelete(dtoOut.dtoOut);
+    ModalHelper.close();
+  },
+
+  _openDeleteModal(data) {
     ModalHelper.open(
       <UU5.Bricks.Lsi lsi={Lsi.createFeeConfiguration} />,
-      <Form
-        handleOnSave={this._listDataManager.current.update}
-        data={data}
-        update={true}
-        id={UU5.Common.Tools.generateUUID(6)}
-      />
+      <UU5.Forms.Form
+        onSave={formRef => this._handleDelete(formRef, data.code)}
+        onSaveDone={this._handleDeleteDone}
+        onSaveFail={this._handleDeleteFail}
+      >
+        <UU5.Bricks.Lsi lsi={Lsi.areYouSure(data.name)} />
+        <UU5.Forms.ContextControls
+          buttonSubmitProps={{ content: <UU5.Bricks.Lsi lsi={Lsi.delete} />, colorSchema: "danger" }}
+          buttonCancelProps={{ content: <UU5.Bricks.Lsi lsi={Lsi.cancel} /> }}
+        />
+      </UU5.Forms.Form>
     );
+
+    this._deleteModal.current.open(data);
+  },
+  _openUpdateModal(data) {
+    console.log(this._updateModal);
+
+    this._updateModal.current.open(data);
   },
   _getBookInfoLine(name, value) {
     let classNames = this.getClassName();
@@ -302,23 +284,26 @@ export const BookTile = UU5.Common.VisualComponent.create({
   render() {
     let { name, code, author, locationCode, state, conditionCode, genreCodes } = this.props.data;
     return (
-      <UuP.Tiles.ActionTile
-        {...this.getMainPropsToPass()}
-        key={UU5.Common.Tools.generateUUID(4)}
-        actionList={this._getTileActionList(this.props.data)}
-        header={name}
-        level={4}
-        content={
-          <UU5.Bricks.Div key={UU5.Common.Tools.generateUUID(4)}>
-            {this._getBookInfoLine("author", author)}
-            {this._getBookInfoLine("code", code)}
-            {this._getBookInfoLine("location", locationCode)}
-            {this._getBookInfoLine("state", <UU5.Bricks.Lsi lsi={Lsi[state]} />)}
-            {this._getCondition(conditionCode)}
-            {this._getGenre(genreCodes)}
-          </UU5.Bricks.Div>
-        }
-      />
+      <>
+        <UuP.Tiles.ActionTile
+          {...this.getMainPropsToPass()}
+          key={UU5.Common.Tools.generateUUID(4)}
+          actionList={this._getTileActionList(this.props.data)}
+          header={name}
+          level={4}
+          content={
+            <UU5.Bricks.Div key={UU5.Common.Tools.generateUUID(4)}>
+              {this._getBookInfoLine("author", author)}
+              {this._getBookInfoLine("code", code)}
+              {this._getBookInfoLine("location", locationCode)}
+              {this._getBookInfoLine("state", <UU5.Bricks.Lsi lsi={Lsi[state]} />)}
+              {this._getCondition(conditionCode)}
+              {this._getGenre(genreCodes)}
+            </UU5.Bricks.Div>
+          }
+        />
+        <UpdateBookModal ref_={this._updateModal} />
+      </>
     );
   }
   //@@viewOff:render
