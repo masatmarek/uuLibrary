@@ -5,6 +5,7 @@ import * as Plus4U5 from "uu_plus4u5g01";
 import "uu_plus4u5g01-app";
 
 import Config from "./config/config.js";
+import Calls from "../calls";
 import Lsi from "../config/lsi.js";
 import Left from "./left.js";
 import Bottom from "./bottom.js";
@@ -54,6 +55,24 @@ const SpaAuthenticated = UU5.Common.VisualComponent.create({
   //@@viewOff:overriding
 
   //@@viewOn:private
+  _getLibrary() {
+    return (
+      <UU5.Common.Loader onLoad={Calls.getLibrary}>
+        {({ isLoading, isError, data }) => {
+          if (isLoading) {
+            return <UU5.Bricks.Loading />;
+          } else if (isError) {
+            return <></>;
+          } else {
+            console.log(data);
+
+            localStorage.setItem("library", JSON.stringify(data));
+            return <></>;
+          }
+        }}
+      </UU5.Common.Loader>
+    );
+  },
   //@@viewOff:private
 
   //@@viewOn:render
@@ -68,6 +87,7 @@ const SpaAuthenticated = UU5.Common.VisualComponent.create({
         left={<Left identity={this.props.identity} />}
         leftWidth="!xs-320px !s-320px !m-256px l-256px xl-256px"
       >
+        {this._getLibrary()}
         <UU5.Common.Router
           routes={{
             "": "home",

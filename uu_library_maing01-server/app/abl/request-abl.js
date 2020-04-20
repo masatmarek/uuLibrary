@@ -36,38 +36,39 @@ class RequestAbl {
     );
     // HDS 2
     let book = await this.bookDao.getByCode(awid, dtoIn.bookCode);
+    // HDS 2.1
     if (!book) {
       // A3
       throw new Errors.Create.BookDoesNotExist({ uuAppErrorMap }, { code: dtoIn.bookCode });
     }
-    // HDS 3
-    // HDS 3.1
-    let location = await this.locationDao.getByCode(awid, book.locationCode);
-    if (location.state !== STATES.active) {
-      // A5
-      throw new Errors.Create.LocationIsNotInProperState(
-        { uuAppErrorMap },
-        { state: location.state, expectedState: STATES.active }
-      );
-    }
-    // HDS 4
-    // HDS 4.1
+    // HDS 2.2
     if (dtoIn.type === "borrow" && book.state === STATES.borrowed) {
+      // A4
       throw new Errors.Create.BookIsNotInProperState(
         { uuAppErrorMap },
         { state: book.state, expectedState: STATES.available }
       );
     }
-    // HDS 4.2
+    // HDS 2.3
     else if (dtoIn.type === "return" && book.state === STATES.available) {
+      // A5
       throw new Errors.Create.BookIsNotInProperState(
         { uuAppErrorMap },
         { state: book.state, expectedState: STATES.borrowed }
       );
     }
+    // HDS 3
+    // HDS 3.1
+    let location = await this.locationDao.getByCode(awid, book.locationCode);
+    if (location.state !== STATES.active) {
+      // A6
+      throw new Errors.Create.LocationIsNotInProperState(
+        { uuAppErrorMap },
+        { state: location.state, expectedState: STATES.active }
+      );
+    }
 
-    // HDS 5
-    // HDS 5.1
+    // HDS 4
     let requestDtoIn = {
       awid: awid,
       code: `${dtoIn.type.toUpperCase()}-${dtoIn.bookCode}`,
@@ -80,16 +81,16 @@ class RequestAbl {
         email: session._attributes.email
       }
     };
-    // HDS 5.2
+    // HDS 4.1
     let request;
     try {
       request = await this.dao.create(requestDtoIn);
     } catch (error) {
-      // A
+      // A7
       throw new Errors.Create.CreateByDaoFailed({ uuAppErrorMap }, { cause: error });
     }
 
-    // HDS 6
+    // HDS 5
     let dtoOut = { ...request };
     dtoOut.uuAppErrorMap = uuAppErrorMap;
     return dtoOut;

@@ -12,13 +12,6 @@ const ConfirmBorrowBook = {
       this.message = "DtoIn is not valid.";
     }
   },
-  BookDoesNotExist: class extends LibraryMainUseCaseError {
-    constructor() {
-      super(...arguments);
-      this.code = `${ConfirmBorrowBook.UC_CODE}bookDoesNotExist`;
-      this.message = "Book does not exist.";
-    }
-  },
   RequestDoesNotExist: class extends LibraryMainUseCaseError {
     constructor() {
       super(...arguments);
@@ -51,7 +44,7 @@ const ConfirmBorrowBook = {
     constructor() {
       super(...arguments);
       this.code = `${ConfirmBorrowBook.UC_CODE}deleteRequestFailedByDao`;
-      this.message = "Delete reques failed by dao.";
+      this.message = "Delete request failed by dao.";
     }
   }
 };

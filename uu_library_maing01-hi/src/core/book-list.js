@@ -100,10 +100,15 @@ export const BookList = UU5.Common.VisualComponent.create({
     );
   },
   _handleBorrowBook(book) {
-    let data = { code: book.code };
+    let date = new Date();
+    let data = {
+      bookCode: book.code,
+      type: "borrow",
+      from: `${date.getFullYear()}-${date.getMonth()}-${date.getDay()}`
+    };
     let classNames = this.getClassName();
     return new Promise((done, fail) =>
-      Calls.rentalBorowBook({
+      Calls.requestCreate({
         data,
         done: data => {
           done(data);
@@ -339,34 +344,26 @@ export const BookList = UU5.Common.VisualComponent.create({
     );
   },
   _getGenre(code) {
-    return (
-      <UU5.Common.Loader onLoad={Calls.genreGet} data={{ code: code }}>
-        {({ isLoading, isError, data }) => {
-          if (isLoading) {
-            return <UU5.Bricks.Loading />;
-          } else if (isError) {
-            return <></>;
-          } else {
-            return this._getBookInfoLine("genre", <UU5.Bricks.Lsi lsi={data.name} />);
-          }
-        }}
-      </UU5.Common.Loader>
-    );
+    let libraryString = localStorage.getItem("library");
+    let library = JSON.parse(libraryString);
+    let result;
+    library.genres.forEach(genre => {
+      if (genre.code === code) {
+        result = this._getBookInfoLine("genre", <UU5.Bricks.Lsi lsi={genre.name} />);
+      }
+    });
+    return result;
   },
   _getCondition(code) {
-    return (
-      <UU5.Common.Loader onLoad={Calls.conditionGet} data={{ code: code }}>
-        {({ isLoading, isError, data }) => {
-          if (isLoading) {
-            return <UU5.Bricks.Loading />;
-          } else if (isError) {
-            return <></>;
-          } else {
-            return this._getBookInfoLine("condition", <UU5.Bricks.Lsi lsi={data.name} />);
-          }
-        }}
-      </UU5.Common.Loader>
-    );
+    let libraryString = localStorage.getItem("library");
+    let library = JSON.parse(libraryString);
+    let result;
+    library.conditions.forEach(condition => {
+      if (condition.code === code) {
+        result = this._getBookInfoLine("condition", <UU5.Bricks.Lsi lsi={condition.name} />);
+      }
+    });
+    return result;
   },
   _getBooks() {
     return (

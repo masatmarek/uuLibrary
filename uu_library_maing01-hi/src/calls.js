@@ -11,7 +11,10 @@ let Calls = {
   promisedCall(method, url, dtoIn, clientOptions) {
     return Plus4U5.Common.Calls.call(method, url, dtoIn, clientOptions);
   },
-
+  getLibrary(dtoIn) {
+    let commandUri = Calls.getCommandUri("library/get");
+    Calls.promisedCall("get", commandUri, dtoIn);
+  },
   loadDemoContent(dtoIn) {
     let commandUri = Calls.getCommandUri("loadDemoContent");
     return Calls.call("get", commandUri, dtoIn);
@@ -39,6 +42,10 @@ let Calls = {
   genreGet(dtoIn) {
     let commandUri = Calls.getCommandUri("genre/get");
     Calls.promisedCall("get", commandUri, dtoIn);
+  },
+  requestCreate(dtoIn) {
+    let commandUri = Calls.getCommandUri("request/create");
+    Calls.promisedCall("post", commandUri, dtoIn);
   },
   conditionGet(dtoIn) {
     let commandUri = Calls.getCommandUri("condition/get");

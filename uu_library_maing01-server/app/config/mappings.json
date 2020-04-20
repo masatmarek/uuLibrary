@@ -135,6 +135,16 @@
         "realization": "api/controllers/RequestController.requestCreate",
         "httpMethod": "POST",
         "type": "CMD"
+      },
+      "library/create": {
+        "realization": "api/controllers/LibraryMainController.libraryCreate",
+        "httpMethod": "POST",
+        "type": "CMD"
+      },
+      "library/get": {
+        "realization": "api/controllers/LibraryMainController.libraryGet",
+        "httpMethod": "GET",
+        "type": "CMD"
       }
     }
   }

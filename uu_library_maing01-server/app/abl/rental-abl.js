@@ -49,7 +49,10 @@ class RentalAbl {
     let requestType = request.code.split("-");
     if (requestType[0] !== "BORROW") {
       // A4
-      throw new Errors.ConfirmBorrowBook.IsNotBorrowRequest({ uuAppErrorMap }, { code: request.code });
+      throw new Errors.ConfirmBorrowBook.IsNotBorrowRequest(
+        { uuAppErrorMap },
+        { code: request.code, expectType: "borrow" }
+      );
     }
     // HDS 4
     try {

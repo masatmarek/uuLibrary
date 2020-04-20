@@ -24,6 +24,7 @@ class GenreAbl {
   constructor() {
     this.validator = new Validator(Path.join(__dirname, "..", "api", "validation_types", "genre-types.js"));
     this.dao = DaoFactory.getDao("genre");
+    this.libraryDao = DaoFactory.getDao("libraryMain");
     this.dao.createSchema();
   }
 
@@ -100,25 +101,25 @@ class GenreAbl {
       WARNINGS.createUnsupportedKeys.code,
       Errors.Create.InvalidDtoIn
     );
-    //HDS 2
-    dtoIn.awid = awid;
-
-    // HDS 3
-    let genre;
-    try {
-      genre = await this.dao.create(dtoIn);
-    } catch (e) {
-      if (e instanceof DuplicateKey) {
+    // HDS 2
+    let library = await this.libraryDao.getByAwid(awid);
+    library.genres.forEach(genre => {
+      if (genre.code === dtoIn.code) {
         // A3
         throw new Errors.Create.DuplicateCode({ uuAppErrorMap }, { code: dtoIn.code });
-      } else {
-        // A4
-        throw new Errors.Create.CreateByDaoFailed({ uuAppErrorMap });
       }
+    });
+    library.genres.push(dtoIn);
+    // HDS 3
+    try {
+      library = await this.libraryDao.updateByAwid(library);
+    } catch (e) {
+      // A4
+      throw new Errors.Create.CreateByDaoFailed({ uuAppErrorMap }, { cause: e });
     }
 
     //HDS 4
-    let dtoOut = { ...genre };
+    let dtoOut = { ...library };
     dtoOut.uuAppErrorMap = uuAppErrorMap;
     return dtoOut;
   }

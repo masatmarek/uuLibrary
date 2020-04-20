@@ -10,18 +10,16 @@ class LibraryMainMongo extends UuObjectDao {
     return await super.insertOne(uuObject);
   }
 
-  async get(awid, id) {
+  async getByAwid(awid) {
     let filter = {
-      awid: awid,
-      id: id
+      awid: awid
     };
     return await super.findOne(filter);
   }
 
-  async update(uuObject) {
+  async updateByAwid(uuObject) {
     let filter = {
-      awid: uuObject.awid,
-      id: uuObject.id
+      awid: uuObject.awid
     };
     return await super.findOneAndUpdate(filter, uuObject, "NONE");
   }

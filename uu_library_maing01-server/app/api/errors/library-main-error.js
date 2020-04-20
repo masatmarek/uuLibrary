@@ -30,6 +30,39 @@ const Init = {
   }
 };
 
+const Create = {
+  UC_CODE: `${LibraryMainUseCaseError.ERROR_PREFIX}library/create/`,
+
+  InvalidDtoIn: class extends LibraryMainUseCaseError {
+    constructor() {
+      super(...arguments);
+      this.code = `${Create.UC_CODE}invalidDtoIn`;
+      this.message = "DtoIn is not valid.";
+    }
+  },
+  CreateByDaoFailed: class extends LibraryMainUseCaseError {
+    constructor() {
+      super(...arguments);
+      this.code = `${Create.UC_CODE}createByDaoFailed`;
+      this.message = "Create by dao failed.";
+    }
+  }
+};
+
+const Get = {
+  UC_CODE: `${LibraryMainUseCaseError.ERROR_PREFIX}library/get/`,
+
+  InvalidDtoIn: class extends LibraryMainUseCaseError {
+    constructor() {
+      super(...arguments);
+      this.code = `${Get.UC_CODE}invalidDtoIn`;
+      this.message = "DtoIn is not valid.";
+    }
+  }
+};
+
 module.exports = {
+  Get,
+  Create,
   Init
 };

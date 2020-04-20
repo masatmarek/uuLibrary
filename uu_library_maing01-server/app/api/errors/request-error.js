@@ -16,7 +16,7 @@ const Create = {
     constructor() {
       super(...arguments);
       this.code = `${Create.UC_CODE}createByDaoFailed`;
-      this.message = "Create of rental failed.";
+      this.message = "Create of request failed.";
     }
   },
   BookDoesNotExist: class extends LibraryMainUseCaseError {
