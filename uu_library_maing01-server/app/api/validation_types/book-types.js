@@ -2,9 +2,8 @@
 const codeType = string(/^[0-9a-zA-Z_\-]{2,64}$/);
 
 const bookCreateDtoInType = shape({
-  code: codeType().isRequired(),
   locationCode: codeType().isRequired(),
-  genreCode: codeType().isRequired(),
+  genreCodes: array().isRequired(),
   conditionCode: codeType().isRequired(),
   name: string().isRequired(),
   author: string().isRequired()

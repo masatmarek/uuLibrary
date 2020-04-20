@@ -64,8 +64,6 @@ const SpaAuthenticated = UU5.Common.VisualComponent.create({
           } else if (isError) {
             return <></>;
           } else {
-            console.log(data);
-
             localStorage.setItem("library", JSON.stringify(data));
             return <></>;
           }
@@ -73,20 +71,112 @@ const SpaAuthenticated = UU5.Common.VisualComponent.create({
       </UU5.Common.Loader>
     );
   },
+  _getpermissions() {
+    let data = {
+      uuIdentityList: UU5.Environment.getSession().getIdentity()
+        ? UU5.Environment.getSession().getIdentity().uuIdentity
+        : "0-0"
+    };
+    return (
+      <UU5.Common.Loader onLoad={Calls.syslistPermissions} data={data}>
+        {({ isLoading, isError, data }) => {
+          if (isLoading) {
+            return <UU5.Bricks.Loading />;
+          } else if (isError) {
+            return <></>;
+          } else {
+            let profiles = [];
+            data.itemList.forEach(permission => {
+              profiles.push(permission.profileCode);
+            });
+            localStorage.setItem("permission", JSON.stringify(profiles));
+            return <></>;
+          }
+        }}
+      </UU5.Common.Loader>
+    );
+  },
+  _setRoute(route) {
+    UU5.Environment.setRoute(route);
+  },
   //@@viewOff:private
 
   //@@viewOn:render
   render() {
+    let library = JSON.parse(localStorage.getItem("library"));
+    let permissions = JSON.parse(localStorage.getItem("permission"));
+
+    const menuItems = [
+      {
+        id: "home",
+        content: <UU5.Bricks.Lsi lsi={Lsi.leftLinks.home} />,
+        onClick: () => this._setRoute("")
+      },
+      {
+        id: "location",
+        content: <UU5.Bricks.Lsi lsi={Lsi.leftLinks.location} />,
+        onClick: () => this._setRoute("location")
+      }
+    ];
+    const executiveItems = [
+      {
+        content: <UU5.Bricks.Lsi lsi={Lsi.controlBar.contentManger} />,
+        onClick: () => alert(`item "File manager" clicked`)
+      }
+    ];
     return (
       <Plus4U5.App.Page
         {...this.getMainPropsToPass()}
-        top={<Plus4U5.App.Top content={this.getLsiComponent("name")} />}
-        bottom={<Bottom />}
-        type={2}
-        displayedLanguages={["cs", "en"]}
-        left={<Left identity={this.props.identity} />}
-        leftWidth="!xs-320px !s-320px !m-256px l-256px xl-256px"
+        displayedLanguages={library.languages}
+        type={3}
+        topFixed="smart"
+        topFixedHeight={64}
+        leftFixed
+        leftWidth="!xs-85 !s-80 !m-320px !l-320px !xl-320px"
+        leftRelative="m l xl"
+        leftResizable="m l xl"
+        leftResizableMinWidth={220}
+        leftResizableMaxWidth={500}
+        isLeftOpen="m l xl"
+        showLeftToggleButton
+        top={<Plus4U5.App.TopBt displayedLanguages={library.languages} />}
+        left={
+          <Plus4U5.App.Left
+            logoProps={{
+              colorSchema: library.colorSchema,
+              textColor: "#fff",
+              subtitle: "library",
+              title: <UU5.Bricks.Lsi lsi={library.name} />,
+              decorationWidth: 136,
+              decorationRight: -8,
+              decorationBottom: -8,
+              companyLogo: "https://cdn.plus4u.net/uu-plus4u5g01/4.0.0/assets/img/unicorn-logo.svg"
+            }}
+            aboutItems={[
+              {
+                content: "About application",
+                href: "about"
+              }
+            ]}
+            helpHref="https://uuos9.plus4u.net/uu-bookkitg01-main/78462435-4a9622a0b4074996944c5d1fb07b22a7"
+          >
+            <Plus4U5.App.MenuProvider>
+              <Plus4U5.App.MenuPanel header="Menu" expanded borderBottom>
+                <Plus4U5.App.MenuTree items={menuItems} />
+              </Plus4U5.App.MenuPanel>
+            </Plus4U5.App.MenuProvider>
+          </Plus4U5.App.Left>
+        }
+        menuProps={
+          permissions.includes("Administrators") || permissions.includes("Managers")
+            ? {
+                header: "Control Bar",
+                items: executiveItems
+              }
+            : null
+        }
       >
+        {this._getpermissions}
         {this._getLibrary()}
         <UU5.Common.Router
           routes={{

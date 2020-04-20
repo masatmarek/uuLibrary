@@ -59,7 +59,7 @@ const Create = {
     constructor() {
       super(...arguments);
       this.code = `${Create.UC_CODE}genreDoesNotExist`;
-      this.message = "Genre does not exist.";
+      this.message = "One of entered genre does not exist.";
     }
   }
 };

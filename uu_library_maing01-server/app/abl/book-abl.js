@@ -32,8 +32,7 @@ class BookAbl {
     this.validator = new Validator(Path.join(__dirname, "..", "api", "validation_types", "book-types.js"));
     this.dao = DaoFactory.getDao("book");
     this.locationDao = DaoFactory.getDao("location");
-    this.genreDao = DaoFactory.getDao("genre");
-    this.conditionDao = DaoFactory.getDao("condition");
+    this.libraryDao = DaoFactory.getDao("libraryMain");
   }
 
   async delete(awid, dtoIn) {
@@ -223,15 +222,31 @@ class BookAbl {
       );
     }
     // HDS 3
-    let condition = await this.conditionDao.getByCode(awid, dtoIn.conditionCode);
-    if (!condition) {
-      throw new Errors.Create.ConditionDoesNotExist({ uuAppErrorMap }, { conditionCode: dtoIn.conditionCode });
+    let library = await this.libraryDao.getByAwid(awid);
+    let { genres, conditions } = library;
+
+    // HDS 3.1
+    let libraryGenreCodes = [];
+    genres.forEach(genre => {
+      libraryGenreCodes.push(genre.code);
+    });
+    let genresValid = dtoIn.genreCodes.every(val => libraryGenreCodes.includes(val));
+    if (!genresValid) {
+      // A6
+      throw new Errors.Create.GenreDoesNotExist({ uuAppErrorMap });
+    }
+    // HDS 3.2
+    let libraryConditionCodes = [];
+    conditions.forEach(condition => {
+      libraryConditionCodes.push(condition.code);
+    });
+    let conditionsValid = libraryConditionCodes.includes(dtoIn.conditionCode);
+    if (!conditionsValid) {
+      // A7
+      throw new Errors.Create.ConditionDoesNotExist({ uuAppErrorMap });
     }
     // HDS 4
-    let genre = await this.genreDao.getByCode(awid, dtoIn.genreCode);
-    if (!genre) {
-      throw new Errors.Create.GenreDoesNotExist({ uuAppErrorMap }, { genreCode: dtoIn.genreCode });
-    }
+    dtoIn.code = this.createCode(dtoIn.name);
     // HDS 5
     dtoIn.awid = awid;
     dtoIn.state = STATES.available;
@@ -254,6 +269,68 @@ class BookAbl {
     let dtoOut = { ...book };
     dtoOut.uuAppErrorMap = uuAppErrorMap;
     return dtoOut;
+  }
+  createCode(name) {
+    let code = "";
+    for (let i = 0; i < name.length; i++) {
+      const inSymbol = name[i];
+      let outSymbol;
+      switch (inSymbol.toLowerCase()) {
+        case "á":
+          outSymbol = "a";
+          break;
+        case "é":
+          outSymbol = "e";
+          break;
+        case "ě":
+          outSymbol = "e";
+          break;
+        case "í":
+          outSymbol = "i";
+          break;
+        case "ú":
+          outSymbol = "u";
+          break;
+        case "ů":
+          outSymbol = "u";
+          break;
+        case "č":
+          outSymbol = "c";
+          break;
+        case "ó":
+          outSymbol = "o";
+          break;
+        case "š":
+          outSymbol = "s";
+          break;
+        case "ť":
+          outSymbol = "t";
+          break;
+        case "ř":
+          outSymbol = "r";
+          break;
+        case "ž":
+          outSymbol = "z";
+          break;
+        case "ý":
+          outSymbol = "y";
+          break;
+        case "ň":
+          outSymbol = "";
+          break;
+        case "ď":
+          outSymbol = "d";
+          break;
+        case " ":
+          outSymbol = "-";
+          break;
+        default:
+          outSymbol = inSymbol;
+          break;
+      }
+      code += outSymbol.toLowerCase();
+    }
+    return code;
   }
 }
 

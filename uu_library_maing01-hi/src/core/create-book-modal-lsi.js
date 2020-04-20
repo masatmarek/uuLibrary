@@ -1,6 +1,6 @@
 let Lsi = {
-  add: { cs: "Přidat", en: "Add" },
-  update: { cs: "Upravit", en: "Update" },
+  create: { cs: "Vytvořit", en: "Create" },
+  cancel: { cs: "Zrušit", en: "Cancel" },
   required: {
     cs: "Toto pole je povinné.",
     en: "This input is required."
@@ -10,7 +10,10 @@ let Lsi = {
   authorLabel: { cs: "Autor", en: "Author" },
   locationLabel: { cs: "Umístení", en: "Location" },
   genreLabel: { cs: "Žánr", en: "Author" },
+  genrePlaceHolder: { cs: "Vyberte alespoň jeden žánr", en: "Pick at least one genre." },
   conditionLabel: { cs: "Kondice", en: "Location" },
+  modalHelpCreate: { cs: "Tento modál slouží pro vytvoření knihy" },
+  modalHeaderCreate: { cs: "Vytvořit knihu" }
 };
 
 export default Lsi;

@@ -3,6 +3,12 @@ const Lsi = {
     cs: "Aplikace uuLibrary",
     en: "Application uuLibrary"
   },
+  controlBar: {
+    contentManger: {
+      cs: "Správa obsahu",
+      en: "Content manager"
+    }
+  },
 
   leftLinks: {
     home: {

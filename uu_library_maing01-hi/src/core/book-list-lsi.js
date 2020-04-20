@@ -7,6 +7,7 @@ const Lsi = {
   location: { cs: "Oddělení", en: "Location" },
   condition: { cs: "Kondice", en: "Condition" },
   genre: { cs: "Žánr", en: "Genre" },
+  code: { cs: "Kód", en: "Code" },
   updateButton: { cs: "Upravit", en: "Update" },
   deleteButton: { cs: "Smazat", en: "Delete" },
   createButton: { cs: "Vytvořit", en: "Create" },
@@ -15,7 +16,6 @@ const Lsi = {
   deleteBook: { cs: "Smazat knihu", en: "Delete book" },
   areYouSureToDelete: { cs: "Jste si jistý?", en: "Are your sure?" },
   cancel: { cs: "Zrušit", en: "Cancel" },
-  back: { cs: "Do nadřazené složky", en: "To upper folder" },
   successBorrowPrefix: { cs: "Žádost o půjčení", en: "" },
   book: { cs: "knihy", en: "" },
   successBorrowSuffix: { cs: "problěhla úspěšně.", en: "" }

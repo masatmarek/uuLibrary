@@ -11,8 +11,8 @@ import "uu_pg01-tiles";
 import Config from "./config/config.js";
 import Calls from "../calls";
 import ModalHelper from "../helpers/modal-helper.js";
-
-import Form from "./form";
+import BookTile from "./book-tile";
+import CreateBookModal from "./create-book-modal";
 
 import Lsi from "./book-list-lsi.js";
 //@@viewOff:imports
@@ -71,7 +71,9 @@ export const BookList = UU5.Common.VisualComponent.create({
   //@@viewOn:reactLifeCycle
   getInitialState() {
     this._listDataManager = UU5.Common.Reference.create();
-    this._profileList = [];
+    this._createModal = UU5.Common.Reference.create();
+    this._updateModal = UU5.Common.Reference.create();
+    this._deleteModal = UU5.Common.Reference.create();
     return {};
   },
   //@@viewOff:reactLifeCycle
@@ -99,102 +101,9 @@ export const BookList = UU5.Common.VisualComponent.create({
       })
     );
   },
-  _handleBorrowBook(book) {
-    let date = new Date();
-    let data = {
-      bookCode: book.code,
-      type: "borrow",
-      from: `${date.getFullYear()}-${date.getMonth()}-${date.getDay()}`
-    };
-    let classNames = this.getClassName();
-    return new Promise((done, fail) =>
-      Calls.requestCreate({
-        data,
-        done: data => {
-          done(data);
-          this._listDataManager.current.load();
-          UU5.Environment.getPage()
-            .getAlertBus()
-            .setAlert({
-              colorSchema: "success",
-              closeTimer: 7000,
-              content: (
-                <UU5.Bricks.Span>
-                  <UU5.Bricks.Lsi lsi={Lsi.successBorrowPrefix} />
-                  &nbsp;
-                  <UU5.Bricks.Link href="http://www.unicorn.com/" className={classNames.link()} target="_blank">
-                    <UU5.Bricks.Lsi lsi={Lsi.book} />
-                  </UU5.Bricks.Link>
-                  &nbsp;
-                  <UU5.Bricks.Lsi lsi={Lsi.successBorrowSuffix} />
-                </UU5.Bricks.Span>
-              )
-            });
-        },
-        fail
-      })
-    );
-  },
-  _handleDelete(code) {
-    return new Promise((resolve, reject) => {
-      Calls.bookDelete({
-        data: { code },
-        done: dtoOut => {
-          ModalHelper.close();
-          resolve(dtoOut);
-          this._listDataManager.current.load();
-        },
-        fail: failDtoOut => {
-          UU5.Environment.getPage()
-            .getAlertBus()
-            .setAlert({ colorSchema: "danger", content: failDtoOut.message });
-          ModalHelper.close();
-          reject(failDtoOut);
-        }
-      });
-    });
-  },
-  _handleGetpermList() {
-    let data = {
-      uuIdentityList: UU5.Environment.getSession().getIdentity()
-        ? UU5.Environment.getSession().getIdentity().uuIdentity
-        : "0-0"
-    };
-    return new Promise((done, fail) =>
-      Calls.syslistPermissions({
-        data,
-        done: data => {
-          for (let perm of data.itemList) {
-            this._profileList.push(perm.profileCode);
-          }
-          done(data);
-        },
-        fail: failDtoOut => {
-          console.log(failDtoOut);
-        }
-      })
-    );
-  },
-  _handleUpdate(data) {
-    return new Promise((resolve, reject) => {
-      Calls.bookUpdate({
-        data,
-        done: dtoOut => {
-          ModalHelper.close();
-          resolve(dtoOut);
-          this._listDataManager.current.load();
-        },
-        fail: failDtoOut => {
-          UU5.Environment.getPage()
-            .getAlertBus()
-            .setAlert({ colorSchema: "danger", content: failDtoOut.message });
-          ModalHelper.close();
-          reject(failDtoOut);
-        }
-      });
-    });
-  },
   _handleCreate(data) {
+    console.log(data);
+
     return new Promise((resolve, reject) => {
       Calls.bookCreate({
         data,
@@ -212,57 +121,14 @@ export const BookList = UU5.Common.VisualComponent.create({
       });
     });
   },
-  _getTileActionList(tileData) {
-    let actions = [];
-    if (this._profileList.includes("Managers")) {
-      actions = [
-        {
-          content: <UU5.Bricks.Lsi lsi={Lsi.updateButton} />,
-          onClick: () => {
-            this._openUpdateModal(tileData);
-          },
-          bgStyle: "filled",
-          priority: 0
-        },
-        {
-          content: <UU5.Bricks.Lsi lsi={Lsi.deleteButton} />,
-          onClick: () => {
-            this._openDeleteConfirmModal(tileData);
-          },
-          bgStyle: "filled",
-          priority: 0
-        }
-      ];
-      if (tileData.state === "available") {
-        actions.push({
-          content: <UU5.Bricks.Lsi lsi={Lsi.borrowButton} />,
-          onClick: () => this._handleBorrowBook(tileData),
-          bgStyle: "filled",
-          colorSchema: "success",
-          priority: 1
-        });
-      }
-      return actions;
-    } else if (this._profileList.includes("Customers") && !this._profileList.includes("Managers")) {
-      if (tileData.state === "available") {
-        return [
-          {
-            content: <UU5.Bricks.Lsi lsi={Lsi.borrowButton} />,
-            onClick: () => this._handleBorrowBook(tileData),
-            bgStyle: "filled",
-            colorSchema: "success",
-            priority: 1
-          }
-        ];
-      } else {
-        return [];
-      }
-    } else {
-      return [];
-    }
-  },
   _getActionBarActions() {
-    if (this._profileList.includes("Managers")) {
+    let permissions = JSON.parse(localStorage.getItem("permission"));
+
+    if (
+      permissions.includes["Administrators"] ||
+      permissions.includes("Managers") ||
+      permissions.includes("Librarirans")
+    ) {
       return [
         {
           content: "Create",
@@ -274,96 +140,11 @@ export const BookList = UU5.Common.VisualComponent.create({
     }
   },
 
-  _openDeleteConfirmModal(data) {
-    let classNames = this.getClassName();
-    let modal = UU5.Environment.getPage().getModal();
-    modal.open({
-      header: <UU5.Bricks.Lsi lsi={Lsi.deleteBook} />,
-      content: <UU5.Bricks.Lsi lsi={Lsi.areYouSureToDelete} />,
-      footer: (
-        <UU5.Bricks.Div>
-          <UU5.Bricks.Button
-            content={<UU5.Bricks.Lsi lsi={Lsi.cancel} />}
-            className={classNames.cancelButton()}
-            onClick={() => modal.close()}
-          />
-          <UU5.Bricks.Button
-            colorSchema="red"
-            content={<UU5.Bricks.Lsi lsi={Lsi.deleteButton} />}
-            onClick={() => this._listDataManager.current.delete(data.code)}
-          />
-        </UU5.Bricks.Div>
-      ),
-      className: classNames.confirmDeleteModal()
-    });
-  },
   _openCreateModal() {
-    ModalHelper.open(
-      <UU5.Bricks.Lsi lsi={Lsi.createFeeConfiguration} />,
-      <Form handleOnSave={this._listDataManager.current.create} update={false} id={UU5.Common.Tools.generateUUID(6)} />
-    );
-  },
-  _openUpdateModal(data) {
-    ModalHelper.open(
-      <UU5.Bricks.Lsi lsi={Lsi.createFeeConfiguration} />,
-      <Form
-        handleOnSave={this._listDataManager.current.update}
-        data={data}
-        update={true}
-        id={UU5.Common.Tools.generateUUID(6)}
-      />
-    );
-  },
-  _getBookInfoLine(name, value) {
-    let classNames = this.getClassName();
-    return (
-      <UU5.Bricks.Div key={UU5.Common.Tools.generateUUID(4)}>
-        <UU5.Bricks.Lsi lsi={Lsi[name]} className={classNames.boldText()} />
-        :&nbsp;&nbsp;
-        <UU5.Bricks.Span content={value} />
-      </UU5.Bricks.Div>
-    );
+    this._createModal.current.open();
   },
   _renderTile(tileInfo) {
-    return (
-      <UuP.Tiles.ActionTile
-        key={UU5.Common.Tools.generateUUID(4)}
-        actionList={this._getTileActionList(tileInfo.data)}
-        header={tileInfo.name}
-        level={4}
-        content={
-          <UU5.Bricks.Div key={UU5.Common.Tools.generateUUID(4)}>
-            {this._getBookInfoLine("author", tileInfo.author)}
-            {this._getBookInfoLine("location", tileInfo.locationCode)}
-            {this._getBookInfoLine("state", <UU5.Bricks.Lsi lsi={Lsi[tileInfo.state]} />)}
-            {this._getCondition(tileInfo.conditionCode)}
-            {this._getGenre(tileInfo.genreCode)}
-          </UU5.Bricks.Div>
-        }
-      />
-    );
-  },
-  _getGenre(code) {
-    let libraryString = localStorage.getItem("library");
-    let library = JSON.parse(libraryString);
-    let result;
-    library.genres.forEach(genre => {
-      if (genre.code === code) {
-        result = this._getBookInfoLine("genre", <UU5.Bricks.Lsi lsi={genre.name} />);
-      }
-    });
-    return result;
-  },
-  _getCondition(code) {
-    let libraryString = localStorage.getItem("library");
-    let library = JSON.parse(libraryString);
-    let result;
-    library.conditions.forEach(condition => {
-      if (condition.code === code) {
-        result = this._getBookInfoLine("condition", <UU5.Bricks.Lsi lsi={condition.name} />);
-      }
-    });
-    return result;
+    return <BookTile key={tileInfo.code} data={tileInfo} />;
   },
   _getBooks() {
     return (
@@ -399,6 +180,11 @@ export const BookList = UU5.Common.VisualComponent.create({
                     scrollToAlignment="center"
                   />
                 </UU5.Tiles.ListController>
+                <CreateBookModal
+                  onCreate={newData => this._listDataManager.current.create({ ...data, ...newData })}
+                  id={UU5.Common.Tools.generateUUID(6)}
+                  ref_={this._createModal}
+                />
               </UU5.Bricks.Div>
             );
           } else {
@@ -408,29 +194,11 @@ export const BookList = UU5.Common.VisualComponent.create({
       </UU5.Common.ListDataManager>
     );
   },
-  _getBackLink() {
-    let classNames = this.getClassName();
-    return (
-      <UU5.Bricks.Div
-        className={classNames.getBackDiv()}
-        mainAttrs={{ onClick: () => UU5.Environment.setRoute("location") }}
-      >
-        <UU5.Bricks.Icon className={classNames.getBackIcon()} icon="mdi-subdirectory-arrow-left" />
-        <UU5.Bricks.Lsi lsi={Lsi.back} />
-      </UU5.Bricks.Div>
-    );
-  },
   //@@viewOff:private
 
   //@@viewOn:render
   render() {
-    this._handleGetpermList();
-    return (
-      <UU5.Bricks.Div {...this.getMainPropsToPass()}>
-        {this._getBackLink()}
-        {this._getBooks()}
-      </UU5.Bricks.Div>
-    );
+    return <UU5.Bricks.Div {...this.getMainPropsToPass()}>{this._getBooks()}</UU5.Bricks.Div>;
   }
   //@@viewOff:render
 });
