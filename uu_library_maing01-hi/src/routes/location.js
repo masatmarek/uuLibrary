@@ -19,7 +19,10 @@ export const Location = UU5.Common.VisualComponent.create({
   statics: {
     tagName: Config.TAG + "Location",
     classNames: {
-      main: () => Config.Css.css``
+      main: () => Config.Css.css``,
+      header: () => Config.Css.css`
+        text-align: center;
+      `
     },
     lsi: Lsi
   },
@@ -50,7 +53,7 @@ export const Location = UU5.Common.VisualComponent.create({
         <UU5.Bricks.Header
           level="0"
           content={
-            <UU5.Bricks.Div>
+            <UU5.Bricks.Div className={this.getClassName().header()}>
               <UU5.Bricks.Lsi lsi={Lsi.location.header} /> &nbsp;
               {this.props.params && this.props.params.code ? this.props.params.code : ""}
             </UU5.Bricks.Div>

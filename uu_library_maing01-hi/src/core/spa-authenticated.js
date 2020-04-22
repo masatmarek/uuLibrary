@@ -11,8 +11,39 @@ import Left from "./left.js";
 import Bottom from "./bottom.js";
 import About from "../routes/about.js";
 import Home from "../routes/home.js";
+import Admin from "../routes/admin";
 import Location from "../routes/location";
 //@@viewOff:imports
+const menuItems = [
+  {
+    id: "home",
+    content: <UU5.Bricks.Lsi lsi={Lsi.leftLinks.home} />,
+    onClick: () => UU5.Environment.setRoute("")
+  },
+  {
+    id: "location",
+    content: <UU5.Bricks.Lsi lsi={Lsi.leftLinks.location} />,
+    onClick: () => UU5.Environment.setRoute("location")
+  }
+];
+const executiveItems = [
+  {
+    content: <UU5.Bricks.Lsi lsi={Lsi.controlBar.contentManger} />,
+    onClick: () => UU5.Environment.setRoute("admin")
+  }
+];
+const errorItems = [
+  {
+    id: "home",
+    content: <UU5.Bricks.Lsi lsi={Lsi.leftLinks.home} />,
+    onClick: () => UU5.Environment.setRoute("")
+  },
+  {
+    id: "createLibrary",
+    content: <UU5.Bricks.Lsi lsi={Lsi.leftLinks.createLibrary} />,
+    onClick: () => UU5.Environment.setRoute("createLibrary")
+  }
+];
 
 const SpaAuthenticated = UU5.Common.VisualComponent.create({
   //@@viewOn:mixins
@@ -49,6 +80,9 @@ const SpaAuthenticated = UU5.Common.VisualComponent.create({
   //@@viewOff:reactLifeCycle
 
   //@@viewOn:interface
+  reRender() {
+    this.setState({});
+  },
   //@@viewOff:interface
 
   //@@viewOn:overriding
@@ -62,16 +96,69 @@ const SpaAuthenticated = UU5.Common.VisualComponent.create({
           if (isLoading) {
             return <UU5.Bricks.Loading />;
           } else if (isError) {
-            return <></>;
+            return (
+              <Plus4U5.App.Left
+                logoProps={{
+                  colorSchema: "default",
+                  textColor: "#fff",
+                  subtitle: "library",
+                  title: <UU5.Bricks.Lsi lsi={"Library"} />,
+                  decorationWidth: 136,
+                  decorationRight: -8,
+                  decorationBottom: -8,
+                  companyLogo: "https://cdn.plus4u.net/uu-plus4u5g01/4.0.0/assets/img/unicorn-logo.svg"
+                }}
+                aboutItems={[
+                  {
+                    content: "About application",
+                    href: "about"
+                  }
+                ]}
+                helpHref="https://uuos9.plus4u.net/uu-bookkitg01-main/78462435-4a9622a0b4074996944c5d1fb07b22a7"
+              >
+                <Plus4U5.App.MenuProvider>
+                  <Plus4U5.App.MenuPanel header="Menu" expanded borderBottom>
+                    <Plus4U5.App.MenuTree items={errorItems} />
+                  </Plus4U5.App.MenuPanel>
+                </Plus4U5.App.MenuProvider>
+              </Plus4U5.App.Left>
+            );
           } else {
             localStorage.setItem("library", JSON.stringify(data));
-            return <></>;
+            let library = JSON.parse(localStorage.getItem("library"));
+            return (
+              <Plus4U5.App.Left
+                logoProps={{
+                  colorSchema: library ? library.colorSchema : "default",
+                  textColor: "#fff",
+                  subtitle: "library",
+                  title: <UU5.Bricks.Lsi lsi={library ? library.name : "Library"} />,
+                  decorationWidth: 136,
+                  decorationRight: -8,
+                  decorationBottom: -8,
+                  companyLogo: "https://cdn.plus4u.net/uu-plus4u5g01/4.0.0/assets/img/unicorn-logo.svg"
+                }}
+                aboutItems={[
+                  {
+                    content: "About application",
+                    href: "about"
+                  }
+                ]}
+                helpHref="https://uuos9.plus4u.net/uu-bookkitg01-main/78462435-4a9622a0b4074996944c5d1fb07b22a7"
+              >
+                <Plus4U5.App.MenuProvider>
+                  <Plus4U5.App.MenuPanel header="Menu" expanded borderBottom>
+                    <Plus4U5.App.MenuTree items={menuItems} />
+                  </Plus4U5.App.MenuPanel>
+                </Plus4U5.App.MenuProvider>
+              </Plus4U5.App.Left>
+            );
           }
         }}
       </UU5.Common.Loader>
     );
   },
-  _getpermissions() {
+  _getPermissions() {
     let data = {
       uuIdentityList: UU5.Environment.getSession().getIdentity()
         ? UU5.Environment.getSession().getIdentity().uuIdentity
@@ -90,12 +177,13 @@ const SpaAuthenticated = UU5.Common.VisualComponent.create({
               profiles.push(permission.profileCode);
             });
             localStorage.setItem("permission", JSON.stringify(profiles));
-            return <></>;
+            return <UU5.Bricks.Div />;
           }
         }}
       </UU5.Common.Loader>
     );
   },
+
   _setRoute(route) {
     UU5.Environment.setRoute(route);
   },
@@ -105,89 +193,48 @@ const SpaAuthenticated = UU5.Common.VisualComponent.create({
   render() {
     let library = JSON.parse(localStorage.getItem("library"));
     let permissions = JSON.parse(localStorage.getItem("permission"));
+    console.log(library);
 
-    const menuItems = [
-      {
-        id: "home",
-        content: <UU5.Bricks.Lsi lsi={Lsi.leftLinks.home} />,
-        onClick: () => this._setRoute("")
-      },
-      {
-        id: "location",
-        content: <UU5.Bricks.Lsi lsi={Lsi.leftLinks.location} />,
-        onClick: () => this._setRoute("location")
-      }
-    ];
-    const executiveItems = [
-      {
-        content: <UU5.Bricks.Lsi lsi={Lsi.controlBar.contentManger} />,
-        onClick: () => alert(`item "File manager" clicked`)
-      }
-    ];
     return (
-      <Plus4U5.App.Page
-        {...this.getMainPropsToPass()}
-        displayedLanguages={library.languages}
-        type={3}
-        topFixed="smart"
-        topFixedHeight={64}
-        leftFixed
-        leftWidth="!xs-85 !s-80 !m-320px !l-320px !xl-320px"
-        leftRelative="m l xl"
-        leftResizable="m l xl"
-        leftResizableMinWidth={220}
-        leftResizableMaxWidth={500}
-        isLeftOpen="m l xl"
-        showLeftToggleButton
-        top={<Plus4U5.App.TopBt displayedLanguages={library.languages} />}
-        left={
-          <Plus4U5.App.Left
-            logoProps={{
-              colorSchema: library.colorSchema,
-              textColor: "#fff",
-              subtitle: "library",
-              title: <UU5.Bricks.Lsi lsi={library.name} />,
-              decorationWidth: 136,
-              decorationRight: -8,
-              decorationBottom: -8,
-              companyLogo: "https://cdn.plus4u.net/uu-plus4u5g01/4.0.0/assets/img/unicorn-logo.svg"
+      <>
+        <Plus4U5.App.Page
+          {...this.getMainPropsToPass()}
+          displayedLanguages={library ? library.languages : ["en", "cs"]}
+          type={3}
+          topFixed="smart"
+          topFixedHeight={64}
+          leftFixed
+          leftWidth="!xs-85 !s-80 !m-320px !l-320px !xl-320px"
+          leftRelative="m l xl"
+          leftResizable="m l xl"
+          leftResizableMinWidth={220}
+          leftResizableMaxWidth={500}
+          isLeftOpen="m l xl"
+          showLeftToggleButton
+          top={<Plus4U5.App.TopBt displayedLanguages={library ? library.languages : ["en", "cs"]} />}
+          left={this._getLibrary()}
+          menuProps={
+            permissions && (permissions.includes("Administrators") || permissions.includes("Managers"))
+              ? {
+                  header: "Control Bar",
+                  items: executiveItems
+                }
+              : null
+          }
+        >
+          {this._getPermissions()}
+          <UU5.Common.Router
+            routes={{
+              "": "home",
+              home: { component: <Home identity={this.props.identity} /> },
+              about: { component: <About identity={this.props.identity} /> },
+              location: { component: <Location /> },
+              admin: { component: <Admin /> }
             }}
-            aboutItems={[
-              {
-                content: "About application",
-                href: "about"
-              }
-            ]}
-            helpHref="https://uuos9.plus4u.net/uu-bookkitg01-main/78462435-4a9622a0b4074996944c5d1fb07b22a7"
-          >
-            <Plus4U5.App.MenuProvider>
-              <Plus4U5.App.MenuPanel header="Menu" expanded borderBottom>
-                <Plus4U5.App.MenuTree items={menuItems} />
-              </Plus4U5.App.MenuPanel>
-            </Plus4U5.App.MenuProvider>
-          </Plus4U5.App.Left>
-        }
-        menuProps={
-          permissions.includes("Administrators") || permissions.includes("Managers")
-            ? {
-                header: "Control Bar",
-                items: executiveItems
-              }
-            : null
-        }
-      >
-        {this._getpermissions}
-        {this._getLibrary()}
-        <UU5.Common.Router
-          routes={{
-            "": "home",
-            home: { component: <Home identity={this.props.identity} /> },
-            about: { component: <About identity={this.props.identity} /> },
-            location: { component: <Location /> }
-          }}
-          controlled={false}
-        />
-      </Plus4U5.App.Page>
+            controlled={false}
+          />
+        </Plus4U5.App.Page>
+      </>
     );
   }
   //@@viewOff:render

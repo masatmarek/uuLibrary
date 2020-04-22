@@ -26,6 +26,10 @@ const Lsi = {
     controlPanel: {
       cs: "Ovládací panel",
       en: "Control panel"
+    },
+    createLibrary: {
+      cs: "Vytvořit knihovnu",
+      en: "Create library"
     }
   },
 

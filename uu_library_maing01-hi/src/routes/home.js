@@ -66,26 +66,15 @@ const Home = UU5.Common.VisualComponent.create({
     return (
       <UU5.Bricks.Div {...this.getMainPropsToPass()}>
         {this.props.identity ? (
-          <>
-            <UU5.Bricks.Row className={this.getClassName("welcomeRow")}>
-              <UU5.Bricks.Column colWidth="x-12 s-3">
-                <Plus4U5.Bricks.UserPhoto width="100px" />
-              </UU5.Bricks.Column>
-              <UU5.Bricks.Column colWidth="x-12 s-9">
-                <UU5.Bricks.Header level="2" content={this.getLsiComponent("welcome")} />
-                <UU5.Bricks.Header level="2" content={this.props.identity.name} />
-              </UU5.Bricks.Column>
-            </UU5.Bricks.Row>
-            <WelcomeRow textPadding="14px" icon="mdi-human-greeting">
-              {this.getLsiComponent("intro")}
-            </WelcomeRow>
-            <WelcomeRow textPadding="10px" icon="mdi-monitor">
-              {this.getLsiComponent("clientSide")}
-            </WelcomeRow>
-            <WelcomeRow textPadding="8px" icon="mdi-server">
-              {this.getLsiComponent("serverSide")}
-            </WelcomeRow>
-          </>
+          <UU5.Bricks.Row className={this.getClassName("welcomeRow")}>
+            <UU5.Bricks.Column colWidth="x-12 s-3">
+              <Plus4U5.Bricks.UserPhoto width="100px" />
+            </UU5.Bricks.Column>
+            <UU5.Bricks.Column colWidth="x-12 s-9">
+              <UU5.Bricks.Header level="2" content={this.getLsiComponent("welcome")} />
+              <UU5.Bricks.Header level="2" content={this.props.identity.name} />
+            </UU5.Bricks.Column>
+          </UU5.Bricks.Row>
         ) : (
           <Plus4U5.App.Login></Plus4U5.App.Login>
         )}

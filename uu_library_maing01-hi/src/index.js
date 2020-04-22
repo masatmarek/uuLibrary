@@ -1,6 +1,5 @@
 import { AppContainer } from "react-hot-loader";
 import * as UU5 from "uu5g04";
-
 import Spa from "./core/spa.js";
 
 // propagate app version into environment

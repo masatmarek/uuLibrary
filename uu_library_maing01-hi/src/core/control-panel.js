@@ -12,7 +12,6 @@ import Config from "./config/config.js";
 import Calls from "../calls";
 import ModalHelper from "../helpers/modal-helper.js";
 
-import Form from "./form";
 
 import Lsi from "./location-list-lsi.js";
 //@@viewOff:imports
