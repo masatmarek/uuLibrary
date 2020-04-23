@@ -2,6 +2,7 @@
 const { Validator } = require("uu_appg01_server").Validation;
 const { DaoFactory, DuplicateKey } = require("uu_appg01_server").ObjectStore;
 const { ValidationHelper } = require("uu_appg01_server").AppServer;
+const Cfg = require("../helpers/config.js");
 const Errors = require("../api/errors/location-error.js");
 
 const WARNINGS = {
@@ -18,23 +19,16 @@ class LocationAbl {
   constructor() {
     this.validator = Validator.load();
     this.dao = DaoFactory.getDao("location");
+    this.libraryDao = DaoFactory.getDao("libraryMain");
   }
 
-  async close(awid, dtoIn) {
-    
-  }
+  async close(awid, dtoIn) {}
 
-  async reactivate(awid, dtoIn) {
-    
-  }
+  async reactivate(awid, dtoIn) {}
 
-  async suspend(awid, dtoIn) {
-    
-  }
+  async suspend(awid, dtoIn) {}
 
-  async setState(awid, dtoIn) {
-    
-  }
+  async setState(awid, dtoIn) {}
 
   async list(awid, dtoIn) {
     // HDS 1
@@ -67,19 +61,35 @@ class LocationAbl {
     );
 
     //HDS 2
-    dtoIn.state = STATES.active;
-    dtoIn.awid = awid;
+    let library = await this.libraryDao.getByAwid(awid);
+    // HDS 2.1
+    if (!library) {
+      // A3
+      throw new Errors.Create.LibraryDoesNotExist({ uuAppErrorMap }, { awid });
+    }
+    // HDS 2.2
+    if (library.state !== Cfg.library.states.active) {
+      // A4
+      throw new Errors.Create.LibraryIsNotInProperState(
+        { uuAppErrorMap },
+        { state: library.state, expectedState: Cfg.library.states.active }
+      );
+    }
 
     //HDS 3
+    dtoIn.state = Cfg.location.states.active;
+    dtoIn.awid = awid;
+
+    //HDS 4
     let location;
     try {
       location = await this.dao.create(dtoIn);
     } catch (error) {
       if (error instanceof DuplicateKey) {
-        // A3
+        // A5
         throw new Errors.Create.DuplicateCode({ uuAppErrorMap }, { code: dtoIn.code });
       } else {
-        // A4
+        // A6
         throw new Errors.Create.CreateByDaoFailed({ uuAppErrorMap }, { cause: { ...error } });
       }
     }

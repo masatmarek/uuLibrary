@@ -41,6 +41,13 @@ class BookMongo extends UuObjectDao {
     };
     return await super.deleteOne(filter);
   }
+  async deleteManyByLocation(awid, locationCode) {
+    let filter = {
+      awid,
+      locationCode
+    };
+    return await super.deleteMany(filter);
+  }
 }
 
 module.exports = BookMongo;

@@ -23,10 +23,25 @@ const Create = {
   LocationDoesNotExist: class extends LibraryMainUseCaseError {
     constructor() {
       super(...arguments);
-      this.code = `${Create.UC_CODE}locationDoesNotExist`;
+      this.code = `${Create.UC_CODE}libraryDoesNotExist`;
       this.message = "Location does not exist.";
     }
   },
+  LibraryIsNotInProperState: class extends LibraryMainUseCaseError {
+    constructor() {
+      super(...arguments);
+      this.code = `${Create.UC_CODE}libraryIsNotInProperState`;
+      this.message = "Library is not in proper state.";
+    }
+  },
+  LibraryDoesNotExist: class extends LibraryMainUseCaseError {
+    constructor() {
+      super(...arguments);
+      this.code = `${Create.UC_CODE}libraryDoesNotExist`;
+      this.message = "Library does not exist.";
+    }
+  },
+
   CreateByDaoFailed: class extends LibraryMainUseCaseError {
     constructor() {
       super(...arguments);

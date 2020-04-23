@@ -4,6 +4,7 @@ const { Validator } = require("uu_appg01_server").Validation;
 const { DaoFactory, DuplicateKey } = require("uu_appg01_server").ObjectStore;
 const { ValidationHelper } = require("uu_appg01_server").AppServer;
 const Errors = require("../api/errors/book-error.js");
+const Cfg = require("../helpers/config.js");
 
 const WARNINGS = {
   createUnsupportedKeys: {
@@ -223,26 +224,38 @@ class BookAbl {
     }
     // HDS 3
     let library = await this.libraryDao.getByAwid(awid);
-    let { genres, conditions } = library;
-
     // HDS 3.1
+    if (!library) {
+      // A6
+      throw new Errors.Create.LibraryDoesNotExist({ uuAppErrorMap }, { awid });
+    }
+    if (library.state !== Cfg.library.states.active) {
+      // A7
+      throw new Errors.Create.LibraryIsNotInProperState(
+        { uuAppErrorMap },
+        { state: library.state, expectedState: Cfg.library.states.active }
+      );
+    }
+
+    // HDS 3.2
+    let { genres, conditions } = library;
     let libraryGenreCodes = [];
     genres.forEach(genre => {
       libraryGenreCodes.push(genre.code);
     });
     let genresValid = dtoIn.genreCodes.every(val => libraryGenreCodes.includes(val));
     if (!genresValid) {
-      // A6
+      // A8
       throw new Errors.Create.GenreDoesNotExist({ uuAppErrorMap });
     }
-    // HDS 3.2
+    // HDS 3.3
     let libraryConditionCodes = [];
     conditions.forEach(condition => {
       libraryConditionCodes.push(condition.code);
     });
     let conditionsValid = libraryConditionCodes.includes(dtoIn.conditionCode);
     if (!conditionsValid) {
-      // A7
+      // A9
       throw new Errors.Create.ConditionDoesNotExist({ uuAppErrorMap });
     }
     // HDS 4
@@ -256,10 +269,10 @@ class BookAbl {
       book = await this.dao.create(dtoIn);
     } catch (e) {
       if (e instanceof DuplicateKey) {
-        // A8
+        // A10
         throw new Errors.Create.DuplicateCode({ uuAppErrorMap }, { code: dtoIn.code });
       } else {
-        // A9
+        // A11
         throw new Errors.Create.CreateByDaoFailed({ uuAppErrorMap });
       }
     }

@@ -23,6 +23,20 @@ const Create = {
       this.message = "Code of book must be unique.";
     }
   },
+  LibraryIsNotInProperState: class extends LibraryMainUseCaseError {
+    constructor() {
+      super(...arguments);
+      this.code = `${Create.UC_CODE}libraryIsNotInProperState`;
+      this.message = "Library is not in proper state.";
+    }
+  },
+  LibraryDoesNotExist: class extends LibraryMainUseCaseError {
+    constructor() {
+      super(...arguments);
+      this.code = `${Create.UC_CODE}libraryDoesNotExist`;
+      this.message = "Library does not exist.";
+    }
+  },
   CreateByDaoFailed: class extends LibraryMainUseCaseError {
     constructor() {
       super(...arguments);
