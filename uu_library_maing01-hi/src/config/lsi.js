@@ -7,6 +7,10 @@ const Lsi = {
     contentManger: {
       cs: "Správa obsahu",
       en: "Content manager"
+    },
+    requestManager: {
+      cs: "Správa požadavků",
+      en: "Request manager"
     }
   },
 
@@ -121,6 +125,12 @@ const Lsi = {
             target="_blank"
             content="uuApp Template Developer Guide"
           />.`
+    }
+  },
+  request: {
+    header: {
+      cs: "Požadavky",
+      en: "Requests"
     }
   },
   location: {

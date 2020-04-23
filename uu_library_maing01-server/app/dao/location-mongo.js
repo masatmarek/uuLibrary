@@ -21,10 +21,10 @@ class LocationMongo extends UuObjectDao {
     filter.awid = awid;
     return await super.find(filter, pageInfo);
   }
-  async remove(uuObject) {
+  async deleteByCode(uuObject) {
     let filter = {
       awid: uuObject.awid,
-      id: uuObject.id
+      code: uuObject.code
     };
     return await super.deleteOne(filter);
   }

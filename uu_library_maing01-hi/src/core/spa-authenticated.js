@@ -7,12 +7,11 @@ import "uu_plus4u5g01-app";
 import Config from "./config/config.js";
 import Calls from "../calls";
 import Lsi from "../config/lsi.js";
-import Left from "./left.js";
-import Bottom from "./bottom.js";
 import About from "../routes/about.js";
 import Home from "../routes/home.js";
 import Admin from "../routes/admin";
 import Location from "../routes/location";
+import Requests from "../routes/requests";
 //@@viewOff:imports
 const menuItems = [
   {
@@ -30,6 +29,10 @@ const executiveItems = [
   {
     content: <UU5.Bricks.Lsi lsi={Lsi.controlBar.contentManger} />,
     onClick: () => UU5.Environment.setRoute("admin")
+  },
+  {
+    content: <UU5.Bricks.Lsi lsi={Lsi.controlBar.requestManager} />,
+    onClick: () => UU5.Environment.setRoute("requests")
   }
 ];
 const errorItems = [
@@ -229,7 +232,8 @@ const SpaAuthenticated = UU5.Common.VisualComponent.create({
               home: { component: <Home identity={this.props.identity} /> },
               about: { component: <About identity={this.props.identity} /> },
               location: { component: <Location /> },
-              admin: { component: <Admin /> }
+              admin: { component: <Admin /> },
+              requests: { component: <Requests /> }
             }}
             controlled={false}
           />

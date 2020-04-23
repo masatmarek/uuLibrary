@@ -28,7 +28,7 @@
       },
       "location/delete": {
         "realization": "api/controllers/LocationController.delete",
-        "httpMethod": "GET",
+        "httpMethod": "POST",
         "type": "CMD"
       },
       "book/relocate": {
@@ -143,6 +143,11 @@
       },
       "library/get": {
         "realization": "api/controllers/LibraryMainController.libraryGet",
+        "httpMethod": "GET",
+        "type": "CMD"
+      },
+      "request/list": {
+        "realization": "api/controllers/RequestController.requestList",
         "httpMethod": "GET",
         "type": "CMD"
       }

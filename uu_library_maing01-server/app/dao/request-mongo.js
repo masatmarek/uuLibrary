@@ -12,8 +12,7 @@ class RequestMongo extends UuObjectDao {
 
   async listByCriteria(awid, criteria, pageInfo = {}) {
     let filter = {};
-    if (criteria.author) filter.author = criteria.author;
-    if (criteria.locationCode) filter.locationCode = criteria.locationCode;
+    if (criteria.type) filter.type = criteria.type;
     filter.awid = awid;
     return await super.find(filter, pageInfo);
   }

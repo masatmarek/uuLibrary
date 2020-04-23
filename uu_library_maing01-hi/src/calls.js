@@ -31,6 +31,14 @@ let Calls = {
     let commandUri = Calls.getCommandUri("location/list");
     return Calls.promisedCall("get", commandUri, dtoIn);
   },
+  locationListLoader(dtoIn) {
+    let commandUri = Calls.getCommandUri("location/list");
+    Calls.promisedCall("get", commandUri, dtoIn);
+  },
+  locationDelete(dtoIn) {
+    let commandUri = Calls.getCommandUri("location/delete");
+    return Calls.promisedCall("post", commandUri, dtoIn);
+  },
   bookList(dtoIn) {
     let commandUri = Calls.getCommandUri("book/list");
     return Calls.promisedCall("get", commandUri, dtoIn);
@@ -66,6 +74,14 @@ let Calls = {
   bookDelete(dtoIn) {
     let commandUri = Calls.getCommandUri("book/delete");
     return Calls.promisedCall("post", commandUri, dtoIn);
+  },
+  bookRelocate(dtoIn) {
+    let commandUri = Calls.getCommandUri("book/relocate");
+    return Calls.promisedCall("post", commandUri, dtoIn);
+  },
+  requestList(dtoIn) {
+    let commandUri = Calls.getCommandUri("request/list");
+    return Calls.promisedCall("get", commandUri, dtoIn);
   },
   /*
   For calling command on specific server, in case of developing client site with already deployed

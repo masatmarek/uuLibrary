@@ -8,12 +8,14 @@ const Lsi = {
   condition: { cs: "Kondice", en: "Condition" },
   genre: { cs: "Žánr", en: "Genre" },
   code: { cs: "Kód", en: "Code" },
+  relocateButton: { cs: "Přemístit", en: "Relocate" },
   updateButton: { cs: "Upravit", en: "Update" },
   deleteButton: { cs: "Smazat", en: "Delete" },
   createButton: { cs: "Vytvořit", en: "Create" },
   borrowButton: { cs: "Půjčit", en: "Borrow" },
   returnButton: { cs: "Vrátit", en: "Return" },
   deleteBook: { cs: "Smazat knihu", en: "Delete book" },
+  relocateBook: { cs: "Přemístit knihu", en: "Relocate book" },
   areYouSureToDelete: { cs: "Jste si jistý?", en: "Are your sure?" },
   cancel: { cs: "Zrušit", en: "Cancel" },
   delete: { cs: "Smazat", en: "Delete" },
@@ -21,6 +23,12 @@ const Lsi = {
   book: { cs: "knihy", en: "" },
   successBorrowSuffix: { cs: "problěhla úspěšně.", en: "" },
   successDelete: { cs: "Smazaní proběhlo úspěšně", en: "Delete of book was successfull" },
+  successRelocate: location => {
+    return {
+      cs: `Přemístění do lokace ${location} proběhlo úspěšné.`,
+      en: `Relocate of book to location ${location} was successfull.`
+    };
+  },
   areYouSure(name) {
     return {
       cs: `Jste si jistý že chcete smazat knihu: '${name}'?`,

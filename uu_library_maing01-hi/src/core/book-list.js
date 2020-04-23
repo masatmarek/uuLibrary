@@ -128,7 +128,34 @@ export const BookList = UU5.Common.VisualComponent.create({
           this._listDataManager.current.load();
           UU5.Environment.getPage()
             .getAlertBus()
-            .setAlert({ colorSchema: "danger", content: <UU5.Bricks.Lsi lsi={Lsi.successDelete} /> });
+            .setAlert({ colorSchema: "success", content: <UU5.Bricks.Lsi lsi={Lsi.successDelete} /> });
+        },
+        fail: failDtoOut => {
+          UU5.Environment.getPage()
+            .getAlertBus()
+            .setAlert({ colorSchema: "danger", content: failDtoOut.message });
+          ModalHelper.close();
+          reject(failDtoOut);
+        }
+      });
+    });
+  },
+  _handleRelocate(data) {
+    console.log(data);
+
+    return new Promise((resolve, reject) => {
+      Calls.bookRelocate({
+        data: data,
+        done: dtoOut => {
+          ModalHelper.close();
+          resolve(dtoOut);
+          this._listDataManager.current.load();
+          UU5.Environment.getPage()
+            .getAlertBus()
+            .setAlert({
+              colorSchema: "success",
+              content: <UU5.Bricks.Lsi lsi={Lsi.successRelocate(dtoOut.locationCode)} />
+            });
         },
         fail: failDtoOut => {
           UU5.Environment.getPage()
@@ -163,7 +190,9 @@ export const BookList = UU5.Common.VisualComponent.create({
     this._createModal.current.open();
   },
   _renderTile(tileInfo) {
-    return <BookTile key={tileInfo.code} data={tileInfo} onDelete={this._handleDelete} />;
+    return (
+      <BookTile key={tileInfo.code} data={tileInfo} onDelete={this._handleDelete} onRelocate={this._handleRelocate} />
+    );
   },
   _getBooks() {
     return (
@@ -183,7 +212,11 @@ export const BookList = UU5.Common.VisualComponent.create({
                 <UU5.Tiles.ListController data={data} selectable={false}>
                   <UU5.Tiles.ActionBar
                     collapsible={false}
-                    title=""
+                    title={
+                      <UU5.Bricks.Button bgStyle="transparent" onClick={() => UU5.Environment.setRoute("location")}>
+                        <UU5.Bricks.Icon icon="mdi-arrow-left" />
+                      </UU5.Bricks.Button>
+                    }
                     searchable={true}
                     actions={this._getActionBarActions()}
                   />

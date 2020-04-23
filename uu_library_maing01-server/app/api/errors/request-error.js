@@ -4,7 +4,7 @@ const LibraryMainUseCaseError = require("./library-main-use-case-error.js");
 const REQUEST_ERROR_PREFIX = `${LibraryMainUseCaseError.ERROR_PREFIX}request/`;
 
 const Create = {
-  UC_CODE: `${REQUEST_ERROR_PREFIX}request/create/`,
+  UC_CODE: `${REQUEST_ERROR_PREFIX}create/`,
   InvalidDtoIn: class extends LibraryMainUseCaseError {
     constructor() {
       super(...arguments);
@@ -42,6 +42,18 @@ const Create = {
   }
 };
 
+const List = {
+  UC_CODE: `${REQUEST_ERROR_PREFIX}list/`,
+  InvalidDtoIn: class extends LibraryMainUseCaseError {
+    constructor() {
+      super(...arguments);
+      this.code = `${List.UC_CODE}invalidDtoIn`;
+      this.message = "DtoIn is not valid.";
+    }
+  }
+};
+
 module.exports = {
+  List,
   Create
 };

@@ -8,6 +8,12 @@ const Errors = require("../api/errors/location-error.js");
 const WARNINGS = {
   createUnsupportedKeys: {
     code: `${Errors.Create.UC_CODE}unsupportedKeys`
+  },
+  listUnsupportedKeys: {
+    code: `${Errors.List.UC_CODE}unsupportedKeys`
+  },
+  deleteUnsupportedKeys: {
+    code: `${Errors.Delete.UC_CODE}unsupportedKeys`
   }
 };
 const STATES = {
@@ -19,6 +25,7 @@ class LocationAbl {
   constructor() {
     this.validator = Validator.load();
     this.dao = DaoFactory.getDao("location");
+    this.bookDao = DaoFactory.getDao("book");
     this.libraryDao = DaoFactory.getDao("libraryMain");
   }
 
@@ -37,8 +44,8 @@ class LocationAbl {
     let uuAppErrorMap = ValidationHelper.processValidationResult(
       dtoIn,
       validationResult,
-      WARNINGS.createUnsupportedKeys.code,
-      Errors.Create.InvalidDtoIn
+      WARNINGS.listUnsupportedKeys.code,
+      Errors.List.InvalidDtoIn
     );
 
     // HDS 3
@@ -104,18 +111,48 @@ class LocationAbl {
   }
   async delete(awid, dtoIn) {
     // HDS 1
-    let validationResult = this.validator.validate("initDtoInType", dtoIn);
+    let validationResult = this.validator.validate("deleteDtoInType", dtoIn);
     // A1, A2
     let uuAppErrorMap = ValidationHelper.processValidationResult(
       dtoIn,
       validationResult,
-      WARNINGS.initUnsupportedKeys.code,
-      Errors.Init.InvalidDtoIn
+      WARNINGS.deleteUnsupportedKeys.code,
+      Errors.Delete.InvalidDtoIn
     );
+    // HDS 2
+    let location = await this.dao.getByCode(awid, dtoIn.code);
+    if (!location) {
+      // A3
+      throw new Errors.Delete.LocationDoesNotExist({ uuAppErrorMap }, { location: dtoIn.code });
+    }
 
-    return {
-      uuAppErrorMap: uuAppErrorMap
-    };
+    let books = await this.bookDao.listByCriteria(awid, { locationCode: location.code });
+
+    //HDS 3
+    let dtoOut = {};
+    // HDS 3.1
+    if (books.itemList.length !== 0 && !dtoIn.forceDelete) {
+      // A4
+      throw new Errors.Delete.LocationContainBooks({ uuAppErrorMap }, { location: dtoIn.code, books: books.itemList });
+    } // HDS 3.2
+    else if ((books.itemList.length !== 0 && dtoIn.forceDelete === true) || books.itemList.length === 0) {
+      try {
+        let removeDtoIn = { code: dtoIn.code, awid: awid };
+        dtoOut = await this.dao.deleteByCode(removeDtoIn);
+      } catch (error) {
+        throw new Errors.Delete.DeleteByCodeFailed({ uuAppErrorMap }, { cause: error });
+      }
+      // HDS 3.3
+      if (books.itemList.length !== 0) {
+        try {
+          await this.bookDao.deleteManyByLocation(awid, dtoIn.code);
+        } catch (error) {
+          throw new Errors.Delete.DeleteByCodeFailed({ uuAppErrorMap }, { cause: error });
+        }
+      }
+    }
+    // HDS 4
+    return uuAppErrorMap;
   }
 }
 

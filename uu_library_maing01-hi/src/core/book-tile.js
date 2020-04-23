@@ -70,7 +70,8 @@ export const BookTile = UU5.Common.VisualComponent.create({
   //@@viewOn:propTypes
   propTypes: {
     route: UU5.PropTypes.object,
-    onDelete: UU5.PropTypes.func
+    onDelete: UU5.PropTypes.func,
+    onRelocate: UU5.PropTypes.func
   },
   //@@viewOff:propTypes
 
@@ -82,7 +83,7 @@ export const BookTile = UU5.Common.VisualComponent.create({
     this._listDataManager = UU5.Common.Reference.create();
     this._createModal = UU5.Common.Reference.create();
     this._updateModal = UU5.Common.Reference.create();
-
+    this._newLocation = {};
     return {};
   },
   //@@viewOff:reactLifeCycle
@@ -168,6 +169,14 @@ export const BookTile = UU5.Common.VisualComponent.create({
           priority: 0
         },
         {
+          content: <UU5.Bricks.Lsi lsi={Lsi.relocateButton} />,
+          onClick: () => {
+            this._openRelocateModal(tileData);
+          },
+          bgStyle: "filled",
+          priority: 0
+        },
+        {
           content: <UU5.Bricks.Lsi lsi={Lsi.deleteButton} />,
           onClick: () => {
             this._openDeleteModal(tileData);
@@ -204,6 +213,15 @@ export const BookTile = UU5.Common.VisualComponent.create({
       return [];
     }
   },
+  _handleRelocate(formRef, book) {
+    formRef.values.code = book.code;
+    formRef.component.saveDone(formRef.values);
+  },
+
+  _handleRelocateDone(dtoOut) {
+    this.props.onRelocate && this.props.onRelocate(dtoOut.dtoOut);
+    ModalHelper.close();
+  },
   _handleDelete(formRef, code) {
     formRef.component.saveDone({ code });
   },
@@ -212,10 +230,54 @@ export const BookTile = UU5.Common.VisualComponent.create({
     this.props.onDelete && this.props.onDelete(dtoOut.dtoOut);
     ModalHelper.close();
   },
-
+  _getLocations(book) {
+    return (
+      <UU5.Common.Loader onLoad={Calls.locationListLoader}>
+        {({ isLoading, isError, data }) => {
+          if (isLoading) {
+            return <UU5.Bricks.Loading />;
+          } else if (isError) {
+            console.log(isError);
+            return <></>;
+          } else {
+            let options = [];
+            data.itemList.forEach(item => {
+              if (book.locationCode !== item.code) {
+                options.push(<UU5.Forms.Select.Option key={item.code} value={item.code} content={item.name} />);
+              }
+            });
+            return (
+              <UU5.Forms.Form
+                onSave={formRef => this._handleRelocate(formRef, book)}
+                onSaveDone={this._handleRelocateDone}
+              >
+                <UU5.Forms.Select
+                  name="locationCode"
+                  openToContent
+                  labelColWidth={{ xs: 12 }}
+                  inputColWidth={{ xs: 12 }}
+                  label={<UU5.Bricks.Lsi lsi={Lsi.genreLabel} />}
+                  placeholder={"Vyberte novou lokaci"}
+                >
+                  {options}
+                </UU5.Forms.Select>
+                <UU5.Forms.ContextControls
+                  buttonSubmitProps={{ content: <UU5.Bricks.Lsi lsi={Lsi.relocateButton} /> }}
+                  buttonCancelProps={{ content: <UU5.Bricks.Lsi lsi={Lsi.cancel} /> }}
+                />
+              </UU5.Forms.Form>
+            );
+          }
+        }}
+      </UU5.Common.Loader>
+    );
+  },
+  _openRelocateModal(data) {
+    ModalHelper.open(<UU5.Bricks.Lsi lsi={Lsi.relocateBook} />, this._getLocations(data));
+  },
   _openDeleteModal(data) {
     ModalHelper.open(
-      <UU5.Bricks.Lsi lsi={Lsi.createFeeConfiguration} />,
+      <UU5.Bricks.Lsi lsi={Lsi.deleteBook} />,
       <UU5.Forms.Form
         onSave={formRef => this._handleDelete(formRef, data.code)}
         onSaveDone={this._handleDeleteDone}

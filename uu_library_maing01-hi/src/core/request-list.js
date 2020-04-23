@@ -14,17 +14,17 @@ import ModalHelper from "../helpers/modal-helper.js";
 
 import Form from "./create-book-modal";
 
-import Lsi from "./location-list-lsi.js";
+import Lsi from "./request-list-lsi.js";
 //@@viewOff:imports
 
-export const LocationList = UU5.Common.VisualComponent.create({
+export const RequestList = UU5.Common.VisualComponent.create({
   //@@viewOn:mixins
   mixins: [UU5.Common.BaseMixin],
   //@@viewOff:mixins
 
   //@@viewOn:statics
   statics: {
-    tagName: Config.TAG + "LocationList",
+    tagName: Config.TAG + "RequestList",
     classNames: {
       main: () => Config.Css.css``,
       boldText: () => Config.Css.css`
@@ -72,9 +72,9 @@ export const LocationList = UU5.Common.VisualComponent.create({
 
   //@@viewOn:private
   _handleLoad() {
-    let data = {};
+    let data = { type: this.props.types };
     return new Promise((done, fail) =>
-      Calls.locationList({
+      Calls.requestList({
         data,
         done: data => {
           for (let conf of data.itemList) {
@@ -141,7 +141,7 @@ export const LocationList = UU5.Common.VisualComponent.create({
         fail: failDtoOut => {
           UU5.Environment.getPage()
             .getAlertBus()
-            .setAlert({ colorSchema: "danger", content: failDtoOut.message });
+            .setAlert({ colorSchema: "success", content: failDtoOut.message });
           ModalHelper.close();
           reject(failDtoOut);
         }
@@ -170,20 +170,22 @@ export const LocationList = UU5.Common.VisualComponent.create({
     if (this._profileList.includes("Managers")) {
       return [
         {
-          content: <UU5.Bricks.Lsi lsi={Lsi.updateButton} />,
+          content: <UU5.Bricks.Lsi lsi={Lsi.confirmButton} />,
           onClick: () => {
             this._openUpdateModal(tileData);
           },
-          bgStyle: "filled",
-          priority: 0
+          bgStyle: "outline",
+          colorSchema: "success",
+          priority: 1
         },
         {
-          content: <UU5.Bricks.Lsi lsi={Lsi.deleteButton} />,
+          content: <UU5.Bricks.Lsi lsi={Lsi.declineButton} />,
           onClick: () => {
             this._openDeleteConfirmModal(tileData);
           },
-          bgStyle: "filled",
-          priority: 0
+          bgStyle: "outline",
+          colorSchema: "danger",
+          priority: 1
         }
       ];
     } else {
@@ -249,30 +251,21 @@ export const LocationList = UU5.Common.VisualComponent.create({
       </UU5.Bricks.Div>
     );
   },
-  _getTileHeader(data) {
-    let classNames = this.getClassName();
-    return (
-      <UU5.Bricks.Span
-        mainAttrs={{
-          onClick: () => this._setRoute(data.code)
-        }}
-        className={classNames.header()}
-      >
-        {data.name}
-      </UU5.Bricks.Span>
-    );
-  },
+
   _renderTile(tileInfo) {
+    console.log(tileInfo);
+
     return (
       <UuP.Tiles.ActionTile
         key={UU5.Common.Tools.generateUUID(4)}
         actionList={this._getTileActionList(tileInfo.data)}
-        header={this._getTileHeader(tileInfo)}
+        header={<UU5.Bricks.Lsi lsi={Lsi.request} />}
         level={4}
         content={
           <UU5.Bricks.Div key={UU5.Common.Tools.generateUUID(4)}>
-            {this._getLocationInfoLine("state", <UU5.Bricks.Lsi lsi={Lsi[tileInfo.state]} />)}
-            {this._getLocationInfoLine("capacity", tileInfo.capacity)}
+            {this._getLocationInfoLine("code", tileInfo.code)}
+            {this._getLocationInfoLine("bookCode", tileInfo.bookCode)}
+            {this._getLocationInfoLine("customer", tileInfo.customer.name)}
           </UU5.Bricks.Div>
         }
       />
@@ -296,17 +289,18 @@ export const LocationList = UU5.Common.VisualComponent.create({
                 <UU5.Tiles.ListController data={data} selectable={false}>
                   <UU5.Tiles.ActionBar
                     collapsible={false}
-                    title=""
+                    title={<UU5.Bricks.Lsi lsi={Lsi.requestList} />}
                     searchable={true}
                     actions={this._getActionBarActions()}
                   />
                   <UU5.Tiles.List
                     tile={this._renderTile}
-                    tileHeight={120}
+                    tileBorder
+                    tileStyle={{ borderRadius: 4 }}
+                    tileMinWidth={330}
+                    tileHeight={150}
                     rowSpacing={8}
                     tileSpacing={8}
-                    tileElevationHover={3}
-                    tileElevation={1}
                     tileJustify="space-between"
                     scrollToAlignment="center"
                   />
@@ -331,4 +325,4 @@ export const LocationList = UU5.Common.VisualComponent.create({
   //@@viewOff:render
 });
 
-export default LocationList;
+export default RequestList;

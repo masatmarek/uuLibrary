@@ -38,7 +38,8 @@
       "condition/delete": ["Administrators","Managers"],
       "request/create": ["Administrators","Managers","Librarians","Customers"],
       "library/create": ["Administrators"],
-      "library/get": ["Public"]
+      "library/get": ["Public"],
+      "request/list": ["Public"]
     }
   }
 }

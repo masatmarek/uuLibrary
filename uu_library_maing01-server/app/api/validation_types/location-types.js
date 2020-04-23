@@ -13,3 +13,8 @@ const locationListDtoInType = shape({
     pageSize: integer()
   })
 });
+
+const deleteDtoInType = shape({
+  code: codeType().isRequired(),
+  forceDelete: boolean()
+});

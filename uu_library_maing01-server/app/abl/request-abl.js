@@ -8,6 +8,9 @@ const Errors = require("../api/errors/request-error.js");
 const WARNINGS = {
   createUnsupportedKeys: {
     code: `${Errors.Create.UC_CODE}unsupportedKeys`
+  },
+  listUnsupportedKeys: {
+    code: `${Errors.List.UC_CODE}unsupportedKeys`
   }
 };
 const STATES = {
@@ -23,6 +26,24 @@ class RequestAbl {
     this.dao.createSchema();
     this.locationDao = DaoFactory.getDao("location");
     this.bookDao = DaoFactory.getDao("book");
+  }
+
+  async requestList(awid, dtoIn) {
+    // HDS 1.2, 1.3, A1, A2
+    let validationResult = this.validator.validate("requestListDtoInType", dtoIn);
+    let uuAppErrorMap = ValidationHelper.processValidationResult(
+      dtoIn,
+      validationResult,
+      WARNINGS.createUnsupportedKeys.code,
+      Errors.List.InvalidDtoIn
+    );
+    // HDS 2
+    if (!dtoIn.pageInfo) dtoIn.pageInfo = {};
+    let dtoOut = await this.dao.listByCriteria(awid, dtoIn, dtoIn.pageInfo);
+
+    // HDS 3
+    dtoOut.uuAppErrorMap = uuAppErrorMap;
+    return dtoOut;
   }
 
   async requestCreate(awid, dtoIn, session) {

@@ -4,7 +4,36 @@ const LibraryMainUseCaseError = require("./library-main-use-case-error.js");
 const LOCATION_ERROR_PREFIX = `${LibraryMainUseCaseError.ERROR_PREFIX}location/`;
 
 const Delete = {
-  UC_CODE: `${LOCATION_ERROR_PREFIX}delete/`
+  UC_CODE: `${LOCATION_ERROR_PREFIX}delete/`,
+  InvalidDtoIn: class extends LibraryMainUseCaseError {
+    constructor() {
+      super(...arguments);
+      this.code = `${Delete.UC_CODE}invalidDtoIn`;
+      this.message = "DtoIn is not valid.";
+    }
+  },
+  LocationDoesNotExist: class extends LibraryMainUseCaseError {
+    constructor() {
+      super(...arguments);
+      this.code = `${Delete.UC_CODE}locationDoesNotExist`;
+      this.message = "Location does not exist.";
+    }
+  },
+  LocationContainBooks: class extends LibraryMainUseCaseError {
+    constructor() {
+      super(...arguments);
+      this.code = `${Delete.UC_CODE}locationContainBooks`;
+      this.message =
+        "Location contain books if you want to delete all books from this location set 'forceDelete': 'true'.";
+    }
+  },
+  DeleteByCodeFailed: class extends LibraryMainUseCaseError {
+    constructor() {
+      super(...arguments);
+      this.code = `${Delete.UC_CODE}deleteByCodeFailed`;
+      this.message = "Delete of location failed.";
+    }
+  }
 };
 
 const Create = {
@@ -48,27 +77,29 @@ const Create = {
 
 const List = {
   UC_CODE: `${LOCATION_ERROR_PREFIX}list/`,
-  
+  InvalidDtoIn: class extends LibraryMainUseCaseError {
+    constructor() {
+      super(...arguments);
+      this.code = `${List.UC_CODE}invalidDtoIn`;
+      this.message = "DtoIn is not valid.";
+    }
+  }
 };
 
 const SetState = {
-  UC_CODE: `${LOCATION_ERROR_PREFIX}setState/`,
-  
+  UC_CODE: `${LOCATION_ERROR_PREFIX}setState/`
 };
 
 const Suspend = {
-  UC_CODE: `${LOCATION_ERROR_PREFIX}suspend/`,
-  
+  UC_CODE: `${LOCATION_ERROR_PREFIX}suspend/`
 };
 
 const Reactivate = {
-  UC_CODE: `${LOCATION_ERROR_PREFIX}reactivate/`,
-  
+  UC_CODE: `${LOCATION_ERROR_PREFIX}reactivate/`
 };
 
 const Close = {
-  UC_CODE: `${LOCATION_ERROR_PREFIX}close/`,
-  
+  UC_CODE: `${LOCATION_ERROR_PREFIX}close/`
 };
 
 module.exports = {
