@@ -7,8 +7,11 @@ const Errors = require("../api/errors/rental-error.js");
 const nodemailer = require("nodemailer");
 
 const WARNINGS = {
-  borowBookUnsupportedKeys: {
+  confirmBorowBookUnsupportedKeys: {
     code: `${Errors.ConfirmBorrowBook.UC_CODE}unsupportedKeys`
+  },
+  declineBorowBookUnsupportedKeys: {
+    code: `${Errors.DeclineBorrowBook.UC_CODE}unsupportedKeys`
   }
 };
 
@@ -26,13 +29,13 @@ class RentalAbl {
     this.requestDao = DaoFactory.getDao("request");
   }
 
-  async confirmConfirmBorrowBook(awid, dtoIn) {
+  async confirmBorrowBook(awid, dtoIn) {
     //HDS 1.2, 1.3, A1, A2
     let validationResult = this.validator.validate("rentalConfirmBorrowBookDtoInType", dtoIn);
     let uuAppErrorMap = ValidationHelper.processValidationResult(
       dtoIn,
       validationResult,
-      WARNINGS.borowBookUnsupportedKeys.code,
+      WARNINGS.confirmBorowBookUnsupportedKeys.code,
       Errors.ConfirmBorrowBook.InvalidDtoIn
     );
     // HDS 2
@@ -123,6 +126,70 @@ class RentalAbl {
     //HDS 8
     dtoOut.uuAppErrorMap = uuAppErrorMap;
     return dtoOut;
+  }
+  async declineBorrowBook(awid, dtoIn) {
+    //HDS 1.2, 1.3, A1, A2
+    let validationResult = this.validator.validate("rentalDeclineBorrowBookDtoInType", dtoIn);
+    let uuAppErrorMap = ValidationHelper.processValidationResult(
+      dtoIn,
+      validationResult,
+      WARNINGS.decilneBorowBookUnsupportedKeys.code,
+      Errors.DeclineBorrowBook.InvalidDtoIn
+    );
+    // HDS 2
+    let request = await this.requestDao.getByCode(awid, dtoIn.requestCode);
+    if (!request) {
+      // A3
+      throw new Errors.DeclineBorrowBook.RequestDoesNotExist({ uuAppErrorMap }, { code: dtoIn.requestCode });
+    }
+    // HDS 2.2
+    let requestType = request.code.split("-");
+    if (requestType[0] !== "BORROW") {
+      // A4
+      throw new Errors.DeclineBorrowBook.IsNotBorrowRequest(
+        { uuAppErrorMap },
+        { code: request.code, expectType: "borrow" }
+      );
+    }
+
+    // HDS 3
+    try {
+      await this.requestDao.deleteByCode(awid, dtoIn.requestCode);
+    } catch (error) {
+      throw new Errors.DeclineBorrowBook.DeleteRequestFailedByDao({ uuAppErrorMap }, { cause: error });
+    }
+
+    // HDS 4
+    let transporter = nodemailer.createTransport({
+      service: "gmail",
+      auth: {
+        user: "uu.library.team11@gmail.com",
+        pass: "hesloprotest123"
+      },
+      tls: {
+        rejectUnauthorized: false
+      }
+    });
+
+    let mailOptions = {
+      from: "Knihovna",
+      to: request.customer.email,
+      subject: `${dtoIn.emailSubject}`,
+      text: `${dtoIn.emailText}`
+    };
+
+    transporter.sendMail(
+      mailOptions,
+      await function(error, info) {
+        if (error) {
+          uuAppErrorMap = { ...error };
+        } else {
+          console.log("Email sent: " + info.response);
+        }
+      }
+    );
+    //HDS 8
+    return { uuAppErrorMap };
   }
 
   addOneMonth(date) {

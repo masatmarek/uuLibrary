@@ -2,8 +2,11 @@
 const RentalAbl = require("../../abl/rental-abl.js");
 
 class RentalController {
-  confirmConfirmBorrowBook(ucEnv) {
-    return RentalAbl.confirmConfirmBorrowBook(ucEnv.getUri().getAwid(), ucEnv.getDtoIn());
+  confirmBorrowBook(ucEnv) {
+    return RentalAbl.confirmBorrowBook(ucEnv.getUri().getAwid(), ucEnv.getDtoIn());
+  }
+  declineBorrowBook(ucEnv) {
+    return RentalAbl.declineBorrowBook(ucEnv.getUri().getAwid(), ucEnv.getDtoIn());
   }
 }
 

@@ -56,9 +56,11 @@ class GenreAbl {
       Errors.List.InvalidDtoIn
     );
     // HDS 2
-    let dtoOut = await this.dao.list(awid, dtoIn.pageInfo);
+    let library = await this.libraryDao.getByAwid(awid);
 
     // HDS 3
+    let dtoOut = {};
+    dtoOut.itemList = library.genres;
     dtoOut.uuAppErrorMap = uuAppErrorMap;
     return dtoOut;
   }
@@ -109,16 +111,18 @@ class GenreAbl {
         throw new Errors.Create.DuplicateCode({ uuAppErrorMap }, { code: dtoIn.code });
       }
     });
-    library.genres.push(dtoIn);
     // HDS 3
+    library.genres.push(dtoIn);
+
+    // HDS 4
     try {
       library = await this.libraryDao.updateByAwid(library);
     } catch (e) {
       // A4
-      throw new Errors.Create.CreateByDaoFailed({ uuAppErrorMap }, { cause: e });
+      throw new Errors.Create.UpdateByDaoFailed({ uuAppErrorMap }, { cause: e });
     }
 
-    //HDS 4
+    //HDS 5
     let dtoOut = { ...library };
     dtoOut.uuAppErrorMap = uuAppErrorMap;
     return dtoOut;

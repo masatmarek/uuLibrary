@@ -67,7 +67,12 @@
         "type": "CMD"
       },
       "rental/confirmBorrowBook": {
-        "realization": "api/controllers/RentalController.confirmConfirmBorrowBook",
+        "realization": "api/controllers/RentalController.confirmBorrowBook",
+        "httpMethod": "POST",
+        "type": "CMD"
+      },
+      "rental/declineBorrowBook": {
+        "realization": "api/controllers/RentalController.declineBorrowBook",
         "httpMethod": "POST",
         "type": "CMD"
       },

@@ -8,12 +8,7 @@ const genreCreateDtoInType = shape({
 const genreDeleteDtoInType = shape({
   code: codeType().isRequired()
 });
-const genreListDtoInType = shape({
-  pageInfo: shape({
-    pageIndex: integer(),
-    pageSize: integer()
-  })
-});
+const genreListDtoInType = shape({});
 const genreGetDtoInType = shape({
   code: codeType().isRequired()
 });

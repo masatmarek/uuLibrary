@@ -6,3 +6,9 @@ const rentalConfirmBorrowBookDtoInType = shape({
   emailSubject: string().isRequired(),
   emailText: string().isRequired()
 });
+
+const rentalDecileBorrowBookDtoInType = shape({
+  requestCode: codeType().isRequired(),
+  emailSubject: string().isRequired(),
+  emailText: string().isRequired()
+});

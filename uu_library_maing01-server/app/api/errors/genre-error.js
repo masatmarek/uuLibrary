@@ -19,10 +19,10 @@ const Create = {
       this.message = "Code of genre must be unique.";
     }
   },
-  CreateByDaoFailed: class extends LibraryMainUseCaseError {
+  UpdateByDaoFailed: class extends LibraryMainUseCaseError {
     constructor() {
       super(...arguments);
-      this.code = `${Create.UC_CODE}createByDaoFailed`;
+      this.code = `${Create.UC_CODE}updateByDaoFailed`;
       this.message = "Create of genre failed.";
     }
   }

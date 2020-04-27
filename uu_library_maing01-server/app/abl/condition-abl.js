@@ -118,9 +118,11 @@ class ConditionAbl {
       Errors.List.InvalidDtoIn
     );
     // HDS 2
-    let dtoOut = await this.dao.list(awid, dtoIn.pageInfo);
+    let library = await this.libraryDao.getByAwid(awid);
 
     // HDS 3
+    let dtoOut = {};
+    dtoOut.itemList = library.conditions;
     dtoOut.uuAppErrorMap = uuAppErrorMap;
     return dtoOut;
   }
