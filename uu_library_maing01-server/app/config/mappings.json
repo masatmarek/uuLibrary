@@ -150,6 +150,11 @@
         "realization": "api/controllers/RequestController.requestList",
         "httpMethod": "GET",
         "type": "CMD"
+      },
+      "location/update": {
+        "realization": "api/controllers/LocationController.locationUpdate",
+        "httpMethod": "POST",
+        "type": "CMD"
       }
     }
   }

@@ -14,7 +14,13 @@ const locationListDtoInType = shape({
   })
 });
 
-const deleteDtoInType = shape({
+const locationDeleteDtoInType = shape({
   code: codeType().isRequired(),
   forceDelete: boolean()
+});
+
+const locationUpdateDtoInType = shape({
+  code: codeType().isRequired(),
+  name: string(),
+  capacity: integer()
 });

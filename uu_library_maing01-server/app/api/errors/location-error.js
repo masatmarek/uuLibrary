@@ -102,7 +102,54 @@ const Close = {
   UC_CODE: `${LOCATION_ERROR_PREFIX}close/`
 };
 
+const Update = {
+  UC_CODE: `${LOCATION_ERROR_PREFIX}update/`,
+  InvalidDtoIn: class extends LibraryMainUseCaseError {
+    constructor() {
+      super(...arguments);
+      this.code = `${Delete.UC_CODE}invalidDtoIn`;
+      this.message = "DtoIn is not valid.";
+    }
+  },
+  LocationDoesNotExist: class extends LibraryMainUseCaseError {
+    constructor() {
+      super(...arguments);
+      this.code = `${Delete.UC_CODE}locationDoesNotExist`;
+      this.message = "Location does not exist.";
+    }
+  },
+  LocationIsNotInProperState: class extends LibraryMainUseCaseError {
+    constructor() {
+      super(...arguments);
+      this.code = `${Delete.UC_CODE}locationIsNotInProperState`;
+      this.message = "Locationis not in proper state.";
+    }
+  },
+  LocationUpdateFailed: class extends LibraryMainUseCaseError {
+    constructor() {
+      super(...arguments);
+      this.code = `${Delete.UC_CODE}locationUpdateFailed`;
+      this.message = "Locationis update by dao failed.";
+    }
+  },
+  LibraryIsNotInProperState: class extends LibraryMainUseCaseError {
+    constructor() {
+      super(...arguments);
+      this.code = `${Create.UC_CODE}libraryIsNotInProperState`;
+      this.message = "Library is not in proper state.";
+    }
+  },
+  LibraryDoesNotExist: class extends LibraryMainUseCaseError {
+    constructor() {
+      super(...arguments);
+      this.code = `${Create.UC_CODE}libraryDoesNotExist`;
+      this.message = "Library does not exist.";
+    }
+  }
+};
+
 module.exports = {
+  Update,
   Close,
   Reactivate,
   Suspend,

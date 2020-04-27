@@ -65,7 +65,6 @@ const Spa = UU5.Common.VisualComponent.create({
     } else if (this.isAuthenticated()) {
       child = <SpaAuthenticated {...this.getMainPropsToPass()} identity={this.getIdentity()} />;
     } else if (this.isNotAuthenticated()) {
-      // TODO Fill in the productInfo.baseUri properly (e.g. "https://uuos9.plus4u.net/uu-bookkitg01-main/00000-111111111111/").
       child = <SpaNotAuthenticated {...this.getMainPropsToPass()} productInfo={{ baseUri: "" }} />;
     } else {
       child = <Plus4U5.App.SpaLoading {...this.getMainPropsToPass()} content="uuLibrary" />;

@@ -12,21 +12,78 @@ const WARNINGS = {
   listUnsupportedKeys: {
     code: `${Errors.List.UC_CODE}unsupportedKeys`
   },
+  updateUnsupportedKeys: {
+    code: `${Errors.Update.UC_CODE}unsupportedKeys`
+  },
   deleteUnsupportedKeys: {
     code: `${Errors.Delete.UC_CODE}unsupportedKeys`
   }
 };
-const STATES = {
-  active: "active",
-  suspend: "suspend",
-  closed: "closed"
-};
+
 class LocationAbl {
   constructor() {
     this.validator = Validator.load();
     this.dao = DaoFactory.getDao("location");
     this.bookDao = DaoFactory.getDao("book");
     this.libraryDao = DaoFactory.getDao("libraryMain");
+  }
+
+  async update(awid, dtoIn) {
+    // HDS 1
+    let validationResult = this.validator.validate("locationUpdateDtoInType", dtoIn);
+    // A1, A2
+    let uuAppErrorMap = ValidationHelper.processValidationResult(
+      dtoIn,
+      validationResult,
+      WARNINGS.updateUnsupportedKeys.code,
+      Errors.Update.InvalidDtoIn
+    );
+    //HDS 2
+    let library = await this.libraryDao.getByAwid(awid);
+    // HDS 2.1
+    if (!library) {
+      // A3
+      throw new Errors.Update.LibraryDoesNotExist({ uuAppErrorMap }, { awid });
+    }
+    // HDS 2.2
+    if (library.state !== Cfg.library.states.active) {
+      // A4
+      throw new Errors.Update.LibraryIsNotInProperState(
+        { uuAppErrorMap },
+        { state: library.state, expectedState: Cfg.library.states.active }
+      );
+    }
+    // HDS 3
+    let location = await this.dao.getByCode(awid, dtoIn.code);
+    if (!location) {
+      // A5
+      throw new Errors.Update.LocationDoesNotExist({ uuAppErrorMap }, { location: dtoIn.code });
+    }
+    if (location.state === Cfg.location.states.closed) {
+      // A6
+      throw new Errors.Update.LocationIsNotInProperState(
+        { uuAppErrorMap },
+        {
+          location: dtoIn.code,
+          state: location.state,
+          expectedStates: [Cfg.location.states.active, Cfg.location.states.suspend]
+        }
+      );
+    }
+    // HDS 4
+    dtoIn.awid = awid;
+
+    //HDS 5
+    let dtoOut;
+    try {
+      dtoOut = await this.dao.updateByCode(dtoIn);
+    } catch (error) {
+      throw new Errors.Update.LocationUpdateFailed({ uuAppErrorMap }, { cause: error });
+    }
+
+    // HDS 6
+    dtoOut.uuAppErrorMap = uuAppErrorMap;
+    return dtoOut;
   }
 
   async close(awid, dtoIn) {}
@@ -101,7 +158,7 @@ class LocationAbl {
       }
     }
 
-    //HDS4
+    //HDS 4
     let dtoOut = { ...location };
     dtoOut.uuAppErrorMap = uuAppErrorMap;
     return dtoOut;
@@ -111,7 +168,7 @@ class LocationAbl {
   }
   async delete(awid, dtoIn) {
     // HDS 1
-    let validationResult = this.validator.validate("deleteDtoInType", dtoIn);
+    let validationResult = this.validator.validate("locationDeleteDtoInType", dtoIn);
     // A1, A2
     let uuAppErrorMap = ValidationHelper.processValidationResult(
       dtoIn,
