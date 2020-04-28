@@ -39,6 +39,14 @@ let Calls = {
     let commandUri = Calls.getCommandUri("location/delete");
     return Calls.promisedCall("post", commandUri, dtoIn);
   },
+  locationCreate(dtoIn) {
+    let commandUri = Calls.getCommandUri("location/create");
+    return Calls.promisedCall("post", commandUri, dtoIn);
+  },
+  locationUpdate(dtoIn){
+    let commandUri = Calls.getCommandUri("location/update");
+    return Calls.promisedCall("post", commandUri, dtoIn);
+  },
   bookList(dtoIn) {
     let commandUri = Calls.getCommandUri("book/list");
     return Calls.promisedCall("get", commandUri, dtoIn);

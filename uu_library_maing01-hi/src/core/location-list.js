@@ -45,6 +45,9 @@ export const LocationList = UU5.Common.VisualComponent.create({
         &:hover{
           text-decoration: underline;
         }
+    `,
+      formControls: () => Config.Css.css`
+        margin-top: 10px;
     `
     }
   },
@@ -108,6 +111,27 @@ export const LocationList = UU5.Common.VisualComponent.create({
       });
     });
   },
+  _handleCreate({ values, component }) {
+    return new Promise((resolve, reject) => {
+      Calls.locationCreate({
+        data: values,
+        done: dtoOut => {
+          ModalHelper.close();
+          resolve(dtoOut);
+          this._listDataManager.current.load();
+        },
+        fail: failDtoOut => {
+          console.log(failDtoOut.code);
+
+          UU5.Environment.getPage()
+            .getAlertBus()
+            .setAlert({ colorSchema: "danger", content: <UU5.Bricks.Lsi lsi={Lsi[failDtoOut.code]} /> });
+          ModalHelper.close();
+          reject(failDtoOut);
+        }
+      });
+    });
+  },
   _handleGetpermList() {
     let data = {
       uuIdentityList: UU5.Environment.getSession().getIdentity()
@@ -129,32 +153,15 @@ export const LocationList = UU5.Common.VisualComponent.create({
       })
     );
   },
-  _handleUpdate(data) {
+  _handleUpdate({ values, component }, code) {
+    values.code = code;
     return new Promise((resolve, reject) => {
       Calls.locationUpdate({
-        data,
+        data: values,
         done: dtoOut => {
           ModalHelper.close();
           resolve(dtoOut);
           this._listDataManager.current.load();
-        },
-        fail: failDtoOut => {
-          UU5.Environment.getPage()
-            .getAlertBus()
-            .setAlert({ colorSchema: "danger", content: failDtoOut.message });
-          ModalHelper.close();
-          reject(failDtoOut);
-        }
-      });
-    });
-  },
-  _handleCreate(data) {
-    return new Promise((resolve, reject) => {
-      Calls.locationCreate({
-        data,
-        done: dtoOut => {
-          ModalHelper.close();
-          resolve(dtoOut);
         },
         fail: failDtoOut => {
           UU5.Environment.getPage()
@@ -223,21 +230,81 @@ export const LocationList = UU5.Common.VisualComponent.create({
     });
   },
   _openCreateModal() {
-    ModalHelper.open(
-      <UU5.Bricks.Lsi lsi={Lsi.createFeeConfiguration} />,
-      <Form handleOnSave={this._listDataManager.current.create} update={false} id={UU5.Common.Tools.generateUUID(6)} />
-    );
+    let classNames = this.getClassName();
+    let modal = UU5.Environment.getPage().getModal();
+    modal.open({
+      header: <UU5.Bricks.Lsi lsi={Lsi.createLocation} />,
+      content: (
+        <UU5.Forms.Form onSave={formRef => this._handleCreate(formRef)}>
+          <UU5.Forms.Text
+            name="code"
+            labelColWidth={{ xs: 12 }}
+            inputColWidth={{ xs: 12 }}
+            label={<UU5.Bricks.Lsi lsi={Lsi.codeLabel} />}
+            required
+            requiredMessage={<UU5.Bricks.Lsi lsi={Lsi.required} />}
+          />
+          <UU5.Forms.Text
+            name="name"
+            labelColWidth={{ xs: 12 }}
+            inputColWidth={{ xs: 12 }}
+            label={<UU5.Bricks.Lsi lsi={Lsi.nameLabel} />}
+            required
+            requiredMessage={<UU5.Bricks.Lsi lsi={Lsi.required} />}
+          />
+          <UU5.Forms.Number
+            name="capacity"
+            labelColWidth={{ xs: 12 }}
+            inputColWidth={{ xs: 12 }}
+            min={0}
+            label={<UU5.Bricks.Lsi lsi={Lsi.capacityLabel} />}
+            required
+            requiredMessage={<UU5.Bricks.Lsi lsi={Lsi.required} />}
+          />
+          <UU5.Forms.ContextControls
+            className={classNames.formControls()}
+            buttonSubmitProps={{ content: <UU5.Bricks.Lsi lsi={Lsi.createButton} />, colorSchema: "blue" }}
+            buttonCancelProps={{ content: <UU5.Bricks.Lsi lsi={Lsi.cancel} /> }}
+          />
+        </UU5.Forms.Form>
+      )
+    });
   },
+
   _openUpdateModal(data) {
-    ModalHelper.open(
-      <UU5.Bricks.Lsi lsi={Lsi.createFeeConfiguration} />,
-      <Form
-        handleOnSave={this._listDataManager.current.update}
-        data={data}
-        update={true}
-        id={UU5.Common.Tools.generateUUID(6)}
-      />
-    );
+    let classNames = this.getClassName();
+    let modal = UU5.Environment.getPage().getModal();
+    modal.open({
+      header: <UU5.Bricks.Lsi lsi={Lsi.createLocation} />,
+      content: (
+        <UU5.Forms.Form onSave={formRef => this._handleUpdate(formRef, data.code)}>
+          <UU5.Forms.Text
+            name="name"
+            labelColWidth={{ xs: 12 }}
+            inputColWidth={{ xs: 12 }}
+            label={<UU5.Bricks.Lsi lsi={Lsi.nameLabel} />}
+            required
+            value={data.name}
+            requiredMessage={<UU5.Bricks.Lsi lsi={Lsi.required} />}
+          />
+          <UU5.Forms.Number
+            name="capacity"
+            labelColWidth={{ xs: 12 }}
+            inputColWidth={{ xs: 12 }}
+            min={0}
+            label={<UU5.Bricks.Lsi lsi={Lsi.capacityLabel} />}
+            required
+            value={data.capacity}
+            requiredMessage={<UU5.Bricks.Lsi lsi={Lsi.required} />}
+          />
+          <UU5.Forms.ContextControls
+            className={classNames.formControls()}
+            buttonSubmitProps={{ content: <UU5.Bricks.Lsi lsi={Lsi.updateButton} />, colorSchema: "blue" }}
+            buttonCancelProps={{ content: <UU5.Bricks.Lsi lsi={Lsi.cancel} /> }}
+          />
+        </UU5.Forms.Form>
+      )
+    });
   },
   _getLocationInfoLine(name, value) {
     let classNames = this.getClassName();
@@ -271,6 +338,7 @@ export const LocationList = UU5.Common.VisualComponent.create({
         level={4}
         content={
           <UU5.Bricks.Div key={UU5.Common.Tools.generateUUID(4)}>
+            {this._getLocationInfoLine("codeLabel", tileInfo.code)}
             {this._getLocationInfoLine("state", <UU5.Bricks.Lsi lsi={Lsi[tileInfo.state]} />)}
             {this._getLocationInfoLine("capacity", tileInfo.capacity)}
           </UU5.Bricks.Div>
@@ -302,7 +370,7 @@ export const LocationList = UU5.Common.VisualComponent.create({
                   />
                   <UU5.Tiles.List
                     tile={this._renderTile}
-                    tileHeight={120}
+                    tileHeight={140}
                     rowSpacing={8}
                     tileSpacing={8}
                     tileElevationHover={3}

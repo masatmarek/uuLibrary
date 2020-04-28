@@ -11,13 +11,25 @@ const Lsi = {
   borrowButton: { cs: "Půjčit", en: "Borrow" },
   returnButton: { cs: "Vrátit", en: "Return" },
   deleteLocation: { cs: "Smazat oddělení", en: "Delete location" },
+  createLocation: { cs: "Vytvořit oddělení", en: "Create location" },
   forceDelete: { cs: "Smazat i knihy z lokace", en: "Delete books from location" },
   areYouSureToDelete: { cs: "Jste si jistý?", en: "Are your sure?" },
   cancel: { cs: "Zrušit", en: "Cancel" },
+  required: {
+    cs: "Toto pole je povinné.",
+    en: "This input is required."
+  },
+  nameLabel: { cs: "Název", en: "Name" },
+  codeLabel: { cs: "Kód", en: "Code" },
+  capacityLabel: { cs: "Kapacita", en: "Capacity" },
   //failed codes
   "uu-library-main/location/delete/locationContainBooks": {
     cs: "Lokace obsahuje nějaké knihy, pokud chcete smazat lokaci i s knihami zaškrtněte tuto možnost ve formuláři,",
     en: "Location contains some books. If you want to delte them. Then choose this option in form."
+  },
+  "uu-library-main/location/delete/locationDoesNotExist":{
+    cs: "Lokace neexisutje",
+    en: "Location does not exist."
   }
 };
 
