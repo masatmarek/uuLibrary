@@ -43,7 +43,7 @@ let Calls = {
     let commandUri = Calls.getCommandUri("location/create");
     return Calls.promisedCall("post", commandUri, dtoIn);
   },
-  locationUpdate(dtoIn){
+  locationUpdate(dtoIn) {
     let commandUri = Calls.getCommandUri("location/update");
     return Calls.promisedCall("post", commandUri, dtoIn);
   },
@@ -63,6 +63,15 @@ let Calls = {
     let commandUri = Calls.getCommandUri("request/create");
     Calls.promisedCall("post", commandUri, dtoIn);
   },
+  rentalConfirmBorrowBook(dtoIn) {
+    let commandUri = Calls.getCommandUri("rental/confirmBorrowBook");
+    Calls.promisedCall("post", commandUri, dtoIn);
+  },
+  rentalDeclineBorrowBook(dtoIn) {
+    let commandUri = Calls.getCommandUri("rental/declineBorrowBook");
+    Calls.promisedCall("post", commandUri, dtoIn);
+  },
+
   conditionGet(dtoIn) {
     let commandUri = Calls.getCommandUri("condition/get");
     Calls.promisedCall("get", commandUri, dtoIn);

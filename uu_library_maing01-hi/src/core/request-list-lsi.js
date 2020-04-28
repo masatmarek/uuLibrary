@@ -3,16 +3,16 @@ const Lsi = {
   capacity: { cs: "Kapacita", en: "Capacity" },
   confirmButton: { cs: "Potvrdit", en: "Confirm" },
   declineButton: { cs: "Zamítnout", en: "Decline" },
-  createButton: { cs: "Vytvořit", en: "Create" },
-  deleteLocation: { cs: "Smazat oddělení", en: "Delete location" },
-  forceDelete: { cs: "Smazat i knihy z lokace", en: "Delete books from location" },
-  areYouSureToDelete: { cs: "Jste si jistý?", en: "Are your sure?" },
+  confirm: { cs: "Potrvdit žádost", en: "Confirm request" },
+  decline: { cs: "Zamítnout žádost", en: "Decline request" },
   cancel: { cs: "Zrušit", en: "Cancel" },
+  from: { cs: "od", en: "from" },
   requestList: { cs: "Seznam žádostí", en: "List of request" },
   request: { cs: "Žádost", en: "Request" },
   bookCode: { cs: "Kód knížky", en: "Code of book" },
-  customer: { cs: "Zákazník", en: "Customer" }
-
+  customer: { cs: "Zákazník", en: "Customer" },
+  emailSubjectLabel: { cs: "Předmět emailu", en: "Email subject" },
+  emailTextLabel: { cs: "Text emailu", en: "Email text" }
   //failed codes
 };
 

@@ -133,7 +133,7 @@ class RentalAbl {
     let uuAppErrorMap = ValidationHelper.processValidationResult(
       dtoIn,
       validationResult,
-      WARNINGS.decilneBorowBookUnsupportedKeys.code,
+      WARNINGS.declineBorowBookUnsupportedKeys.code,
       Errors.DeclineBorrowBook.InvalidDtoIn
     );
     // HDS 2

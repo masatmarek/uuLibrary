@@ -95,20 +95,44 @@ export const BookTile = UU5.Common.VisualComponent.create({
   //@@viewOff:overriding
 
   //@@viewOn:private
-  _handleBorrowBook(book) {
+  _openRequestCreateModal(data) {
     let date = new Date();
-    let data = {
-      bookCode: book.code,
-      type: "borrow",
-      from: `${date.getFullYear()}-${date.getMonth()}-${date.getDay()}`
-    };
+    let today = `${date.getFullYear()}-${
+      date.getMonth() + 1 < 10 ? "0" + (date.getMonth() + 1) : date.getMonth() + 1
+    }-${date.getDate()}`;
+    ModalHelper.open(
+      <UU5.Bricks.Lsi lsi={Lsi.deleteBook} />,
+      <UU5.Forms.Form onSave={formRef => this._handleCreateRequest(formRef, data.code)}>
+        <UU5.Forms.DatePicker
+          openToContent
+          name="from"
+          value={today}
+          labelColWidth={{ xs: 12 }}
+          inputColWidth={{ xs: 12 }}
+          label={<UU5.Bricks.Lsi lsi={Lsi.fromLabel} />}
+          dateFrom={today}
+          required
+          requiredMessage={<UU5.Bricks.Lsi lsi={Lsi.required} />}
+        />
+        <UU5.Forms.ContextControls
+          buttonSubmitProps={{ content: <UU5.Bricks.Lsi lsi={Lsi.requestLabel} />, colorSchema: "blue" }}
+          buttonCancelProps={{ content: <UU5.Bricks.Lsi lsi={Lsi.cancel} /> }}
+        />
+      </UU5.Forms.Form>
+    );
+  },
+  _handleCreateRequest({ values, component }, code) {
+    values.bookCode = code;
+    values.type = "borrow";
+    values.from = `${values.from.getFullYear()}-${values.from.getMonth() + 1}-${values.from.getDate()}`;
+
     let classNames = this.getClassName();
     return new Promise((done, fail) =>
       Calls.requestCreate({
-        data,
+        data: values,
         done: data => {
           done(data);
-          this._listDataManager.current.load();
+          ModalHelper.close();
           UU5.Environment.getPage()
             .getAlertBus()
             .setAlert({
@@ -127,7 +151,13 @@ export const BookTile = UU5.Common.VisualComponent.create({
               )
             });
         },
-        fail
+        fail: failDtoOut => {
+          UU5.Environment.getPage()
+            .getAlertBus()
+            .setAlert({ colorSchema: "danger", content: failDtoOut.message });
+          ModalHelper.close();
+          fail(failDtoOut);
+        }
       })
     );
   },
@@ -188,7 +218,16 @@ export const BookTile = UU5.Common.VisualComponent.create({
       if (tileData.state === "available") {
         actions.push({
           content: <UU5.Bricks.Lsi lsi={Lsi.borrowButton} />,
-          onClick: () => this._handleBorrowBook(tileData),
+          onClick: () => this._openRequestCreateModal(tileData),
+          bgStyle: "filled",
+          colorSchema: "success",
+          priority: 1
+        });
+      }
+      if (tileData.state === "reserved") {
+        actions.push({
+          content: <UU5.Bricks.Lsi lsi={Lsi.borrowButton} />,
+          disabled: true,
           bgStyle: "filled",
           colorSchema: "success",
           priority: 1
@@ -200,7 +239,7 @@ export const BookTile = UU5.Common.VisualComponent.create({
         return [
           {
             content: <UU5.Bricks.Lsi lsi={Lsi.borrowButton} />,
-            onClick: () => this._handleBorrowBook(tileData),
+            onClick: () => this._openRequestCreateModal(tileData),
             bgStyle: "filled",
             colorSchema: "success",
             priority: 1
@@ -291,7 +330,7 @@ export const BookTile = UU5.Common.VisualComponent.create({
       </UU5.Forms.Form>
     );
 
-    this._deleteModal.current.open(data);
+    //this._deleteModal.current.open(data);
   },
   _openUpdateModal(data) {
     console.log(this._updateModal);

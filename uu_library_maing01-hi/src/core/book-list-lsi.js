@@ -4,6 +4,7 @@ const Lsi = {
   state: { cs: "Stav", en: "State" },
   available: { cs: "Dostupná", en: "Available" },
   borrowed: { cs: "Zapůjčená", en: "Borrowed" },
+  reserved: { cs: "Rezervovaná", en: "Reserved" },
   location: { cs: "Oddělení", en: "Location" },
   condition: { cs: "Kondice", en: "Condition" },
   genre: { cs: "Žánr", en: "Genre" },
@@ -23,16 +24,28 @@ const Lsi = {
   book: { cs: "knihy", en: "" },
   successBorrowSuffix: { cs: "problěhla úspěšně.", en: "" },
   successDelete: { cs: "Smazaní proběhlo úspěšně", en: "Delete of book was successfull" },
+  required: {
+    cs: "Toto pole je povinné.",
+    en: "This input is required."
+  },
+  fromLabel: {
+    cs: "Od kdy si chcete knihu půjčit?",
+    en: "Since when do you want borrow a book?"
+  },
+  requestLabel: {
+    cs: "Zažádat",
+    en: "Create request"
+  },
   successRelocate: location => {
     return {
-      cs: `Přemístění do lokace ${location} proběhlo úspěšné.`,
-      en: `Relocate of book to location ${location} was successfull.`
+      cs: `<uu5string/>Přemístění do lokace <strong>${location}</strong> proběhlo úspěšné.`,
+      en: `<uu5string/>Relocate of book to location <strong>${location}</strong> was successfull.`
     };
   },
   areYouSure(name) {
     return {
-      cs: `Jste si jistý že chcete smazat knihu: '${name}'?`,
-      en: `Are you sure that you want to delete book: '${name}'?`
+      cs: `<uu5string/>Jste si jistý že chcete smazat knihu: '<strong>${name}</strong>'?`,
+      en: `<uu5string/>Are you sure that you want to delete book: '<strong>${name}</strong>'?`
     };
   }
 };

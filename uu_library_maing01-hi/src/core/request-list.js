@@ -45,7 +45,16 @@ export const RequestList = UU5.Common.VisualComponent.create({
         &:hover{
           text-decoration: underline;
         }
-    `
+    `,
+      richTextLabel: () =>
+        Config.Css.css`
+        padding-bottom: 6px;
+      ` + " uu5-forms-label",
+      richTextLabelDiv: () => Config.Css.css`
+     padding: 0 0 6px 0;
+     margin-top: 24px;
+     `,
+      editor: () => Config.Css.css` margin-top: 0`
     }
   },
   //@@viewOff:statics
@@ -60,6 +69,7 @@ export const RequestList = UU5.Common.VisualComponent.create({
   getInitialState() {
     this._listDataManager = UU5.Common.Reference.create();
     this._profileList = [];
+    this._descriptionEditor = UU5.Common.Reference.create();
     return {};
   },
   //@@viewOff:reactLifeCycle
@@ -86,12 +96,10 @@ export const RequestList = UU5.Common.VisualComponent.create({
       })
     );
   },
-
-  _handleDelete({ values, component }, code) {
-    console.log(values, code);
-    values.code = code;
+  _handleConfirmBorrow({ values, component }, code) {
+    values.requestCode = code;
     return new Promise((resolve, reject) => {
-      Calls.locationDelete({
+      Calls.rentalConfirmBorrowBook({
         data: values,
         done: dtoOut => {
           ModalHelper.close();
@@ -108,31 +116,11 @@ export const RequestList = UU5.Common.VisualComponent.create({
       });
     });
   },
-  _handleGetpermList() {
-    let data = {
-      uuIdentityList: UU5.Environment.getSession().getIdentity()
-        ? UU5.Environment.getSession().getIdentity().uuIdentity
-        : "0-0"
-    };
-    return new Promise((done, fail) =>
-      Calls.syslistPermissions({
-        data,
-        done: data => {
-          for (let perm of data.itemList) {
-            this._profileList.push(perm.profileCode);
-          }
-          done(data);
-        },
-        fail: failDtoOut => {
-          console.log(failDtoOut);
-        }
-      })
-    );
-  },
-  _handleUpdate(data) {
+  _handleDeclineBorrow({ values, component }, code) {
+    values.requestCode = code;
     return new Promise((resolve, reject) => {
-      Calls.locationUpdate({
-        data,
+      Calls.rentalDeclineBorrowBook({
+        data: values,
         done: dtoOut => {
           ModalHelper.close();
           resolve(dtoOut);
@@ -141,25 +129,7 @@ export const RequestList = UU5.Common.VisualComponent.create({
         fail: failDtoOut => {
           UU5.Environment.getPage()
             .getAlertBus()
-            .setAlert({ colorSchema: "success", content: failDtoOut.message });
-          ModalHelper.close();
-          reject(failDtoOut);
-        }
-      });
-    });
-  },
-  _handleCreate(data) {
-    return new Promise((resolve, reject) => {
-      Calls.locationCreate({
-        data,
-        done: dtoOut => {
-          ModalHelper.close();
-          resolve(dtoOut);
-        },
-        fail: failDtoOut => {
-          UU5.Environment.getPage()
-            .getAlertBus()
-            .setAlert({ colorSchema: "danger", content: failDtoOut.message });
+            .setAlert({ colorSchema: "danger", content: <UU5.Bricks.Lsi lsi={Lsi[failDtoOut.code]} /> });
           ModalHelper.close();
           reject(failDtoOut);
         }
@@ -167,12 +137,18 @@ export const RequestList = UU5.Common.VisualComponent.create({
     });
   },
   _getTileActionList(tileData) {
-    if (this._profileList.includes("Managers")) {
+    let permissions = JSON.parse(localStorage.getItem("permission"));
+
+    if (
+      permissions.includes["Administrators"] ||
+      permissions.includes("Managers") ||
+      permissions.includes("Librarirans")
+    ) {
       return [
         {
           content: <UU5.Bricks.Lsi lsi={Lsi.confirmButton} />,
           onClick: () => {
-            this._openUpdateModal(tileData);
+            this._openHandleModal(tileData, "confirm");
           },
           bgStyle: "outline",
           colorSchema: "success",
@@ -181,7 +157,7 @@ export const RequestList = UU5.Common.VisualComponent.create({
         {
           content: <UU5.Bricks.Lsi lsi={Lsi.declineButton} />,
           onClick: () => {
-            this._openDeleteConfirmModal(tileData);
+            this._openHandleModal(tileData, "decline");
           },
           bgStyle: "outline",
           colorSchema: "danger",
@@ -192,31 +168,44 @@ export const RequestList = UU5.Common.VisualComponent.create({
       return [];
     }
   },
-  _getActionBarActions() {
-    if (this._profileList.includes("Managers")) {
-      return [
-        {
-          content: "Create",
-          onClick: this._openCreateModal,
-          icon: "mdi-plus-circle",
-          active: true
-        }
-      ];
-    }
-  },
   _setRoute(code) {
     UU5.Environment.setRoute("location", { code });
   },
-  _openDeleteConfirmModal(data) {
+  _openHandleModal(data, type) {
     let classNames = this.getClassName();
     let modal = UU5.Environment.getPage().getModal();
     modal.open({
-      header: <UU5.Bricks.Lsi lsi={Lsi.deleteLocation} />,
+      header: <UU5.Bricks.Lsi lsi={type === "confirm" ? Lsi.confirm : Lsi.decline} />,
       content: (
-        <UU5.Forms.Form onSave={formRef => this._handleDelete(formRef, data.code)}>
-          <UU5.Forms.Checkbox label={<UU5.Bricks.Lsi lsi={Lsi.forceDelete} />} name="forceDelete" />
+        <UU5.Forms.Form
+          // eslint-disable-next-line react/jsx-no-bind
+          onSave={formRef => {
+            type === "confirm"
+              ? this._handleConfirmBorrow(formRef, data.code)
+              : this._handleDeclineBorrow(formRef, data.code);
+          }}
+        >
+          <UU5.Forms.Text
+            name="emailSubject"
+            labelColWidth={{ xs: 12 }}
+            inputColWidth={{ xs: 12 }}
+            label={<UU5.Bricks.Lsi lsi={Lsi.emailSubjectLabel} />}
+            required
+            requiredMessage={<UU5.Bricks.Lsi lsi={Lsi.required} />}
+          />
+          <UU5.Forms.TextArea
+            name="emailText"
+            labelColWidth={{ xs: 12 }}
+            inputColWidth={{ xs: 12 }}
+            label={<UU5.Bricks.Lsi lsi={Lsi.emailTextLabel} />}
+            required
+            requiredMessage={<UU5.Bricks.Lsi lsi={Lsi.required} />}
+          />
           <UU5.Forms.ContextControls
-            buttonSubmitProps={{ content: <UU5.Bricks.Lsi lsi={Lsi.deleteButton} />, colorSchema: "danger" }}
+            buttonSubmitProps={{
+              content: <UU5.Bricks.Lsi lsi={type === "confirm" ? Lsi.confirmButton : Lsi.declineButton} />,
+              colorSchema: type === "confirm" ? "success" : "danger"
+            }}
             buttonCancelProps={{ content: <UU5.Bricks.Lsi lsi={Lsi.cancel} /> }}
           />
         </UU5.Forms.Form>
@@ -265,6 +254,7 @@ export const RequestList = UU5.Common.VisualComponent.create({
           <UU5.Bricks.Div key={UU5.Common.Tools.generateUUID(4)}>
             {this._getLocationInfoLine("code", tileInfo.code)}
             {this._getLocationInfoLine("bookCode", tileInfo.bookCode)}
+            {this._getLocationInfoLine("from", tileInfo.from)}
             {this._getLocationInfoLine("customer", tileInfo.customer.name)}
           </UU5.Bricks.Div>
         }
@@ -291,14 +281,13 @@ export const RequestList = UU5.Common.VisualComponent.create({
                     collapsible={false}
                     title={<UU5.Bricks.Lsi lsi={Lsi.requestList} />}
                     searchable={true}
-                    actions={this._getActionBarActions()}
                   />
                   <UU5.Tiles.List
                     tile={this._renderTile}
                     tileBorder
                     tileStyle={{ borderRadius: 4 }}
                     tileMinWidth={330}
-                    tileHeight={150}
+                    tileHeight={170}
                     rowSpacing={8}
                     tileSpacing={8}
                     tileJustify="space-between"
@@ -318,8 +307,6 @@ export const RequestList = UU5.Common.VisualComponent.create({
 
   //@@viewOn:render
   render() {
-    this._handleGetpermList();
-
     return <UU5.Bricks.Div {...this.getMainPropsToPass()}>{this._getLocations()}</UU5.Bricks.Div>;
   }
   //@@viewOff:render
