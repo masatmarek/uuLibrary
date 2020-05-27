@@ -34,6 +34,7 @@ class BookAbl {
     this.dao = DaoFactory.getDao("book");
     this.locationDao = DaoFactory.getDao("location");
     this.libraryDao = DaoFactory.getDao("libraryMain");
+    this.authorDao = DaoFactory.getDao("author");
   }
 
   async delete(awid, dtoIn) {
@@ -259,11 +260,22 @@ class BookAbl {
       throw new Errors.Create.ConditionDoesNotExist({ uuAppErrorMap });
     }
     // HDS 4
+    let authors = await this.authorDao.list(awid);
+    let storedAuthorCodes = [];
+    authors.itemList.forEach(author => {
+      storedAuthorCodes.push(author.code);
+    });
+    let authorsValid = dtoIn.authorCodes.every(val => storedAuthorCodes.includes(val));
+    if (!authorsValid) {
+      // A8
+      throw new Errors.Create.AuthorsDoesNotExist({ uuAppErrorMap });
+    }
+    // HDS 5
     dtoIn.code = this.createCode(dtoIn.name);
     dtoIn.awid = awid;
     dtoIn.state = STATES.available;
 
-    // HDS 5
+    // HDS 6
     let book;
     try {
       book = await this.dao.create(dtoIn);
@@ -277,7 +289,7 @@ class BookAbl {
       }
     }
 
-    // HDS 6
+    // HDS 7
     let dtoOut = { ...book };
     dtoOut.uuAppErrorMap = uuAppErrorMap;
     return dtoOut;

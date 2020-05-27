@@ -6,7 +6,7 @@ const bookCreateDtoInType = shape({
   genreCodes: array().isRequired(),
   conditionCode: codeType().isRequired(),
   name: string().isRequired(),
-  author: string().isRequired(),
+  authorCodes: array().isRequired(),
   details: shape({
     publisher: string(),
     dateOfPublication: string(),
@@ -16,9 +16,15 @@ const bookCreateDtoInType = shape({
   })
 });
 const bookUpdateDtoInType = shape({
-  code: codeType().isRequired(),
-  name: string(),
-  author: string()
+  genreCodes: array().isRequired(),
+  conditionCode: codeType().isRequired(),
+  name: string().isRequired(),
+  author: string().isRequired(),
+  publisher: string(),
+  dateOfPublication: string(),
+  language: string(),
+  custody: string(),
+  numberOfPages: string()
 });
 const bookListDtoInType = shape({
   author: string(),

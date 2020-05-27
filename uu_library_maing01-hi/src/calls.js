@@ -27,6 +27,10 @@ let Calls = {
     let commandUri = Calls.getCommandUri("sys/listPermissions");
     Calls.promisedCall("get", commandUri, dtoIn);
   },
+  authorList(dtoIn) {
+    let commandUri = Calls.getCommandUri("author/list");
+    Calls.promisedCall("get", commandUri, dtoIn);
+  },
   locationList(dtoIn) {
     let commandUri = Calls.getCommandUri("location/list");
     return Calls.promisedCall("get", commandUri, dtoIn);

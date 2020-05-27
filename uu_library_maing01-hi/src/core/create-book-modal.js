@@ -113,6 +113,12 @@ export const CreateBookModal = UU5.Common.VisualComponent.create({
   },
   _getForm() {
     let library = JSON.parse(localStorage.getItem("library"));
+    let authors = JSON.parse(localStorage.getItem("authors"));
+    let availableTags = [];
+    authors.forEach(author => {
+      availableTags.push({ value: author.code, content: author.name });
+    });
+    console.log(availableTags);
 
     return (
       <UU5.Forms.ContextForm
@@ -155,7 +161,7 @@ export const CreateBookModal = UU5.Common.VisualComponent.create({
         <UU5.Forms.SwitchSelector
           name="custody"
           items={[
-            { content: <UU5.Bricks.Lsi lsi={{ cs: "Měká", en: "Paperback" }} />, value: "paperback" },
+            { content: <UU5.Bricks.Lsi lsi={{ cs: "Měkká", en: "Paperback" }} />, value: "paperback" },
             { content: <UU5.Bricks.Lsi lsi={{ cs: "Tvrdá", en: "Hardback" }} />, value: "hardback" }
           ]}
           label={<UU5.Bricks.Lsi lsi={Lsi.custody} />}
@@ -168,13 +174,19 @@ export const CreateBookModal = UU5.Common.VisualComponent.create({
           label={<UU5.Bricks.Lsi lsi={Lsi.numberOfPages} />}
         />
 
-        <UU5.Forms.Text
-          name="author"
-          labelColWidth={{ xs: 12 }}
-          inputColWidth={{ xs: 12 }}
-          label={<UU5.Bricks.Lsi lsi={Lsi.authorLabel} />}
-          required
-          requiredMessage={<UU5.Bricks.Lsi lsi={Lsi.required} />}
+        <UU5.Forms.TagSelect
+          label="Label"
+          feedback="initial"
+          name="authorCodes"
+          size="m"
+          disabled={false}
+          readOnly={false}
+          borderRadius={2}
+          allowCustomTags={false}
+          availableTags={availableTags}
+          multiple
+          onChange={false}
+          onValidate={false}
         />
         <UU5.Bricks.Row>
           <UU5.Bricks.Column colWidth={{ xs: 12, s: 6 }}>

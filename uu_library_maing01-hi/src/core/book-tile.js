@@ -367,6 +367,20 @@ export const BookTile = UU5.Common.VisualComponent.create({
 
     return this._getBookInfoLine("genre", result);
   },
+  _getAuthors(authorCodes) {
+    let classNames = this.getClassName();
+    let authors = JSON.parse(localStorage.getItem("authors"));
+    let storedAuthorCodes = {};
+    authors.forEach(author => {
+      storedAuthorCodes[author.code] = author.name;
+    });
+    let result = [];
+    authorCodes.forEach(author => {
+      result.push(<UU5.Bricks.Label className={classNames.genreBadge()} content={storedAuthorCodes[author]} />);
+    });
+
+    return this._getBookInfoLine("author", result);
+  },
   _getCondition(code) {
     let libraryString = localStorage.getItem("library");
     let library = JSON.parse(libraryString);
@@ -383,7 +397,7 @@ export const BookTile = UU5.Common.VisualComponent.create({
 
   //@@viewOn:render
   render() {
-    let { name, code, author, locationCode, state, conditionCode, genreCodes, details } = this.props.data;
+    let { name, code, authorCodes, locationCode, state, conditionCode, genreCodes, details } = this.props.data;
     return (
       <>
         <UuP.Tiles.ActionTile
@@ -394,7 +408,7 @@ export const BookTile = UU5.Common.VisualComponent.create({
           level={4}
           content={
             <UU5.Bricks.Div key={UU5.Common.Tools.generateUUID(4)}>
-              {this._getBookInfoLine("author", author)}
+              {this._getAuthors(authorCodes)}
               {this._getBookInfoLine("code", code)}
               {this._getBookInfoLine("location", locationCode)}
               {this._getBookInfoLine("state", <UU5.Bricks.Lsi lsi={Lsi[state]} />)}

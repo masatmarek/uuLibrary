@@ -23,7 +23,7 @@ const Create = {
   LocationDoesNotExist: class extends LibraryMainUseCaseError {
     constructor() {
       super(...arguments);
-      this.code = `${Create.UC_CODE}libraryDoesNotExist`;
+      this.code = `${Create.UC_CODE}locationDoesNotExist`;
       this.message = "Location does not exist.";
     }
   },
@@ -61,6 +61,13 @@ const Create = {
       super(...arguments);
       this.code = `${Create.UC_CODE}locationIsNotInProperState`;
       this.message = "Location is not in proper state.";
+    }
+  },
+  AuthorsDoesNotExist: class extends LibraryMainUseCaseError {
+    constructor() {
+      super(...arguments);
+      this.code = `${Create.UC_CODE}authorsDoesNotExist`;
+      this.message = "One of author does not exists.";
     }
   },
   ConditionDoesNotExist: class extends LibraryMainUseCaseError {
