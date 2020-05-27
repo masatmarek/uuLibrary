@@ -4,7 +4,6 @@ import "uu5g04-bricks";
 import "uu5tilesg01";
 import "uu_plus4u5g01-bricks";
 import "uu_plus4u5g01-console";
-import UuP from "uu_pg01";
 import "uu_pg01-bricks";
 import "uu_pg01-tiles";
 

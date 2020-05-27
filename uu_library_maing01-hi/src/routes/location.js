@@ -54,8 +54,8 @@ export const Location = UU5.Common.VisualComponent.create({
           level="0"
           content={
             <UU5.Bricks.Div className={this.getClassName().header()}>
-              <UU5.Bricks.Lsi lsi={Lsi.location.header} /> &nbsp;
-              {this.props.params && this.props.params.code ? this.props.params.code : ""}
+              <UU5.Bricks.Lsi lsi={Lsi.location.header} />
+              {this.props.params && this.props.params.code ? ` ${this.props.params.code}` : ""}
             </UU5.Bricks.Div>
           }
         />

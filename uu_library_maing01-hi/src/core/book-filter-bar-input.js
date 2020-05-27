@@ -14,7 +14,9 @@ export const BookFilterBarInput = UU5.Common.VisualComponent.create({
   //@@viewOn:statics
   statics: {
     tagName: Config.TAG + "BookFilterBarInput",
-
+    classNames: {
+      main: () => Config.Css.css``
+    },
     lsi: Lsi
   },
   //@@viewOff:statics

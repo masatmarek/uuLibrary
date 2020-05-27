@@ -1,5 +1,6 @@
 const Lsi = {
   stateLabel: { cs: "Stav", en: "State" },
+  conditionLabel: { cs: "Kondice", en: "Condition" },
   bookList: { cs: "List knížek", en: "Book list" },
   author: { cs: "Autor", en: "Author" },
   state: { cs: "Stav", en: "State" },

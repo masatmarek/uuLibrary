@@ -191,6 +191,7 @@ export const RequestList = UU5.Common.VisualComponent.create({
             inputColWidth={{ xs: 12 }}
             label={<UU5.Bricks.Lsi lsi={Lsi.emailSubjectLabel} />}
             required
+            value={type === "confirm" ? "Potvrzení výpůjčky" : "Zamítnutí výpujčky"}
             requiredMessage={<UU5.Bricks.Lsi lsi={Lsi.required} />}
           />
           <UU5.Forms.TextArea
@@ -199,6 +200,12 @@ export const RequestList = UU5.Common.VisualComponent.create({
             inputColWidth={{ xs: 12 }}
             label={<UU5.Bricks.Lsi lsi={Lsi.emailTextLabel} />}
             required
+            rows={6}
+            value={
+              type === "confirm"
+                ? "Ahoj,\npotvrzujeme tvojí žádost o výpůjčku knihy: 'xxx'. \n \nMěstská knihovna Praha"
+                : "Ahoj,\nbohužel není z nějakého důvodu možné potvrdit zapůjčení knihy. Pro více informací nás prosím kontaktuj. \n \nMěstská knihovna Praha"
+            }
             requiredMessage={<UU5.Bricks.Lsi lsi={Lsi.required} />}
           />
           <UU5.Forms.ContextControls

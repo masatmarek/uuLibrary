@@ -6,6 +6,8 @@ import Config from "./config/config.js";
 
 import Lsi from "./filter-bar-lsi";
 //@@viewOff:imports
+const buttonAddColumnClassName = Config.Css.css``;
+const chooseFilterSelectClassName = Config.Css.css``;
 
 export const FilterBar = UU5.Common.VisualComponent.create({
   //@@viewOn:mixins
@@ -15,6 +17,26 @@ export const FilterBar = UU5.Common.VisualComponent.create({
   //@@viewOn:statics
   statics: {
     tagName: Config.TAG + "FilterBar",
+    classNames: {
+      main: Config.Css.css`
+      @media only screen and (max-width: 768px) {
+          .${buttonAddColumnClassName} {
+            text-align: center;
+          }
+      
+          .${chooseFilterSelectClassName} {
+            .uu5-forms-label {
+              padding: 0 0 8px;
+            }
+          }
+        }
+      `,
+      buttonAdd: Config.Css.css`
+          margin: 24px;
+      `,
+      buttonAddColumn: buttonAddColumnClassName,
+      chooseFilterSelect: chooseFilterSelectClassName
+    },
     lsi: Lsi
   },
   //@@viewOff:statics
@@ -110,6 +132,7 @@ export const FilterBar = UU5.Common.VisualComponent.create({
 
   //@@viewOn:render
   render() {
+    let classNames = this.getClassName();
     return (
       <UU5.Forms.Form {...this.getMainPropsToPass()} ref_={this._form} onSaveEnter={this._handleButton} noSpacing>
         <UU5.Bricks.Row>
@@ -129,8 +152,9 @@ export const FilterBar = UU5.Common.VisualComponent.create({
           <UU5.Bricks.Column colWidth="xs-12 s-6 m-5 l-4 xl-3" noSpacing>
             {this._getValueInput(this.state.activeItem)}
           </UU5.Bricks.Column>
-          <UU5.Bricks.Column colWidth="xs-12 m-2 xl-1" noSpacing>
+          <UU5.Bricks.Column className={classNames.buttonAddColumn} colWidth="xs-12 m-2 xl-1" noSpacing>
             <UU5.Bricks.Button
+              className={classNames.buttonAdd}
               onClick={this._handleButton}
               colorSchema="green"
               content={<UU5.Bricks.Lsi lsi={Lsi.add} />}

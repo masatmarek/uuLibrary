@@ -40,7 +40,7 @@
         "author": {
           "realization": "dao/AuthorMongo",
           "maxNoi": 500000,
-          "maxSoi": 200
+          "maxSoi": 2000
         }
       }
     }
