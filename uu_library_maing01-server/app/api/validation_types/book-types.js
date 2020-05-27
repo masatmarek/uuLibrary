@@ -6,7 +6,14 @@ const bookCreateDtoInType = shape({
   genreCodes: array().isRequired(),
   conditionCode: codeType().isRequired(),
   name: string().isRequired(),
-  author: string().isRequired()
+  author: string().isRequired(),
+  details: shape({
+    publisher: string(),
+    dateOfPublication: string(),
+    language: string(),
+    custody: string(),
+    numberOfPages: string()
+  })
 });
 const bookUpdateDtoInType = shape({
   code: codeType().isRequired(),

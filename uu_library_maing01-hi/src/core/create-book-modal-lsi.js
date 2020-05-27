@@ -5,6 +5,11 @@ let Lsi = {
     cs: "Toto pole je povinné.",
     en: "This input is required."
   },
+  publisher: { cs: "Vydavatel", en: "Publisher" },
+  dateOfPublication: { cs: "Datum vydání", en: "Date of publication" },
+  language: { cs: "Jazyk", en: "Language" },
+  custody: { cs: "Vazba", en: "Custody" },
+  numberOfPages: { cs: "Počet stran", en: "Number of pages" },
   nameLabel: { cs: "Název", en: "Name" },
   codeLabel: { cs: "Kód", en: "Code" },
   authorLabel: { cs: "Autor", en: "Author" },

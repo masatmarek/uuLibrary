@@ -225,7 +225,7 @@ export const BookList = UU5.Common.VisualComponent.create({
                     tileBorder
                     tileStyle={{ borderRadius: 4 }}
                     tileMinWidth={445}
-                    tileHeight={230}
+                    tileHeight={330}
                     rowSpacing={8}
                     tileSpacing={8}
                     tileJustify="space-between"
