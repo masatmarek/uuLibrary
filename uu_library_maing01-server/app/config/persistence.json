@@ -36,6 +36,11 @@
           "realization": "dao/RequestMongo",
           "maxNoi": 500000,
           "maxSoi": 1000
+        },
+        "author": {
+          "realization": "dao/AuthorMongo",
+          "maxNoi": 500000,
+          "maxSoi": 200
         }
       }
     }

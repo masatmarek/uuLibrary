@@ -160,6 +160,16 @@
         "realization": "api/controllers/LocationController.locationUpdate",
         "httpMethod": "POST",
         "type": "CMD"
+      },
+      "author/create": {
+        "realization": "api/controllers/AuthorController.authorCreate",
+        "httpMethod": "POST",
+        "type": "CMD"
+      },
+      "author/list": {
+        "realization": "api/controllers/AuthorController.authorList",
+        "httpMethod": "GET",
+        "type": "CMD"
       }
     }
   }

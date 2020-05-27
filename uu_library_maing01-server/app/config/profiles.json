@@ -38,7 +38,9 @@
       "request/create": ["Administrators","Managers","Librarians","Customers"],
       "library/create": ["Administrators"],
       "library/get": ["Public"],
-      "request/list": ["Public"]
+      "request/list": ["Public"],
+      "author/create": ["Managers"],
+      "author/list": ["Public"]
     }
   }
 }

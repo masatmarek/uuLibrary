@@ -193,6 +193,36 @@ const SpaAuthenticated = UU5.Common.VisualComponent.create({
       </UU5.Common.Loader>
     );
   },
+  _getAuthors() {
+    console.log("ano jdu volat");
+
+    return (
+      <UU5.Common.Loader onLoad={Calls.authorList} data={{}}>
+        {({ isLoading, isError, data }) => {
+          if (isLoading) {
+            return <UU5.Bricks.Loading />;
+          } else if (isError) {
+            return <></>;
+          } else {
+            let authors = [];
+            console.log(data);
+
+            data.itemList.forEach(author => {
+              console.log(author);
+
+              authors.push({ name: author.name, code: author.code });
+            });
+            console.log(authors);
+
+            localStorage.setItem("authors", JSON.stringify(authors));
+            console.log(localStorage);
+
+            return <UU5.Bricks.Div />;
+          }
+        }}
+      </UU5.Common.Loader>
+    );
+  },
 
   _setRoute(route) {
     UU5.Environment.setRoute(route);
@@ -233,6 +263,7 @@ const SpaAuthenticated = UU5.Common.VisualComponent.create({
           }
         >
           {this._getPermissions()}
+          {this._getAuthors()}
           <UU5.Common.Router
             routes={{
               "": "home",
