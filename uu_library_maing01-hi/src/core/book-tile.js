@@ -101,7 +101,7 @@ export const BookTile = UU5.Common.VisualComponent.create({
       date.getMonth() + 1 < 10 ? "0" + (date.getMonth() + 1) : date.getMonth() + 1
     }-${date.getDate()}`;
     ModalHelper.open(
-      <UU5.Bricks.Lsi lsi={Lsi.deleteBook} />,
+      <UU5.Bricks.Lsi lsi={Lsi.borrowButton} />,
       <UU5.Forms.Form onSave={formRef => this._handleCreateRequest(formRef, data.code)}>
         <UU5.Forms.DatePicker
           openToContent
@@ -383,7 +383,7 @@ export const BookTile = UU5.Common.VisualComponent.create({
 
   //@@viewOn:render
   render() {
-    let { name, code, author, locationCode, state, conditionCode, genreCodes } = this.props.data;
+    let { name, code, author, locationCode, state, conditionCode, genreCodes, details } = this.props.data;
     return (
       <>
         <UuP.Tiles.ActionTile
@@ -400,6 +400,11 @@ export const BookTile = UU5.Common.VisualComponent.create({
               {this._getBookInfoLine("state", <UU5.Bricks.Lsi lsi={Lsi[state]} />)}
               {this._getCondition(conditionCode)}
               {this._getGenre(genreCodes)}
+              {this._getBookInfoLine("publisher", details.publisher)}
+              {this._getBookInfoLine("dateOfPublication", details.dateOfPublication)}
+              {this._getBookInfoLine("language", details.language)}
+              {this._getBookInfoLine("custody", details.custody)}
+              {this._getBookInfoLine("numberOfPages", details.numberOfPages)}
             </UU5.Bricks.Div>
           }
         />

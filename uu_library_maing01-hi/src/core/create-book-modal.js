@@ -73,6 +73,22 @@ export const CreateBookModal = UU5.Common.VisualComponent.create({
   },
 
   _handleCreate({ component, values }) {
+    let details = {
+      publisher: values.publisher,
+      dateOfPublication: values.dateOfPublication,
+      language: values.language,
+      custody: values.custody,
+      numberOfPages: values.numberOfPages
+    };
+    values.details = details;
+
+    delete values.publisher;
+    delete values.dateOfPublication;
+    delete values.language;
+    delete values.custody;
+    delete values.numberOfPages;
+    console.log(values);
+
     values = { ...values };
     values.locationCode = UU5.Common.Tools.getUrlParam("code");
     component.saveDone(values);
@@ -114,6 +130,45 @@ export const CreateBookModal = UU5.Common.VisualComponent.create({
           requiredMessage={<UU5.Bricks.Lsi lsi={Lsi.required} />}
         />
         <UU5.Forms.Text
+          name="publisher"
+          labelColWidth={{ xs: 12 }}
+          inputColWidth={{ xs: 12 }}
+          label={<UU5.Bricks.Lsi lsi={Lsi.publisher} />}
+        />
+        <UU5.Forms.DatePicker
+          name="dateOfPublication"
+          labelColWidth={{ xs: 12 }}
+          format="dd:mm:Y"
+          inputColWidth={{ xs: 12 }}
+          label={<UU5.Bricks.Lsi lsi={Lsi.dateOfPublication} />}
+        />
+        <UU5.Forms.Select
+          name="language"
+          labelColWidth={{ xs: 12 }}
+          inputColWidth={{ xs: 12 }}
+          label={<UU5.Bricks.Lsi lsi={Lsi.language} />}
+        >
+          {library.languages.map(language => {
+            return <UU5.Forms.Select.Option key={language} value={language} />;
+          })}
+        </UU5.Forms.Select>
+        <UU5.Forms.SwitchSelector
+          name="custody"
+          items={[
+            { content: <UU5.Bricks.Lsi lsi={{ cs: "Měká", en: "Paperback" }} />, value: "paperback" },
+            { content: <UU5.Bricks.Lsi lsi={{ cs: "Tvrdá", en: "Hardback" }} />, value: "hardback" }
+          ]}
+          label={<UU5.Bricks.Lsi lsi={Lsi.custody} />}
+        />
+
+        <UU5.Forms.Number
+          name="numberOfPages"
+          labelColWidth={{ xs: 12 }}
+          inputColWidth={{ xs: 12 }}
+          label={<UU5.Bricks.Lsi lsi={Lsi.numberOfPages} />}
+        />
+
+        <UU5.Forms.Text
           name="author"
           labelColWidth={{ xs: 12 }}
           inputColWidth={{ xs: 12 }}
@@ -126,7 +181,6 @@ export const CreateBookModal = UU5.Common.VisualComponent.create({
             <UU5.Forms.Select
               name="genreCodes"
               multiple
-              openToContent
               labelColWidth={{ xs: 12 }}
               inputColWidth={{ xs: 12 }}
               label={<UU5.Bricks.Lsi lsi={Lsi.genreLabel} />}
@@ -146,7 +200,6 @@ export const CreateBookModal = UU5.Common.VisualComponent.create({
           <UU5.Bricks.Column colWidth={{ xs: 12, s: 6 }}>
             <UU5.Forms.Select
               name="conditionCode"
-              openToContent
               labelColWidth={{ xs: 12 }}
               inputColWidth={{ xs: 12 }}
               label={<UU5.Bricks.Lsi lsi={Lsi.conditionLabel} />}
@@ -186,7 +239,7 @@ export const CreateBookModal = UU5.Common.VisualComponent.create({
   render() {
     return (
       <UU5.Bricks.Div {...this.getMainPropsToPass()}>
-        <UU5.Forms.ContextModal ref_={this._modal} />
+        <UU5.Forms.ContextModal ref_={this._modal} overflow={true} />
         <UU5.Bricks.AlertBus ref_={this._alertBus} location="portal" />
       </UU5.Bricks.Div>
     );
