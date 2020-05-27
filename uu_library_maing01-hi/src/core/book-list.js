@@ -171,9 +171,9 @@ export const BookList = UU5.Common.VisualComponent.create({
     let permissions = JSON.parse(localStorage.getItem("permission"));
 
     if (
-      permissions.includes["Administrators"] ||
+      permissions.includes("Administrators") ||
       permissions.includes("Managers") ||
-      permissions.includes("Librarirans")
+      permissions.includes("Librarians")
     ) {
       return [
         {

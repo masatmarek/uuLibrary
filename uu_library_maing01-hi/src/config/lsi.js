@@ -24,7 +24,7 @@ const Lsi = {
       en: "About Application"
     },
     location: {
-      cs: "Oddělení",
+      cs: "Lokace",
       en: "Location"
     },
     controlPanel: {
@@ -135,7 +135,7 @@ const Lsi = {
   },
   location: {
     header: {
-      cs: "Oddělení",
+      cs: "Lokace",
       en: "Location"
     }
   }

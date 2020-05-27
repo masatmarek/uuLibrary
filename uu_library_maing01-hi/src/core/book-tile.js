@@ -187,7 +187,7 @@ export const BookTile = UU5.Common.VisualComponent.create({
     if (
       permissions.includes("Administrators") ||
       permissions.includes("Managers") ||
-      permissions.includes("Librarirans")
+      permissions.includes("Librarians")
     ) {
       actions = [
         {

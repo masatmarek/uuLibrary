@@ -13,12 +13,5 @@ module.exports = {
       suspend: "suspend",
       closed: "closed"
     }
-  },
-  book: {
-    states: {
-      available: "available",
-      borrowed: "borrowed",
-      reserved: "reserved"
-    }
   }
 };

@@ -5,7 +5,7 @@ const Lsi = {
   available: { cs: "Dostupná", en: "Available" },
   borrowed: { cs: "Zapůjčená", en: "Borrowed" },
   reserved: { cs: "Rezervovaná", en: "Reserved" },
-  location: { cs: "Oddělení", en: "Location" },
+  location: { cs: "Lokace", en: "Location" },
   condition: { cs: "Kondice", en: "Condition" },
   genre: { cs: "Žánr", en: "Genre" },
   code: { cs: "Kód", en: "Code" },
