@@ -11,6 +11,8 @@ import "uu_pg01-tiles";
 import Config from "./config/config.js";
 import Calls from "../calls";
 import ModalHelper from "../helpers/modal-helper.js";
+import FilterBar from "./filter-bar.js";
+import BookFilterBarInput from "./book-filter-bar-input.js";
 import BookTile from "./book-tile";
 import CreateBookModal from "./create-book-modal";
 
@@ -191,7 +193,28 @@ export const BookList = UU5.Common.VisualComponent.create({
 
     }
   },
+  _getFilters() {
+    return [
+      {
+        key: "state",
+        label: Lsi.stateLabel,
+        filterFn: (item, value) => item.state === value
+      }
+    ];
+  },
 
+  _getFilterBar() {
+    return (
+      <UU5.Tiles.FilterBar
+        padding="none"
+        key="FilterBar"
+        controller={this._listDataManager.current}
+        filters={this._getFilters()}
+      >
+        <FilterBar>{props => <BookFilterBarInput {...props} />}</FilterBar>
+      </UU5.Tiles.FilterBar>
+    );
+  },
   _openCreateModal() {
     this._createModal.current.open();
   },
@@ -216,6 +239,7 @@ export const BookList = UU5.Common.VisualComponent.create({
             return (
               <UU5.Bricks.Div>
                 <UU5.Tiles.ListController data={data} selectable={false}>
+                  {this._getFilterBar()}
                   <UU5.Tiles.ActionBar
                     collapsible={false}
                     title={
