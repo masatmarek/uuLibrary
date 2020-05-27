@@ -1,4 +1,11 @@
 const Lsi = {
+  from: { cs: "od", en: "from" },
+  to: { cs: "do", en: "to" },
+  monday: { cs: "Pondělí", en: "Monday" },
+  tuesday: { cs: "Úterý", en: "Tuesday" },
+  wednesday: { cs: "Středa", en: "Wednesday" },
+  thursday: { cs: "Čtvrtek", en: "Thursday" },
+  friday: { cs: "Pátek", en: "Friday" },
   author: { cs: "Autor", en: "Author" },
   state: { cs: "Stav", en: "State" },
   active: { cs: "Aktivní", en: "Active" },
