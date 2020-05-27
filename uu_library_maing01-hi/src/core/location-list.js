@@ -112,7 +112,37 @@ export const LocationList = UU5.Common.VisualComponent.create({
     });
   },
   _handleCreate({ values, component }) {
+
+    values.openingHours = [];
+
+    let monday = {day: "monday", from: values.mondayFrom, to: values.mondayTo};
+    let tuesday = {day: "tuesday", from: values.tuesdayFrom, to: values.tuesdayTo};
+    let wednesday = {day: "wednesday", from: values.wednesdayFrom, to: values.wednesdayTo};
+    let thursday = {day: "wednesday", from: values.thursdayFrom, to: values.thursdayTo};
+    let friday = {day: "friday", from: values.fridayFrom, to: values.fridayTo};
+
+    values.openingHours.push(monday,tuesday,wednesday,thursday,friday);
+
+    delete values.mondayFrom;
+    delete values.mondayTo;
+
+    delete values.tuesdayFrom;
+    delete values.tuesdayTo;
+
+    delete values.wednesdayFrom;
+    delete values.wednesdayTo;
+
+    delete values.thursdayFrom;
+    delete values.thursdayTo;
+
+    delete values.fridayFrom;
+    delete values.fridayTo;
+
     return new Promise((resolve, reject) => {
+      
+
+
+
       Calls.locationCreate({
         data: values,
         done: dtoOut => {
@@ -237,14 +267,6 @@ export const LocationList = UU5.Common.VisualComponent.create({
       content: (
         <UU5.Forms.Form onSave={formRef => this._handleCreate(formRef)}>
 
-          <UU5.Forms.Text
-            name="code"
-            labelColWidth={{ xs: 12 }}
-            inputColWidth={{ xs: 12 }}
-            label={<UU5.Bricks.Lsi lsi={Lsi.codeLabel} />}
-            required
-            requiredMessage={<UU5.Bricks.Lsi lsi={Lsi.required} />}
-          />
           <UU5.Forms.Text
             name="name"
             labelColWidth={{ xs: 12 }}
