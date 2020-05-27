@@ -143,6 +143,7 @@ class LocationAbl {
     //HDS 3
     dtoIn.state = Cfg.location.states.active;
     dtoIn.awid = awid;
+    dtoIn.code = this.createCode(dtoIn.name);
 
     //HDS 4
     let location;
@@ -210,6 +211,68 @@ class LocationAbl {
     }
     // HDS 4
     return uuAppErrorMap;
+  }
+  createCode(name) {
+    let code = "";
+    for (let i = 0; i < name.length; i++) {
+      const inSymbol = name[i];
+      let outSymbol;
+      switch (inSymbol.toLowerCase()) {
+        case "á":
+          outSymbol = "a";
+          break;
+        case "é":
+          outSymbol = "e";
+          break;
+        case "ě":
+          outSymbol = "e";
+          break;
+        case "í":
+          outSymbol = "i";
+          break;
+        case "ú":
+          outSymbol = "u";
+          break;
+        case "ů":
+          outSymbol = "u";
+          break;
+        case "č":
+          outSymbol = "c";
+          break;
+        case "ó":
+          outSymbol = "o";
+          break;
+        case "š":
+          outSymbol = "s";
+          break;
+        case "ť":
+          outSymbol = "t";
+          break;
+        case "ř":
+          outSymbol = "r";
+          break;
+        case "ž":
+          outSymbol = "z";
+          break;
+        case "ý":
+          outSymbol = "y";
+          break;
+        case "ň":
+          outSymbol = "";
+          break;
+        case "ď":
+          outSymbol = "d";
+          break;
+        case " ":
+          outSymbol = "-";
+          break;
+        default:
+          outSymbol = inSymbol;
+          break;
+      }
+      code += outSymbol.toLowerCase();
+    }
+    return code;
   }
 }
 
