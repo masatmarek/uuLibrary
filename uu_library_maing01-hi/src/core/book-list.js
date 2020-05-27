@@ -169,12 +169,16 @@ export const BookList = UU5.Common.VisualComponent.create({
   },
   _getActionBarActions() {
     let permissions = JSON.parse(localStorage.getItem("permission"));
+    let locationCode = UU5.Common.Tools.getUrlParam("code");
+
 
     if (
       permissions.includes("Administrators") ||
       permissions.includes("Managers") ||
       permissions.includes("Librarians")
     ) {
+      if (locationCode) {
+        
       return [
         {
           content: "Create",
@@ -183,6 +187,8 @@ export const BookList = UU5.Common.VisualComponent.create({
           active: true
         }
       ];
+    }
+
     }
   },
 
