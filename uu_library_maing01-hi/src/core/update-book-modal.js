@@ -46,12 +46,10 @@ export const UpdateBookModal = UU5.Common.VisualComponent.create({
   //@@viewOff:reactLifeCycle
 
   //@@viewOn:interface
-  open() {
-    console.log("asd");
-
+  open(data) {
     this._modal.current.open({
       header: this._getHeader(),
-      content: this._getForm(),
+      content: this._getForm(data),
       footer: this._getControls(),
       id: UU5.Common.Tools.generateUUID(6)
     });
@@ -65,14 +63,30 @@ export const UpdateBookModal = UU5.Common.VisualComponent.create({
   _getHeader() {
     return (
       <UU5.Forms.ContextHeader
-        info={<UU5.Bricks.Lsi lsi={Lsi.modalHelpCreate} />}
-        content={<UU5.Bricks.Lsi lsi={Lsi.modalHeaderCreate} />}
+        info={<UU5.Bricks.Lsi lsi={Lsi.modalHelpUpdate} />}
+        content={<UU5.Bricks.Lsi lsi={Lsi.modalHeaderUpdate} />}
       />
     );
   },
 
-  _handleUpdate({ component, values }) {
+  _handleUpdate({ component, values }, code) {
     values = { ...values };
+    values.details = {
+      publisher: values.publisher,
+      dateOfPublication: values.dateOfPublication,
+      language: values.language,
+      custody: values.custody,
+      numberOfPages: values.numberOfPages
+    };
+    values.code = code;
+
+    delete values.publisher;
+    delete values.dateOfPublication;
+    delete values.language;
+    delete values.custody;
+    delete values.numberOfPages;
+    console.log(values);
+
     values.locationCode = UU5.Common.Tools.getUrlParam("code");
     component.saveDone(values);
   },
@@ -94,18 +108,24 @@ export const UpdateBookModal = UU5.Common.VisualComponent.create({
       colorSchema: "danger"
     });
   },
-  _getForm() {
+  _getForm(data) {
     let library = JSON.parse(localStorage.getItem("library"));
+    let authors = JSON.parse(localStorage.getItem("authors"));
+    let availableTags = [];
+    authors.forEach(author => {
+      availableTags.push({ value: author.code, content: author.name });
+    });
 
     return (
       <UU5.Forms.ContextForm
-        onSave={formRef => this._handleUpdate(formRef)}
+        onSave={formRef => this._handleUpdate(formRef, data.code)}
         onSaveDone={this._handleUpdateDone}
         onSaveFail={this._handleUpdateFail}
         onCancel={this._closeModal}
       >
         <UU5.Forms.Text
           name="name"
+          value={data.name}
           labelColWidth={{ xs: 12 }}
           inputColWidth={{ xs: 12 }}
           label={<UU5.Bricks.Lsi lsi={Lsi.nameLabel} />}
@@ -113,23 +133,73 @@ export const UpdateBookModal = UU5.Common.VisualComponent.create({
           requiredMessage={<UU5.Bricks.Lsi lsi={Lsi.required} />}
         />
         <UU5.Forms.Text
-          name="author"
+          name="publisher"
+          value={data.details.publisher}
           labelColWidth={{ xs: 12 }}
           inputColWidth={{ xs: 12 }}
-          label={<UU5.Bricks.Lsi lsi={Lsi.authorLabel} />}
-          required
-          requiredMessage={<UU5.Bricks.Lsi lsi={Lsi.required} />}
+          label={<UU5.Bricks.Lsi lsi={Lsi.publisher} />}
+        />
+        <UU5.Forms.DatePicker
+          name="dateOfPublication"
+          value={data.details.dateOfPublication}
+          labelColWidth={{ xs: 12 }}
+          format="dd:mm:Y"
+          inputColWidth={{ xs: 12 }}
+          label={<UU5.Bricks.Lsi lsi={Lsi.dateOfPublication} />}
+        />
+        <UU5.Forms.Select
+          name="language"
+          value={data.details.language}
+          labelColWidth={{ xs: 12 }}
+          inputColWidth={{ xs: 12 }}
+          label={<UU5.Bricks.Lsi lsi={Lsi.language} />}
+        >
+          {library.languages.map(language => {
+            return <UU5.Forms.Select.Option key={language} value={language} />;
+          })}
+        </UU5.Forms.Select>
+        <UU5.Forms.SwitchSelector
+          name="custody"
+          value={data.details.custody}
+          items={[
+            { content: <UU5.Bricks.Lsi lsi={{ cs: "Měkká", en: "Paperback" }} />, value: "paperback" },
+            { content: <UU5.Bricks.Lsi lsi={{ cs: "Tvrdá", en: "Hardback" }} />, value: "hardback" }
+          ]}
+          label={<UU5.Bricks.Lsi lsi={Lsi.custody} />}
+        />
+
+        <UU5.Forms.Number
+          name="numberOfPages"
+          value={data.details.numberOfPages}
+          labelColWidth={{ xs: 12 }}
+          inputColWidth={{ xs: 12 }}
+          label={<UU5.Bricks.Lsi lsi={Lsi.numberOfPages} />}
+        />
+
+        <UU5.Forms.TagSelect
+          label="Label"
+          feedback="initial"
+          name="authorCodes"
+          size="m"
+          disabled={false}
+          readOnly={false}
+          borderRadius={2}
+          allowCustomTags={false}
+          availableTags={availableTags}
+          multiple
+          value={data.authorCodes}
+          onValidate={false}
         />
         <UU5.Bricks.Row>
           <UU5.Bricks.Column colWidth={{ xs: 12, s: 6 }}>
             <UU5.Forms.Select
               name="genreCodes"
               multiple
-              openToContent
               labelColWidth={{ xs: 12 }}
               inputColWidth={{ xs: 12 }}
               label={<UU5.Bricks.Lsi lsi={Lsi.genreLabel} />}
               placeholder={"Vyberte alespoň jeden žánr"}
+              value={data.genreCodes}
             >
               {library.genres.map(genre => {
                 return (
@@ -144,8 +214,8 @@ export const UpdateBookModal = UU5.Common.VisualComponent.create({
           </UU5.Bricks.Column>
           <UU5.Bricks.Column colWidth={{ xs: 12, s: 6 }}>
             <UU5.Forms.Select
+              value={data.conditionCode}
               name="conditionCode"
-              openToContent
               labelColWidth={{ xs: 12 }}
               inputColWidth={{ xs: 12 }}
               label={<UU5.Bricks.Lsi lsi={Lsi.conditionLabel} />}
@@ -170,7 +240,7 @@ export const UpdateBookModal = UU5.Common.VisualComponent.create({
   _getControls() {
     return (
       <UU5.Forms.ContextControls
-        buttonSubmitProps={{ content: <UU5.Bricks.Lsi lsi={Lsi.create} /> }}
+        buttonSubmitProps={{ content: <UU5.Bricks.Lsi lsi={Lsi.update} /> }}
         buttonCancelProps={{ content: <UU5.Bricks.Lsi lsi={Lsi.cancel} /> }}
       />
     );
@@ -185,7 +255,7 @@ export const UpdateBookModal = UU5.Common.VisualComponent.create({
   render() {
     return (
       <UU5.Bricks.Div {...this.getMainPropsToPass()}>
-        <UU5.Forms.ContextModal ref_={this._modal} />
+        <UU5.Forms.ContextModal ref_={this._modal} overflow={true} />
         <UU5.Bricks.AlertBus ref_={this._alertBus} location="portal" />
       </UU5.Bricks.Div>
     );

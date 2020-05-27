@@ -71,7 +71,8 @@ export const BookTile = UU5.Common.VisualComponent.create({
   propTypes: {
     route: UU5.PropTypes.object,
     onDelete: UU5.PropTypes.func,
-    onRelocate: UU5.PropTypes.func
+    onRelocate: UU5.PropTypes.func,
+    onUpdate: UU5.PropTypes.func
   },
   //@@viewOff:propTypes
 
@@ -422,7 +423,7 @@ export const BookTile = UU5.Common.VisualComponent.create({
             </UU5.Bricks.Div>
           }
         />
-        <UpdateBookModal ref_={this._updateModal} />
+        <UpdateBookModal ref_={this._updateModal} onUpdate={this.props.onUpdate} />
       </>
     );
   }

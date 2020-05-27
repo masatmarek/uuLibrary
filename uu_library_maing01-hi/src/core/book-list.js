@@ -120,6 +120,25 @@ export const BookList = UU5.Common.VisualComponent.create({
       });
     });
   },
+  _handleUpdate(data) {
+    return new Promise((resolve, reject) => {
+      Calls.bookUpdate({
+        data,
+        done: dtoOut => {
+          ModalHelper.close();
+          resolve(dtoOut);
+          this._listDataManager.current.load();
+        },
+        fail: failDtoOut => {
+          UU5.Environment.getPage()
+            .getAlertBus()
+            .setAlert({ colorSchema: "danger", content: failDtoOut.message });
+          ModalHelper.close();
+          reject(failDtoOut);
+        }
+      });
+    });
+  },
   _handleDelete(code) {
     return new Promise((resolve, reject) => {
       Calls.bookDelete({
@@ -220,7 +239,13 @@ export const BookList = UU5.Common.VisualComponent.create({
   },
   _renderTile(tileInfo) {
     return (
-      <BookTile key={tileInfo.code} data={tileInfo} onDelete={this._handleDelete} onRelocate={this._handleRelocate} />
+      <BookTile
+        key={tileInfo.code}
+        data={tileInfo}
+        onDelete={this._handleDelete}
+        onRelocate={this._handleRelocate}
+        onUpdate={this._handleUpdate}
+      />
     );
   },
   _getBooks() {
