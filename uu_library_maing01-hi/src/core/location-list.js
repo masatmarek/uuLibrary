@@ -236,6 +236,7 @@ export const LocationList = UU5.Common.VisualComponent.create({
       header: <UU5.Bricks.Lsi lsi={Lsi.createLocation} />,
       content: (
         <UU5.Forms.Form onSave={formRef => this._handleCreate(formRef)}>
+
           <UU5.Forms.Text
             name="code"
             labelColWidth={{ xs: 12 }}
@@ -261,6 +262,183 @@ export const LocationList = UU5.Common.VisualComponent.create({
             required
             requiredMessage={<UU5.Bricks.Lsi lsi={Lsi.required} />}
           />
+
+<UU5.Bricks.Row style="height: 25px">
+<h4>
+  <UU5.Bricks.Lsi lsi={Lsi.monday} />
+  </h4>
+</UU5.Bricks.Row>
+
+<UU5.Bricks.Row>
+<UU5.Bricks.Column colWidth="xs-6">
+
+<UU5.Forms.TimePicker
+  name="mondayFrom"
+  labelColWidth={{ xs: 12 }}
+  inputColWidth={{ xs: 12 }}
+  label={<UU5.Bricks.Lsi lsi={Lsi.from} />}
+  required
+  size="m"
+/>
+</UU5.Bricks.Column>
+
+<UU5.Bricks.Column colWidth="xs-6">
+  
+<UU5.Forms.TimePicker
+  name="mondayTo"
+  labelColWidth={{ xs: 12 }}
+  inputColWidth={{ xs: 12 }}
+  label={<UU5.Bricks.Lsi lsi={Lsi.to} />}
+  required
+  size="m"
+/>
+
+</UU5.Bricks.Column>
+</UU5.Bricks.Row>
+
+<UU5.Bricks.Row style="height: 25px">
+<h4>
+  <UU5.Bricks.Lsi lsi={Lsi.tuesday} />
+  </h4>
+</UU5.Bricks.Row>
+
+<UU5.Bricks.Row>
+<UU5.Bricks.Column colWidth="xs-6">
+
+<UU5.Forms.TimePicker
+  name="tuesdayFrom"
+  labelColWidth={{ xs: 12 }}
+  inputColWidth={{ xs: 12 }}
+  label={<UU5.Bricks.Lsi lsi={Lsi.from} />}
+  required
+  size="m"
+/>
+</UU5.Bricks.Column>
+
+<UU5.Bricks.Column colWidth="xs-6">
+  
+<UU5.Forms.TimePicker
+  name="tuesdayTo"
+  labelColWidth={{ xs: 12 }}
+  inputColWidth={{ xs: 12 }}
+  label={<UU5.Bricks.Lsi lsi={Lsi.to} />}
+  required
+  size="m"
+/>
+
+</UU5.Bricks.Column>
+</UU5.Bricks.Row>
+
+<UU5.Bricks.Row style="height: 25px">
+<h4>
+  <UU5.Bricks.Lsi lsi={Lsi.wednesday} />
+  </h4>
+</UU5.Bricks.Row>
+
+<UU5.Bricks.Row>
+<UU5.Bricks.Column colWidth="xs-6">
+
+<UU5.Forms.TimePicker
+  name="wednesdayFrom"
+  labelColWidth={{ xs: 12 }}
+  inputColWidth={{ xs: 12 }}
+  label={<UU5.Bricks.Lsi lsi={Lsi.from} />}
+  required
+  size="m"
+/>
+</UU5.Bricks.Column>
+
+<UU5.Bricks.Column colWidth="xs-6">
+  
+<UU5.Forms.TimePicker
+  name="wednesdayTo"
+  labelColWidth={{ xs: 12 }}
+  inputColWidth={{ xs: 12 }}
+  label={<UU5.Bricks.Lsi lsi={Lsi.to} />}
+  required
+  size="m"
+/>
+
+</UU5.Bricks.Column>
+</UU5.Bricks.Row>
+
+<UU5.Bricks.Row style="height: 25px">
+<h4>
+  <UU5.Bricks.Lsi lsi={Lsi.thursday} />
+  </h4>
+</UU5.Bricks.Row>
+
+<UU5.Bricks.Row>
+<UU5.Bricks.Column colWidth="xs-6">
+
+<UU5.Forms.TimePicker
+  name="thursdayFrom"
+  labelColWidth={{ xs: 12 }}
+  inputColWidth={{ xs: 12 }}
+  label={<UU5.Bricks.Lsi lsi={Lsi.from} />}
+  required
+  size="m"
+/>
+</UU5.Bricks.Column>
+
+<UU5.Bricks.Column colWidth="xs-6">
+  
+<UU5.Forms.TimePicker
+  name="thursdayTo"
+  labelColWidth={{ xs: 12 }}
+  inputColWidth={{ xs: 12 }}
+  label={<UU5.Bricks.Lsi lsi={Lsi.to} />}
+  required
+  size="m"
+/>
+
+</UU5.Bricks.Column>
+</UU5.Bricks.Row>
+
+<UU5.Bricks.Row style="height: 25px">
+
+  <h4>
+  <UU5.Bricks.Lsi lsi={Lsi.friday} />
+  </h4>
+  
+</UU5.Bricks.Row>
+
+<UU5.Bricks.Row>
+<UU5.Bricks.Column colWidth="xs-6">
+
+<UU5.Forms.TimePicker
+  name="fridayFrom"
+  labelColWidth={{ xs: 12 }}
+  inputColWidth={{ xs: 12 }}
+  label={<UU5.Bricks.Lsi lsi={Lsi.from} />}
+  required
+  size="m"
+/>
+</UU5.Bricks.Column>
+
+<UU5.Bricks.Column colWidth="xs-6">
+  
+<UU5.Forms.TimePicker
+  name="fridayTo"
+  labelColWidth={{ xs: 12 }}
+  inputColWidth={{ xs: 12 }}
+  label={<UU5.Bricks.Lsi lsi={Lsi.to} />}
+  required
+  size="m"
+/>
+
+</UU5.Bricks.Column>
+</UU5.Bricks.Row>
+
+
+
+
+
+
+
+
+
+
           <UU5.Forms.ContextControls
             className={classNames.formControls()}
             buttonSubmitProps={{ content: <UU5.Bricks.Lsi lsi={Lsi.createButton} />, colorSchema: "blue" }}
