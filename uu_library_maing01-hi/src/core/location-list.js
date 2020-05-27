@@ -8,6 +8,9 @@ import UuP from "uu_pg01";
 import "uu_pg01-bricks";
 import "uu_pg01-tiles";
 
+import "uu5g04-block-layout";
+
+
 import Config from "./config/config.js";
 import Calls from "../calls";
 import ModalHelper from "../helpers/modal-helper.js";
@@ -573,12 +576,91 @@ export const LocationList = UU5.Common.VisualComponent.create({
         header={this._getTileHeader(tileInfo)}
         level={4}
         content={
-          <UU5.Bricks.Div key={UU5.Common.Tools.generateUUID(4)}>
-            {this._getLocationInfoLine("codeLabel", tileInfo.code)}
+          <>
+          <UU5.Bricks.Row>
+          <UU5.Bricks.Column colWidth="xs-8">
+          {this._getLocationInfoLine("codeLabel", tileInfo.code)}
             {this._getLocationInfoLine("state", <UU5.Bricks.Lsi lsi={Lsi[tileInfo.state]} />)}
             {this._getLocationInfoLine("capacity", tileInfo.capacity)}
-          </UU5.Bricks.Div>
-        }
+          </UU5.Bricks.Column>
+
+          <UU5.Bricks.Column colWidth="xs-4">
+
+
+          <UU5.BlockLayout.Row>
+        <UU5.BlockLayout.Column width="100px">
+          <UU5.BlockLayout.Text>
+            <b>
+              <UU5.Bricks.Lsi lsi={Lsi.monday}/>:
+            </b>
+          </UU5.BlockLayout.Text>
+        </UU5.BlockLayout.Column>
+        <UU5.BlockLayout.Column>
+        {tileInfo.openingHours[0].from} - {tileInfo.openingHours[0].to}
+        </UU5.BlockLayout.Column>
+      </UU5.BlockLayout.Row>
+
+      <UU5.BlockLayout.Row>
+        <UU5.BlockLayout.Column width="100px">
+          <UU5.BlockLayout.Text>
+            <b>
+              <UU5.Bricks.Lsi lsi={Lsi.tuesday}/>:
+            </b>
+          </UU5.BlockLayout.Text>
+        </UU5.BlockLayout.Column>
+        <UU5.BlockLayout.Column>
+        {tileInfo.openingHours[1].from} - {tileInfo.openingHours[2].to}
+        </UU5.BlockLayout.Column>
+      </UU5.BlockLayout.Row>
+
+      <UU5.BlockLayout.Row>
+        <UU5.BlockLayout.Column width="100px">
+          <UU5.BlockLayout.Text>
+            <b>
+              <UU5.Bricks.Lsi lsi={Lsi.wednesday}/>:
+            </b>
+          </UU5.BlockLayout.Text>
+        </UU5.BlockLayout.Column>
+        <UU5.BlockLayout.Column>
+        {tileInfo.openingHours[2].from} - {tileInfo.openingHours[2].to}
+        </UU5.BlockLayout.Column>
+      </UU5.BlockLayout.Row>
+
+      <UU5.BlockLayout.Row>
+        <UU5.BlockLayout.Column width="100px">
+          <UU5.BlockLayout.Text>
+            <b>
+              <UU5.Bricks.Lsi lsi={Lsi.thursday}/>:
+            </b>
+          </UU5.BlockLayout.Text>
+        </UU5.BlockLayout.Column>
+        <UU5.BlockLayout.Column>
+        {tileInfo.openingHours[3].from} - {tileInfo.openingHours[3].to}
+        </UU5.BlockLayout.Column>
+      </UU5.BlockLayout.Row>
+
+      <UU5.BlockLayout.Row>
+        <UU5.BlockLayout.Column width="100px">
+          <UU5.BlockLayout.Text>
+            <b>
+              <UU5.Bricks.Lsi lsi={Lsi.friday}/>:
+            </b>
+          </UU5.BlockLayout.Text>
+        </UU5.BlockLayout.Column>
+        <UU5.BlockLayout.Column>
+        {tileInfo.openingHours[4].from} - {tileInfo.openingHours[4].to}
+        </UU5.BlockLayout.Column>
+      </UU5.BlockLayout.Row>
+
+          
+          </UU5.Bricks.Column>
+
+          </UU5.Bricks.Row>
+
+
+
+          </>
+        } 
       />
     );
   },
@@ -606,7 +688,7 @@ export const LocationList = UU5.Common.VisualComponent.create({
                   />
                   <UU5.Tiles.List
                     tile={this._renderTile}
-                    tileHeight={140}
+                    tileHeight={250}
                     rowSpacing={8}
                     tileSpacing={8}
                     tileElevationHover={3}
