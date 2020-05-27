@@ -114,7 +114,7 @@ export const LocationList = UU5.Common.VisualComponent.create({
   _handleCreate({ values, component }) {
 
 
-    values.adress = {street: values.street, city: values.city, postalCode: values.postalCode};
+    values.address = {street: values.street, city: values.city, postalCode: values.postalCode};
     
 
     values.openingHours = [];
