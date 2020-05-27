@@ -17,6 +17,8 @@ const Lsi = {
   returnButton: { cs: "Vrátit", en: "Return" },
   deleteBook: { cs: "Smazat knihu", en: "Delete book" },
   publisher: { cs: "Vydavatel", en: "Publisher" },
+  paperback: { cs: "Měká", en: "Paperback" },
+  hardback: { cs: "Tvrdá", en: "Hardback" },
   dateOfPublication: { cs: "Datum vydání", en: "Date of publication" },
   language: { cs: "Jazyk", en: "Language" },
   custody: { cs: "Vazba", en: "Custody" },

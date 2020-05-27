@@ -403,7 +403,7 @@ export const BookTile = UU5.Common.VisualComponent.create({
               {this._getBookInfoLine("publisher", details.publisher)}
               {this._getBookInfoLine("dateOfPublication", details.dateOfPublication)}
               {this._getBookInfoLine("language", details.language)}
-              {this._getBookInfoLine("custody", details.custody)}
+              {this._getBookInfoLine("custody", <UU5.Bricks.Lsi lsi={Lsi[details.custody]} />)}
               {this._getBookInfoLine("numberOfPages", details.numberOfPages)}
             </UU5.Bricks.Div>
           }
