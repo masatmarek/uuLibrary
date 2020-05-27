@@ -113,7 +113,12 @@ export const LocationList = UU5.Common.VisualComponent.create({
   },
   _handleCreate({ values, component }) {
 
+
+    values.adress = {street: values.street, city: values.city, postalCode: values.postalCode};
+    
+
     values.openingHours = [];
+
 
     let monday = {day: "monday", from: values.mondayFrom, to: values.mondayTo};
     let tuesday = {day: "tuesday", from: values.tuesdayFrom, to: values.tuesdayTo};
@@ -281,6 +286,37 @@ export const LocationList = UU5.Common.VisualComponent.create({
             inputColWidth={{ xs: 12 }}
             min={0}
             label={<UU5.Bricks.Lsi lsi={Lsi.capacityLabel} />}
+            required
+            requiredMessage={<UU5.Bricks.Lsi lsi={Lsi.required} />}
+          />
+
+
+          <UU5.Forms.Text
+            name="street"
+            labelColWidth={{ xs: 12 }}
+            inputColWidth={{ xs: 12 }}
+            min={0}
+            label={<UU5.Bricks.Lsi lsi={Lsi.street} />}
+            required
+            requiredMessage={<UU5.Bricks.Lsi lsi={Lsi.required} />}
+          />
+
+          <UU5.Forms.Text
+            name="city"
+            labelColWidth={{ xs: 12 }}
+            inputColWidth={{ xs: 12 }}
+            min={0}
+            label={<UU5.Bricks.Lsi lsi={Lsi.city} />}
+            required
+            requiredMessage={<UU5.Bricks.Lsi lsi={Lsi.required} />}
+          />
+
+          <UU5.Forms.Text
+            name="postalCode"
+            labelColWidth={{ xs: 12 }}
+            inputColWidth={{ xs: 12 }}
+            min={0}
+            label={<UU5.Bricks.Lsi lsi={Lsi.postalCode} />}
             required
             requiredMessage={<UU5.Bricks.Lsi lsi={Lsi.required} />}
           />
