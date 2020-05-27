@@ -5,7 +5,6 @@ const locationCreateDtoInType = shape({
   name: string(),
   address: shape({
     street: string().isRequired(),
-    number: string().isRequired(),
     city: string().isRequired(),
     postalCode: string().isRequired()
   }).isRequired(),
