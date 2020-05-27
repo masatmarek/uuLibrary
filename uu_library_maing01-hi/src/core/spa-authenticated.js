@@ -12,6 +12,7 @@ import Home from "../routes/home.js";
 import Admin from "../routes/admin";
 import Location from "../routes/location";
 import Requests from "../routes/requests";
+import Book from "../routes/book";
 //@@viewOff:imports
 const menuItems = [
   {
@@ -23,7 +24,13 @@ const menuItems = [
     id: "location",
     content: <UU5.Bricks.Lsi lsi={Lsi.leftLinks.location} />,
     onClick: () => UU5.Environment.setRoute("location")
+  },
+  {
+    id: "book",
+    content: <UU5.Bricks.Lsi lsi={Lsi.leftLinks.book} />,
+    onClick: () => UU5.Environment.setRoute("book")
   }
+
 ];
 const executiveItems = [
   {
@@ -233,7 +240,8 @@ const SpaAuthenticated = UU5.Common.VisualComponent.create({
               about: { component: <About identity={this.props.identity} /> },
               location: { component: <Location /> },
               admin: { component: <Admin /> },
-              requests: { component: <Requests /> }
+              requests: { component: <Requests /> },
+              book: { component: <Book /> }
             }}
             controlled={false}
           />

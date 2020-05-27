@@ -2,6 +2,7 @@ const Lsi = {
   bookList: { cs: "List knížek", en: "Book list" },
   author: { cs: "Autor", en: "Author" },
   state: { cs: "Stav", en: "State" },
+  header:  { cs: "Knihy", en: "Books" },
   available: { cs: "Dostupná", en: "Available" },
   borrowed: { cs: "Zapůjčená", en: "Borrowed" },
   reserved: { cs: "Rezervovaná", en: "Reserved" },

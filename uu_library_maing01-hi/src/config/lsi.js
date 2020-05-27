@@ -19,6 +19,10 @@ const Lsi = {
       cs: "Vítejte",
       en: "Welcome"
     },
+    book: {
+      cs: "Knihy",
+      en: "Books"
+    },
     about: {
       cs: "O aplikaci",
       en: "About Application"
@@ -137,6 +141,12 @@ const Lsi = {
     header: {
       cs: "Lokace",
       en: "Location"
+    }
+  },
+  book:{
+    header: {
+      cs: "Knihy",
+      en: "Books"
     }
   }
 };
