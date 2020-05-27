@@ -4,6 +4,13 @@ const codeType = string(/^[0-9a-zA-Z_\-]{2,64}$/);
 const locationCreateDtoInType = shape({
   code: codeType().isRequired(),
   name: string(),
+  address: shape({
+    street: string().isRequired(),
+    number: string().isRequired(),
+    city: string().isRequired(),
+    postalCode: string().isRequired()
+  }).isRequired(),
+  openingHours: array().isRequired(),
   capacity: integer()
 });
 
