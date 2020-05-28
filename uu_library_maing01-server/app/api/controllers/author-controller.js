@@ -2,7 +2,6 @@
 const AuthorAbl = require("../../abl/author-abl.js");
 
 class AuthorController {
-
   authorList(ucEnv) {
     return AuthorAbl.authorList(ucEnv.getUri().getAwid(), ucEnv.getDtoIn());
   }
@@ -10,7 +9,6 @@ class AuthorController {
   authorCreate(ucEnv) {
     return AuthorAbl.authorCreate(ucEnv.getUri().getAwid(), ucEnv.getDtoIn());
   }
-
 }
 
 module.exports = new AuthorController();

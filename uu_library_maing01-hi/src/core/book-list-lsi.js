@@ -22,7 +22,7 @@ const Lsi = {
   publisher: { cs: "Vydavatel", en: "Publisher" },
   paperback: { cs: "Měkká", en: "Paperback" },
   hardback: { cs: "Tvrdá", en: "Hardback" },
-  dateOfPublication: { cs: "Datum vydání", en: "Date of publication" },
+  dateOfPublication: { cs: "Rok vydání", en: "Year of publication" },
   language: { cs: "Jazyk", en: "Language" },
   custody: { cs: "Vazba", en: "Custody" },
   numberOfPages: { cs: "Počet stran", en: "Number of pages" },

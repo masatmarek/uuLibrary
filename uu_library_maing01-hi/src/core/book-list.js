@@ -161,8 +161,6 @@ export const BookList = UU5.Common.VisualComponent.create({
     });
   },
   _handleRelocate(data) {
-    console.log(data);
-
     return new Promise((resolve, reject) => {
       Calls.bookRelocate({
         data: data,
@@ -191,24 +189,21 @@ export const BookList = UU5.Common.VisualComponent.create({
     let permissions = JSON.parse(localStorage.getItem("permission"));
     let locationCode = UU5.Common.Tools.getUrlParam("code");
 
-
     if (
       permissions.includes("Administrators") ||
       permissions.includes("Managers") ||
       permissions.includes("Librarians")
     ) {
       if (locationCode) {
-        
-      return [
-        {
-          content: "Create",
-          onClick: this._openCreateModal,
-          icon: "mdi-plus-circle",
-          active: true
-        }
-      ];
-    }
-
+        return [
+          {
+            content: "Create",
+            onClick: this._openCreateModal,
+            icon: "mdi-plus-circle",
+            active: true
+          }
+        ];
+      }
     }
   },
   _getFilters() {

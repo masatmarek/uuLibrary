@@ -50,7 +50,6 @@ export const DeleteBookModal = UU5.Common.VisualComponent.create({
   },
 
   _handleDeleteDone(dtoOut) {
-    console.log(this.props, dtoOut);
     this.props.onDelete && this.props.onDelete(dtoOut.dtoOut);
     ModalHelper.close();
   },

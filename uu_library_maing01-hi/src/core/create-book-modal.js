@@ -48,8 +48,6 @@ export const CreateBookModal = UU5.Common.VisualComponent.create({
 
   //@@viewOn:interface
   open() {
-    console.log("asd");
-
     this._modal.current.open({
       header: this._getHeader(),
       content: this._getForm(),
@@ -87,8 +85,6 @@ export const CreateBookModal = UU5.Common.VisualComponent.create({
     delete values.language;
     delete values.custody;
     delete values.numberOfPages;
-    console.log(values);
-
     values = { ...values };
     values.locationCode = UU5.Common.Tools.getUrlParam("code");
     component.saveDone(values);
@@ -118,8 +114,6 @@ export const CreateBookModal = UU5.Common.VisualComponent.create({
     authors.forEach(author => {
       availableTags.push({ value: author.code, content: author.name });
     });
-    console.log(availableTags);
-
     return (
       <UU5.Forms.ContextForm
         onSave={formRef => this._handleCreate(formRef)}
@@ -175,7 +169,7 @@ export const CreateBookModal = UU5.Common.VisualComponent.create({
         />
 
         <UU5.Forms.TagSelect
-          label="Label"
+          label={<UU5.Bricks.Lsi lsi={Lsi.authorLabel} />}
           feedback="initial"
           name="authorCodes"
           size="m"

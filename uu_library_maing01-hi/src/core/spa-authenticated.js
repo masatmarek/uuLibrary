@@ -192,8 +192,6 @@ const SpaAuthenticated = UU5.Common.VisualComponent.create({
     );
   },
   _getAuthors() {
-    console.log("ano jdu volat");
-
     return (
       <UU5.Common.Loader onLoad={Calls.authorList} data={{}}>
         {({ isLoading, isError, data }) => {
@@ -203,18 +201,10 @@ const SpaAuthenticated = UU5.Common.VisualComponent.create({
             return <></>;
           } else {
             let authors = [];
-            console.log(data);
-
             data.itemList.forEach(author => {
-              console.log(author);
-
               authors.push({ name: author.name, code: author.code });
             });
-            console.log(authors);
-
             localStorage.setItem("authors", JSON.stringify(authors));
-            console.log(localStorage);
-
             return <UU5.Bricks.Div />;
           }
         }}
@@ -231,8 +221,6 @@ const SpaAuthenticated = UU5.Common.VisualComponent.create({
   render() {
     let library = JSON.parse(localStorage.getItem("library"));
     let permissions = JSON.parse(localStorage.getItem("permission"));
-    console.log(library);
-
     return (
       <>
         <Plus4U5.App.Page

@@ -2,7 +2,6 @@
 const ConditionAbl = require("../../abl/condition-abl.js");
 
 class ConditionController {
-
   conditionGet(ucEnv) {
     return ConditionAbl.conditionGet(ucEnv.getUri().getAwid(), ucEnv.getDtoIn());
   }
@@ -18,7 +17,6 @@ class ConditionController {
   conditionList(ucEnv) {
     return ConditionAbl.conditionList(ucEnv.getUri().getAwid(), ucEnv.getDtoIn());
   }
-
 }
 
 module.exports = new ConditionController();

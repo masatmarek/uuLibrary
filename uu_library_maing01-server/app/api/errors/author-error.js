@@ -52,7 +52,7 @@ const List = {
       this.code = `${Create.UC_CODE}invalidDtoIn`;
       this.message = "DtoIn is not valid.";
     }
-  },
+  }
 };
 
 module.exports = {

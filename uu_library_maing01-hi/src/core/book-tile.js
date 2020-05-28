@@ -283,7 +283,7 @@ export const BookTile = UU5.Common.VisualComponent.create({
               {this._getCondition(conditionCode)}
               {this._getGenre(genreCodes)}
               {this._getBookInfoLine("publisher", details.publisher)}
-              {this._getBookInfoLine("dateOfPublication", details.dateOfPublication)}
+              {this._getBookInfoLine("dateOfPublication", new Date(details.dateOfPublication).getFullYear())}
               {this._getBookInfoLine("language", details.language)}
               {this._getBookInfoLine("custody", <UU5.Bricks.Lsi lsi={Lsi[details.custody]} />)}
               {this._getBookInfoLine("numberOfPages", details.numberOfPages)}

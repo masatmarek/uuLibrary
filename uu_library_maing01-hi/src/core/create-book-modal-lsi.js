@@ -12,7 +12,7 @@ let Lsi = {
   numberOfPages: { cs: "Počet stran", en: "Number of pages" },
   nameLabel: { cs: "Název", en: "Name" },
   codeLabel: { cs: "Kód", en: "Code" },
-  authorLabel: { cs: "Autor", en: "Author" },
+  authorLabel: { cs: "Autoři", en: "Authors" },
   locationLabel: { cs: "Umístení", en: "Location" },
   genreLabel: { cs: "Žánr", en: "Author" },
   genrePlaceHolder: { cs: "Vyberte alespoň jeden žánr", en: "Pick at least one genre." },

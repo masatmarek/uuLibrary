@@ -7,11 +7,10 @@ import "uu_plus4u5g01-app";
 import Config from "./config/config.js";
 import Calls from "../calls";
 import Lsi from "../config/lsi.js";
-import Left from "./left.js";
-import Bottom from "./bottom.js";
 import About from "../routes/about.js";
 import Home from "../routes/home.js";
 import Location from "../routes/location";
+import Book from "../routes/book";
 //@@viewOff:imports
 
 const SpaNotAuthenticated = UU5.Common.VisualComponent.create({
@@ -105,7 +104,6 @@ const SpaNotAuthenticated = UU5.Common.VisualComponent.create({
   render() {
     let library = JSON.parse(localStorage.getItem("library"));
     let permissions = JSON.parse(localStorage.getItem("permission"));
-    console.log(permissions);
 
     const menuItems = [
       {
@@ -117,6 +115,11 @@ const SpaNotAuthenticated = UU5.Common.VisualComponent.create({
         id: "location",
         content: <UU5.Bricks.Lsi lsi={Lsi.leftLinks.location} />,
         onClick: () => this._setRoute("location")
+      },
+      {
+        id: "book",
+        content: <UU5.Bricks.Lsi lsi={Lsi.leftLinks.book} />,
+        onClick: () => UU5.Environment.setRoute("book")
       }
     ];
     const executiveItems = [
@@ -184,7 +187,8 @@ const SpaNotAuthenticated = UU5.Common.VisualComponent.create({
             "": "home",
             home: { component: <Home identity={this.props.identity} /> },
             about: { component: <About identity={this.props.identity} /> },
-            location: { component: <Location /> }
+            location: { component: <Location /> },
+            book: { component: <Book /> }
           }}
           controlled={false}
         />

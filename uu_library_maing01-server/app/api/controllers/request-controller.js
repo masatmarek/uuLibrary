@@ -2,7 +2,6 @@
 const RequestAbl = require("../../abl/request-abl.js");
 
 class RequestController {
-
   requestList(ucEnv) {
     return RequestAbl.requestList(ucEnv.getUri().getAwid(), ucEnv.getDtoIn());
   }

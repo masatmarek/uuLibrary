@@ -249,8 +249,6 @@ export const RequestList = UU5.Common.VisualComponent.create({
   },
 
   _renderTile(tileInfo) {
-    console.log(tileInfo);
-
     return (
       <UuP.Tiles.ActionTile
         key={UU5.Common.Tools.generateUUID(4)}

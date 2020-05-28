@@ -2,7 +2,6 @@
 const LibraryMainAbl = require("../../abl/library-main-abl.js");
 
 class LibraryMainController {
-
   libraryGet(ucEnv) {
     return LibraryMainAbl.libraryGet(ucEnv.getUri().getAwid(), ucEnv.getDtoIn());
   }

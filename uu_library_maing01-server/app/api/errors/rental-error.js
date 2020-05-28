@@ -49,7 +49,6 @@ const ConfirmBorrowBook = {
   }
 };
 
-
 const DeclineBorrowBook = {
   UC_CODE: `${RENTAL_ERROR_PREFIX}declineBorrowBook/`,
   InvalidDtoIn: class extends LibraryMainUseCaseError {

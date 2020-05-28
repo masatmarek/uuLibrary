@@ -2,7 +2,6 @@
 const GenreAbl = require("../../abl/genre-abl.js");
 
 class GenreController {
-
   genreGet(ucEnv) {
     return GenreAbl.genreGet(ucEnv.getUri().getAwid(), ucEnv.getDtoIn());
   }
@@ -18,7 +17,6 @@ class GenreController {
   genreCreate(ucEnv) {
     return GenreAbl.genreCreate(ucEnv.getUri().getAwid(), ucEnv.getDtoIn());
   }
-
 }
 
 module.exports = new GenreController();

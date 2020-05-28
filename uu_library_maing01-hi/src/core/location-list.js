@@ -94,7 +94,6 @@ export const LocationList = UU5.Common.VisualComponent.create({
   },
 
   _handleDelete({ values, component }, code) {
-    console.log(values, code);
     values.code = code;
     return new Promise((resolve, reject) => {
       Calls.locationDelete({

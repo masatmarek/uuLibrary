@@ -14,7 +14,7 @@ const WARNINGS = {
   },
   getUnsupportedKeys: {
     code: `${Errors.Get.UC_CODE}unsupportedKeys`
-  },
+  }
 };
 const STATES = {
   active: "active"

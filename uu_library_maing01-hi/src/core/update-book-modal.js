@@ -85,7 +85,6 @@ export const UpdateBookModal = UU5.Common.VisualComponent.create({
     delete values.language;
     delete values.custody;
     delete values.numberOfPages;
-    console.log(values);
 
     values.locationCode = UU5.Common.Tools.getUrlParam("code");
     component.saveDone(values);
@@ -177,7 +176,7 @@ export const UpdateBookModal = UU5.Common.VisualComponent.create({
         />
 
         <UU5.Forms.TagSelect
-          label="Label"
+          label={<UU5.Bricks.Lsi lsi={Lsi.authorLabel} />}
           feedback="initial"
           name="authorCodes"
           size="m"
