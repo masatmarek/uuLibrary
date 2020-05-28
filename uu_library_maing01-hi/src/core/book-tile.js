@@ -10,10 +10,12 @@ import "uu_pg01-tiles";
 
 import Config from "./config/config.js";
 import Calls from "../calls";
+
 import ModalHelper from "../helpers/modal-helper.js";
 import UpdateBookModal from "./update-book-modal";
 import DeleteBookModal from "./delete-book-modal";
 import RelocateBookModal from "./relocate-book-modal";
+import CreateRequestModal from "./create-request-modal";
 
 import Lsi from "./book-list-lsi.js";
 //@@viewOff:imports
@@ -54,11 +56,6 @@ export const BookTile = UU5.Common.VisualComponent.create({
         transform: rotate(90deg);
         font-size: 20px !important;
         `,
-      link: () => Config.Css.css`
-        cursor: pointer;
-        text-decoration: underline !important;
-        color: #1976D2 !important;
-        `,
       genreBadge: () => Config.Css.css`
         margin-right: 5px;
         margin-bottom: 5px;
@@ -97,69 +94,9 @@ export const BookTile = UU5.Common.VisualComponent.create({
 
   //@@viewOn:private
   _openRequestCreateModal(data) {
-    let date = new Date();
-    let today = `${date.getFullYear()}-${
-      date.getMonth() + 1 < 10 ? "0" + (date.getMonth() + 1) : date.getMonth() + 1
-    }-${date.getDate()}`;
     ModalHelper.open(
       <UU5.Bricks.Lsi lsi={Lsi.borrowButton} />,
-      <UU5.Forms.Form onSave={formRef => this._handleCreateRequest(formRef, data.code)}>
-        <UU5.Forms.DatePicker
-          openToContent
-          name="from"
-          value={today}
-          labelColWidth={{ xs: 12 }}
-          inputColWidth={{ xs: 12 }}
-          label={<UU5.Bricks.Lsi lsi={Lsi.fromLabel} />}
-          dateFrom={today}
-          required
-          requiredMessage={<UU5.Bricks.Lsi lsi={Lsi.required} />}
-        />
-        <UU5.Forms.ContextControls
-          buttonSubmitProps={{ content: <UU5.Bricks.Lsi lsi={Lsi.requestLabel} />, colorSchema: "blue" }}
-          buttonCancelProps={{ content: <UU5.Bricks.Lsi lsi={Lsi.cancel} /> }}
-        />
-      </UU5.Forms.Form>
-    );
-  },
-  _handleCreateRequest({ values, component }, code) {
-    values.bookCode = code;
-    values.type = "borrow";
-    values.from = `${values.from.getFullYear()}-${values.from.getMonth() + 1}-${values.from.getDate()}`;
-
-    let classNames = this.getClassName();
-    return new Promise((done, fail) =>
-      Calls.requestCreate({
-        data: values,
-        done: data => {
-          done(data);
-          ModalHelper.close();
-          UU5.Environment.getPage()
-            .getAlertBus()
-            .setAlert({
-              colorSchema: "success",
-              closeTimer: 7000,
-              content: (
-                <UU5.Bricks.Span>
-                  <UU5.Bricks.Lsi lsi={Lsi.successBorrowPrefix} />
-                  &nbsp;
-                  <UU5.Bricks.Link href="http://www.unicorn.com/" className={classNames.link()} target="_blank">
-                    <UU5.Bricks.Lsi lsi={Lsi.book} />
-                  </UU5.Bricks.Link>
-                  &nbsp;
-                  <UU5.Bricks.Lsi lsi={Lsi.successBorrowSuffix} />
-                </UU5.Bricks.Span>
-              )
-            });
-        },
-        fail: failDtoOut => {
-          UU5.Environment.getPage()
-            .getAlertBus()
-            .setAlert({ colorSchema: "danger", content: failDtoOut.message });
-          ModalHelper.close();
-          fail(failDtoOut);
-        }
-      })
+      <CreateRequestModal name={data.name} code={data.code} />
     );
   },
   _handleUpdate(data) {

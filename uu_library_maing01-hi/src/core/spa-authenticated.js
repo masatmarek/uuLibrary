@@ -30,7 +30,6 @@ const menuItems = [
     content: <UU5.Bricks.Lsi lsi={Lsi.leftLinks.book} />,
     onClick: () => UU5.Environment.setRoute("book")
   }
-
 ];
 const executiveItems = [
   {
@@ -112,7 +111,6 @@ const SpaAuthenticated = UU5.Common.VisualComponent.create({
                   colorSchema: "default",
                   textColor: "#fff",
                   subtitle: "library",
-                  title: <UU5.Bricks.Lsi lsi={"Library"} />,
                   decorationWidth: 136,
                   decorationRight: -8,
                   decorationBottom: -8,
