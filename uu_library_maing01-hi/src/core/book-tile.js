@@ -12,8 +12,7 @@ import Config from "./config/config.js";
 import Calls from "../calls";
 import ModalHelper from "../helpers/modal-helper.js";
 import UpdateBookModal from "./update-book-modal";
-
-import Form from "./create-book-modal";
+import DeleteBookModal from "./delete-book-modal";
 
 import Lsi from "./book-list-lsi.js";
 //@@viewOff:imports
@@ -69,10 +68,10 @@ export const BookTile = UU5.Common.VisualComponent.create({
 
   //@@viewOn:propTypes
   propTypes: {
-    route: UU5.PropTypes.object,
-    onDelete: UU5.PropTypes.func,
-    onRelocate: UU5.PropTypes.func,
-    onUpdate: UU5.PropTypes.func
+    data: UU5.PropTypes.object.isRequired,
+    onDelete: UU5.PropTypes.func.isRequired,
+    onRelocate: UU5.PropTypes.func.isRequired,
+    onUpdate: UU5.PropTypes.func.isRequired
   },
   //@@viewOff:propTypes
 
@@ -262,14 +261,6 @@ export const BookTile = UU5.Common.VisualComponent.create({
     this.props.onRelocate && this.props.onRelocate(dtoOut.dtoOut);
     ModalHelper.close();
   },
-  _handleDelete(formRef, code) {
-    formRef.component.saveDone({ code });
-  },
-
-  _handleDeleteDone(dtoOut) {
-    this.props.onDelete && this.props.onDelete(dtoOut.dtoOut);
-    ModalHelper.close();
-  },
   _getLocations(book) {
     return (
       <UU5.Common.Loader onLoad={Calls.locationListLoader}>
@@ -318,17 +309,7 @@ export const BookTile = UU5.Common.VisualComponent.create({
   _openDeleteModal(data) {
     ModalHelper.open(
       <UU5.Bricks.Lsi lsi={Lsi.deleteBook} />,
-      <UU5.Forms.Form
-        onSave={formRef => this._handleDelete(formRef, data.code)}
-        onSaveDone={this._handleDeleteDone}
-        onSaveFail={this._handleDeleteFail}
-      >
-        <UU5.Bricks.Lsi lsi={Lsi.areYouSure(data.name)} />
-        <UU5.Forms.ContextControls
-          buttonSubmitProps={{ content: <UU5.Bricks.Lsi lsi={Lsi.delete} />, colorSchema: "danger" }}
-          buttonCancelProps={{ content: <UU5.Bricks.Lsi lsi={Lsi.cancel} /> }}
-        />
-      </UU5.Forms.Form>
+      <DeleteBookModal onDelete={this.props.onDelete} code={data.code} name={data.name} />
     );
 
     //this._deleteModal.current.open(data);
@@ -341,7 +322,7 @@ export const BookTile = UU5.Common.VisualComponent.create({
   _getBookInfoLine(name, value) {
     let classNames = this.getClassName();
     return (
-      <UU5.Bricks.Div key={UU5.Common.Tools.generateUUID(4)}>
+      <UU5.Bricks.Div>
         <UU5.Bricks.Lsi lsi={Lsi[name]} className={classNames.boldText()} />
         :&nbsp;&nbsp;
         <UU5.Bricks.Span content={value} />
@@ -398,17 +379,17 @@ export const BookTile = UU5.Common.VisualComponent.create({
 
   //@@viewOn:render
   render() {
-    let { name, code, authorCodes, locationCode, state, conditionCode, genreCodes, details } = this.props.data;
+    let { name, code, authorCodes, locationCode, state, conditionCode, genreCodes, details, id } = this.props.data;
     return (
       <>
         <UuP.Tiles.ActionTile
           {...this.getMainPropsToPass()}
-          key={UU5.Common.Tools.generateUUID(4)}
+          key={id}
           actionList={this._getTileActionList(this.props.data)}
           header={name}
           level={4}
           content={
-            <UU5.Bricks.Div key={UU5.Common.Tools.generateUUID(4)}>
+            <>
               {this._getAuthors(authorCodes)}
               {this._getBookInfoLine("code", code)}
               {this._getBookInfoLine("location", locationCode)}
@@ -420,7 +401,7 @@ export const BookTile = UU5.Common.VisualComponent.create({
               {this._getBookInfoLine("language", details.language)}
               {this._getBookInfoLine("custody", <UU5.Bricks.Lsi lsi={Lsi[details.custody]} />)}
               {this._getBookInfoLine("numberOfPages", details.numberOfPages)}
-            </UU5.Bricks.Div>
+            </>
           }
         />
         <UpdateBookModal ref_={this._updateModal} onUpdate={this.props.onUpdate} />
