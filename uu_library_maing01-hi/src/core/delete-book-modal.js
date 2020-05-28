@@ -8,7 +8,7 @@ import ModalHelper from "../helpers/modal-helper.js";
 
 import Lsi from "./delete-book-modal-lsi";
 //@@viewOff:imports
-export const BookFilterBarInput = UU5.Common.VisualComponent.create({
+export const DeleteBookModal = UU5.Common.VisualComponent.create({
   //@@viewOn:mixins
   mixins: [UU5.Common.BaseMixin],
   //@@viewOff:mixins
@@ -75,4 +75,4 @@ export const BookFilterBarInput = UU5.Common.VisualComponent.create({
   //@@viewOff:render
 });
 
-export default BookFilterBarInput;
+export default DeleteBookModal;

@@ -13,6 +13,7 @@ import Calls from "../calls";
 import ModalHelper from "../helpers/modal-helper.js";
 import UpdateBookModal from "./update-book-modal";
 import DeleteBookModal from "./delete-book-modal";
+import RelocateBookModal from "./relocate-book-modal";
 
 import Lsi from "./book-list-lsi.js";
 //@@viewOff:imports
@@ -252,71 +253,19 @@ export const BookTile = UU5.Common.VisualComponent.create({
       return [];
     }
   },
-  _handleRelocate(formRef, book) {
-    formRef.values.code = book.code;
-    formRef.component.saveDone(formRef.values);
-  },
-
-  _handleRelocateDone(dtoOut) {
-    this.props.onRelocate && this.props.onRelocate(dtoOut.dtoOut);
-    ModalHelper.close();
-  },
-  _getLocations(book) {
-    return (
-      <UU5.Common.Loader onLoad={Calls.locationListLoader}>
-        {({ isLoading, isError, data }) => {
-          if (isLoading) {
-            return <UU5.Bricks.Loading />;
-          } else if (isError) {
-            console.log(isError);
-            return <></>;
-          } else {
-            let options = [];
-            data.itemList.forEach(item => {
-              if (book.locationCode !== item.code) {
-                options.push(<UU5.Forms.Select.Option key={item.code} value={item.code} content={item.name} />);
-              }
-            });
-            return (
-              <UU5.Forms.Form
-                onSave={formRef => this._handleRelocate(formRef, book)}
-                onSaveDone={this._handleRelocateDone}
-              >
-                <UU5.Forms.Select
-                  name="locationCode"
-                  openToContent
-                  labelColWidth={{ xs: 12 }}
-                  inputColWidth={{ xs: 12 }}
-                  label={<UU5.Bricks.Lsi lsi={Lsi.genreLabel} />}
-                  placeholder={"Vyberte novou lokaci"}
-                >
-                  {options}
-                </UU5.Forms.Select>
-                <UU5.Forms.ContextControls
-                  buttonSubmitProps={{ content: <UU5.Bricks.Lsi lsi={Lsi.relocateButton} /> }}
-                  buttonCancelProps={{ content: <UU5.Bricks.Lsi lsi={Lsi.cancel} /> }}
-                />
-              </UU5.Forms.Form>
-            );
-          }
-        }}
-      </UU5.Common.Loader>
-    );
-  },
   _openRelocateModal(data) {
-    ModalHelper.open(<UU5.Bricks.Lsi lsi={Lsi.relocateBook} />, this._getLocations(data));
+    ModalHelper.open(
+      <UU5.Bricks.Lsi lsi={Lsi.relocateBook} />,
+      <RelocateBookModal onRelocate={this.props.onRelocate} code={data.code} locationCode={data.locationCode} />
+    );
   },
   _openDeleteModal(data) {
     ModalHelper.open(
       <UU5.Bricks.Lsi lsi={Lsi.deleteBook} />,
       <DeleteBookModal onDelete={this.props.onDelete} code={data.code} name={data.name} />
     );
-
-    //this._deleteModal.current.open(data);
   },
   _openUpdateModal(data) {
-    console.log(this._updateModal);
-
     this._updateModal.current.open(data);
   },
   _getBookInfoLine(name, value) {
